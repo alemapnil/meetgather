@@ -1,0 +1,346 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+@import url(https://fonts.googleapis.com/css2?family=Pacifico&display=swap);
+
+* {
+    font-family: 'Noto Sans TC';
+    color: #262626;
+    word-break:  'word-break';
+}
+
+ 
+html{
+    height: 100%;
+    margin:0;
+}
+
+body{
+    height: 100%;
+    margin:0;
+}
+
+
+.box0{
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 99;
+    border-bottom: 1px solid #BEBEBE;
+    /* background-color: red; */
+}
+
+.box1{
+    width: 1200px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+.website{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    /* background-color: #26619c; */
+}
+.website a {
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+    color: #f6d819;
+    text-decoration:none;
+}
+.website div{
+    display: flex;
+    align-items: center;
+    gap: 0px;
+}
+
+.website button{
+    border: none;
+    padding: 0;
+    background-color: #f6d819;
+    height: 42px;
+    width: 42px;
+    cursor: pointer;
+
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.website div button img{
+    object-fit: cover;
+    width: 60%;
+    height: 60%;
+}
+
+
+
+.frame1{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 220px;
+    background-color: #26619c;
+}
+.frame1 span{
+    cursor: pointer;
+    color: #262626;
+}
+#earth{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    min-height: 100%; /*外層高度100%*/
+    margin-bottom: -50px; /*隨footer高度需做調整*/
+}
+
+.content{
+    position: relative; 
+    top: 64px;
+    padding-bottom: 50px; /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: lightgreen; */
+}
+
+
+#footer{
+    position: relative; 
+    top: 64px;
+    height: 50px; /*設定footer本身高度*/
+    /* background-color: green; */
+}
+
+#footer div {
+    margin-left: 20px;
+    color: #262626;
+}
+
+.box2{
+    margin-top: 20px;
+    width: 1200px;
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    /* background-color: purple; */
+    z-index: 1;
+}
+
+.record{
+    width:100%;
+    height: 100%;
+    /* background-color: lightgrey; */
+}
+.leftrows{
+    width: 100%;
+    /* background-color: white; */
+}
+
+
+.filter{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    /* ##
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center; */
+}
+
+select{
+    box-sizing: border-box;
+    height: 46px;
+    padding: 8px;
+    border: 0px;
+    outline:0px;
+    border-radius: 20px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0em;
+    background: rgb(246, 247, 248);
+    cursor: pointer;
+}
+.selectChange{
+    background:   #26619c;
+    color: white;
+}
+
+.filter button{
+    background-color: transparent; 
+    border: none;
+    padding: 0;
+    color: #26619c;
+    cursor: pointer;
+    font-size:medium;
+}
+
+.page{
+    display: flex;
+    justify-content: end;
+}
+.pg{
+    margin-top: 50px;
+}
+select option{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0em;
+    text-align: left;
+    color: gray;
+    background-color: white;
+}
+hr{
+    border: 1px solid #E8E8E8;
+    width: 100%;
+    margin-top: 20px;
+}
+.event{
+    margin-top: 20px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 165px;
+    border-top: 2px solid #BEBEBE;
+    /* background-color: pink; */
+}
+
+.event_in{
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    gap: 15px;
+    /* background-color: red; */
+}
+
+.picture{
+    width: 100%;
+    height: 152px;
+    /* background-color: #26619c; */
+}
+
+.picture img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+
+    border-radius: 10px;
+}
+
+.section{
+    width: 100%;
+    /* background-color: blue; */
+}
+
+.section div{
+    margin-bottom: 5px;
+}
+
+.time{
+    color: #B87333;
+    font-size: 16px;
+    font-weight: 700;    
+}
+.title{
+    font-size: 18px;
+    font-weight: 700;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.host{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.lastRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: #E8E8E8; */
+}
+.items{
+    width: 100px;
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+    align-items: center;
+
+}
+.items div{
+    width: 25px;
+    height: 25px; 
+    cursor: pointer;
+}
+
+.items div img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+
+input[type="text"]{
+    box-sizing: border-box;
+    height: 42px;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #BEBEBE;
+    border-right: none;
+
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: gray
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #BEBEBE
+  }
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #BEBEBE
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #BEBEBE
+}
+
