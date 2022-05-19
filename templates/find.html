@@ -6,43 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meetgather - Find events</title>
     <link rel="shortcut icon" type="image/jpg" href="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/webIcon.png">
-    <link href="/static/css/find.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/find.css?v=10.8.155" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
+<div class="overlay"><div><img src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/loading.gif"/></div></div>
+
+
 <div class="box0">
-    <div class="box1">
+    <div class="box0_contain">
+            <div class="website">
+                <a href="/">Meetgather</a>
+                <div class="search">
+                    <input type="text" id="keyword" placeholder="輸入活動關鍵字"/>
+                    <button><img src='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/magnify.png'/></button>
+                </div>
+            </div>
+
+            <div class="frame1" style="display: none;">
+                <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+                <span class ='login opc'>登入</span>
+            </div>
+            <div class="fr2" style="display: none;">
+                <div class="frame2">
+                    <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+                    <span class ='message opc'> <img src='/static/img/message.svg'/></span>
+                    <span class ='alarm opc'> <img src='/static/img/alarm.svg'/></span>
+                    <div class ='shot opc'><img referrerpolicy="no-referrer"></img></div>
+                </div>
+                <div class="myinfo" style="display: none;">
+                    <div>
+                        <div class="0 opc">你的活動</div>
+                        <div class="1 opc">建立活動</div>
+                        <div class="2 opc">個人檔案</div>
+                        <div class="3 opc logoutA">登出</div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div> 
+
+
+<div class="laptop">
+    <div class="row1">
         <div class="website">
             <a href="/">Meetgather</a>
-            <div>
-                <input type="text" id='keyword' placeholder="輸入活動關鍵字"/>
-                <button><img src='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/magnify.png'/></button>
+        </div>
+        <div class="frame1" style="display: none;">
+            <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+            <span class ='login opc'>登入</span>
+        </div>
+        <div class="frame2" style="display: none;">
+            <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+            <span class ='message opc'> <img src='/static/img/message.svg'/></span>
+            <span class ='alarm opc'> <img src='/static/img/alarm.svg'/></span>
+        </div>
+
+    </div>
+    <div class="row2">
+        <div class="fr3">
+            <div class ='shot opc'><img referrerpolicy="no-referrer"/></img></div>
+            <div class="myinfo opc" style="display: none;">
+                <div>
+                    <div class="0 opc">你的活動</div>
+                    <div class="1 opc">建立活動</div>
+                    <div class="2 opc">個人檔案</div>
+                    <div class="3 opc logoutB">登出</div>
+                </div>
             </div>
         </div>
-        <div class="frame1">
-        <span id ='earth'> <img src='/static/img/earth.svg'/><span>中文</span></span>
-        <span id ='login'>登入</span>
-        <span id ='signup'>註冊</span>
+        <div class="search">
+            <input type="text" id="keyword" placeholder="輸入活動關鍵字"/>
+            <button><img src='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/magnify.png'/></button>
         </div>
-    </div> 
+    </div>
+
+
 </div>
 
+
 <div class="wrapper">
-<div class="content">
     <div class="box2">
-        <div class="record"></div>
         <div class="leftrows">
+
             <div class="filter">
-                <select name="date" >
+                <div>
+                    <select name="date" >
                     <option value="">任何時段</option>
                     <option value="0">即將開始</option>
                     <option value="1">今天</option>
                     <option value="2">明天</option>
                     <option value="3">本週末</option>
                     <option value="4">自選時段</option>
-                </select>
-
-                <select name="category" >
+                    </select>
+                </div>
+            
+                <div>
+                    <select name="category" >
                     <option value="">任何類別</option>
                     <option value="0">商業投資</option>
                     <option value="1">科技</option>
@@ -58,52 +118,51 @@
                     <option value="11">唱歌派對</option>
                     <option value="12">社交</option>
                     <option value="13">其他</option>
-                </select>
-
-                <select name="city" >
-                    <option value="">地點/線上</option>
-                    <option value="online">線上</option>
-                    <option value="0">基隆市</option>
-                    <option value="1">臺北市</option>
-                    <option value="2">新北市</option>
-                    <option value="3">桃園市</option>
-                    <option value="4">新竹市</option>
-                    <option value="5">新竹縣</option>
-                    <option value="6">苗栗縣</option>
-                    <option value="7">臺中市</option>
-                    <option value="8">彰化縣</option>
-                    <option value="9">南投縣</option>
-                    <option value="10">雲林縣</option>
-                    <option value="11">嘉義市</option>
-                    <option value="12">嘉義縣</option>
-                    <option value="13">臺南市</option>
-                    <option value="14">高雄市</option>
-                    <option value="15">屏東縣</option>
-                    <option value="16">宜蘭縣</option>
-                    <option value="17">花蓮縣</option>
-                    <option value="18">臺東縣</option>
-                    <option value="19">澎湖縣</option>
-                    <option value="20">金門縣</option>
-                    <option value="21">連江縣</option>
-                </select>
-
-                <select name="sort" class="selectChange" >
-                    <option value="0" >排序 : 時間</option>
-                    <option value="1">排序 : 熱門</option>
-                </select>
-
-                <button>重整篩選器</button>
-
-            </div>
-            <div class="page">
-                <div>
-                <span class="first"><</span>
-                <span class="former">前</span>
-                <span class="num"></span>
-                <span class="next">後</span>
-                <span class="last">></span>
+                    </select>
                 </div>
+            
+                <div>
+                    <select name="city" >
+                        <option value="">地點/線上</option>
+                        <option value="online">線上</option>
+                        <option value="0">基隆市</option>
+                        <option value="1">臺北市</option>
+                        <option value="2">新北市</option>
+                        <option value="3">桃園市</option>
+                        <option value="4">新竹市</option>
+                        <option value="5">新竹縣</option>
+                        <option value="6">苗栗縣</option>
+                        <option value="7">臺中市</option>
+                        <option value="8">彰化縣</option>
+                        <option value="9">南投縣</option>
+                        <option value="10">雲林縣</option>
+                        <option value="11">嘉義市</option>
+                        <option value="12">嘉義縣</option>
+                        <option value="13">臺南市</option>
+                        <option value="14">高雄市</option>
+                        <option value="15">屏東縣</option>
+                        <option value="16">宜蘭縣</option>
+                        <option value="17">花蓮縣</option>
+                        <option value="18">臺東縣</option>
+                        <option value="19">澎湖縣</option>
+                        <option value="20">金門縣</option>
+                        <option value="21">連江縣</option>
+                    </select>
+            
+                </div>
+            
+                <div>
+                    <select name="sort" class="selectChange" >
+                        <option value="0" >排序 : 時間</option>
+                        <option value="1">排序 : 熱門</option>
+                    </select>    
+                </div>
+            
+                <div class="refresh"><button>刷新篩選器</button></div>
+                
+        
             </div>
+           
             <div class="result">
 
                 <div class="event">
@@ -111,7 +170,7 @@
                         <div class="picture"><img src = "/static/img/test.jpg"></div>
                         <div class="section">
                             <div class="time">SUN, MAY 22 · 8:30 PM GMT+8</div>
-                            <div class="title">The First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and Smarter</div>
+                            <div class="title">The First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and Smarter</div>
                             <div class="host">Peter W.<span> |台北市</span></div>
 
                             <div class="lastRow">
@@ -121,51 +180,24 @@
                                     <div class="fav"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite1.png"/></div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-                </div>
-
-                <div class="event">
-                    <div class="event_in">
-                        <div class="picture"><img src = "/static/img/test.jpg"></div>
-                        <div class="section">
-                            <div class="time">SUN, MAY 22 · 8:30 PM GMT+8</div>
-                            <div class="title">中文口說課 Chinese class basic</div>
-                            <div class="host">Peter W.<span> |台北市</span></div>
-
-                            <div class="lastRow">
-                                <div class="attendee"><span>100000000000000000000000000</span>人參加</div>
-                                <div class="items">
-                                    <div class="share"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/share.png"/></div>
-                                    <div class="fav"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite1.png"/></div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-
-
-
+                </div> 
             </div>
-            <div class="page pg">
+            <div class="page">
                 <div>
                 <span class="first"><</span>
                 <span class="former">前</span>
-                <span class="num"></span>
+                <span class="num">1</span>
                 <span class="next">後</span>
                 <span class="last">></span>
                 </div>
-            </div>
-        </div>
-
+            </div>  
+        </div> 
     </div>
-</div>  
 </div>
+<div class = 'footer'><div>© COPYRIGHT <span class="year"></span> PamelaLin</div></div>  
 
-<div id = 'footer'><div>© COPYRIGHT <span class="year"></span> PamelaLin</div></div>
 
 <script type="text/javascript" src='/static/js/find.js'></script>
 </body>

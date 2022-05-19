@@ -7,17 +7,35 @@
     word-break:  'word-break';
 }
 
- 
-html{
+html, body{
     height: 100%;
     margin:0;
+    padding: 0;
 }
 
-body{
+.overlay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
     height: 100%;
-    margin:0;
+    background-color: white;
+    z-index: 99
 }
 
+.overlay div{
+    width: 250px;
+    height: 250px;
+}
+
+.overlay div img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
 
 .box0{
     height: 64px;
@@ -26,12 +44,11 @@ body{
     position: fixed;
     top: 0px;
     width: 100%;
-    z-index: 99;
+    z-index: 1;
     border-bottom: 1px solid #BEBEBE;
-    /* background-color: red; */
 }
 
-.box1{
+.box0_contain{
     width: 1200px;
     height: 100%;
     display: flex;
@@ -39,11 +56,12 @@ body{
     align-items: center;
     background-color: white;
 }
+
+
 .website{
     display: flex;
     align-items: center;
     gap: 25px;
-    /* background-color: #26619c; */
 }
 .website a {
     font-family: 'Pacifico', cursive;
@@ -51,13 +69,13 @@ body{
     color: #f6d819;
     text-decoration:none;
 }
-.website div{
+.search{
     display: flex;
     align-items: center;
     gap: 0px;
 }
 
-.website button{
+.search button{
     border: none;
     padding: 0;
     background-color: #f6d819;
@@ -68,93 +86,118 @@ body{
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
 }
-.website div button img{
+.search button img{
     object-fit: cover;
     width: 60%;
     height: 60%;
 }
-
-
+.op{
+    opacity: 0.5;
+    cursor: pointer;
+}
 
 .frame1{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 220px;
-    background-color: #26619c;
+    width: 150px;
 }
-.frame1 span{
-    cursor: pointer;
-    color: #262626;
-}
-#earth{
+
+.earth{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+.frame2{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 250px;
+}
+
+.myinfo{
+    width: 148px;
+    height: 148px;
+    border-radius: 6px;
+    border: 1px solid #BEBEBE;;
+    background-color: white;
+    margin-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.myinfo div{
+    width: 120px;
+}
+
+.myinfo div div{
+    margin-bottom: 10px;
+}
+
+
+.shot{
+    width: 60px;
+    height: 60px;
+}
+
+.shot img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
 
 .wrapper {
-    min-height: 100%; /*外層高度100%*/
-    margin-bottom: -50px; /*隨footer高度需做調整*/
+    min-height: 100%;
 }
 
-.content{
-    position: relative; 
-    top: 64px;
-    padding-bottom: 50px; /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* background-color: lightgreen; */
-}
-
-
-#footer{
+.footer{
     position: relative; 
     top: 64px;
     height: 50px; /*設定footer本身高度*/
-    /* background-color: green; */
+    display: flex;
+    align-items: flex-end;
 }
 
-#footer div {
+.footer div {
     margin-left: 20px;
-    color: #262626;
 }
+
 
 .box2{
-    margin-top: 20px;
+    position: relative;
+    top: 64px;
+    margin: 20px auto 0 auto;
     width: 1200px;
-    display: grid;
-    grid-template-columns: 25% 1fr;
-    gap: 30px;
-    justify-content: center;
-    align-items: center;
-    /* background-color: purple; */
-    z-index: 1;
 }
 
-.record{
-    width:100%;
-    height: 100%;
-    /* background-color: lightgrey; */
-}
 .leftrows{
+    margin:0 auto;
     width: 100%;
-    /* background-color: white; */
 }
-
 
 .filter{
+    width: 95%;
+    height: 60px;
     display: flex;
-    align-items: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    flex-direction: row;
-    /* ##
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center; */
+    overflow-x: auto;
 }
+.filter::-webkit-scrollbar{
+    width: 0px;
+    height: 2px;
+}
+
+.filter div{
+    min-width: 100px;
+    margin-right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 select{
     box-sizing: border-box;
@@ -176,7 +219,7 @@ select{
     color: white;
 }
 
-.filter button{
+.refresh button{
     background-color: transparent; 
     border: none;
     padding: 0;
@@ -187,7 +230,8 @@ select{
 
 .page{
     display: flex;
-    justify-content: end;
+    justify-content: center;
+    margin-top: 20px;
 }
 .pg{
     margin-top: 50px;
@@ -201,34 +245,26 @@ select option{
     color: gray;
     background-color: white;
 }
-hr{
-    border: 1px solid #E8E8E8;
-    width: 100%;
-    margin-top: 20px;
-}
+
+
 .event{
     margin-top: 20px;
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     height: 165px;
     border-top: 2px solid #BEBEBE;
-    /* background-color: pink; */
 }
 
 .event_in{
     width: 100%;
     height: 90%;
     display: grid;
-    grid-template-columns: 30% 1fr;
+    grid-template-columns: 250px 1fr;
     gap: 15px;
-    /* background-color: red; */
 }
 
 .picture{
-    width: 100%;
-    height: 152px;
-    /* background-color: #26619c; */
 }
 
 .picture img{
@@ -241,11 +277,10 @@ hr{
 
 .section{
     width: 100%;
-    /* background-color: blue; */
 }
 
 .section div{
-    margin-bottom: 5px;
+    margin-bottom: 7px;
 }
 
 .time{
@@ -273,7 +308,6 @@ hr{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: #E8E8E8; */
 }
 .items{
     width: 100px;
@@ -298,6 +332,7 @@ hr{
 
 input[type="text"]{
     box-sizing: border-box;
+    width: 300px;
     height: 42px;
     padding: 10px;
     outline: none;
@@ -307,7 +342,7 @@ input[type="text"]{
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
 
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 16px;
@@ -316,7 +351,7 @@ input[type="text"]{
     color: gray
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder, :-ms-input-placeholder,::-ms-input-placeholder  { /* Chrome, Firefox, Opera, Safari 10.1+*/
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -325,22 +360,166 @@ input[type="text"]{
     text-align: left;
     color: #BEBEBE
   }
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #BEBEBE
-}
-::-ms-input-placeholder { /* Microsoft Edge */
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #BEBEBE
+
+
+.laptop{
+    display: none;
+    height: 130px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1;
+    background-color: white; 
 }
 
+
+.row1{
+    margin: 0 auto;
+    width: 90%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.row2{
+    margin: 0 auto;
+    width: 90%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+@media (max-width:1200px){
+    .box0_contain{
+        width: 95%;
+    }
+    .box2{
+        width: 95%;
+    }
+}
+
+@media (max-width:780px){
+    .box0{
+        display: none;
+    }
+
+    .box2{
+        top:130px;
+        margin: 0 auto;
+        width: 95%;
+    }
+    .footer{
+        top:130px;
+    }
+
+    .op{
+        opacity: 1;
+    }
+    .leftrows{
+        width: 95%;
+    }
+    .filter{
+        width: 95%;
+        height: 50px;
+    }
+    .filter div{
+        margin-right: 5px;
+    }
+    .refresh button{
+        font-size: 13px;
+        font-weight: 300;
+    }
+    select{
+        font-size: 13px;
+        font-weight: 300;
+    }
+    select option{
+        font-size: 13px;
+        font-weight: 300;
+    }
+    .event{
+        /* width: 95%; */
+    }
+    .event_in{
+        grid-template-columns: 30% 1fr;
+    }
+
+    .picture{
+        height: 100px;
+    }
+    .section div{
+        margin-bottom: 3px;
+    }
+    .time{
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .title{
+        font-size: 13px;
+        font-weight: 500;
+        -webkit-line-clamp: 3;
+    }
+    
+    .host{
+        font-size: 13px;
+        font-weight: 300;
+    }
+    
+    .lastRow{
+        font-size: 13px;
+        font-weight: 300;
+    }
+    .items div{
+        width: 16px;
+        height: 16px; 
+    }
+    .page{
+        font-size: 13px;
+    }
+
+    .laptop{
+        display: block;
+    }
+    .frame1{
+        width: 130px;
+        font-size: 13px;
+        font-weight: 300;
+
+    }
+    .frame2{
+        width: 150px;
+        font-size: 13px;
+        font-weight: 300;
+    }
+    .shot{
+        width: 55px;
+        height: 55px;
+    }
+    .search{
+        position:fixed;
+        right: 20px;
+    }
+    
+    input[type="text"]{
+        font-size: 13px;
+        font-weight: 300;
+        border: 1px solid #f6d819;
+        width: 180px;
+    }
+    ::placeholder, :-ms-input-placeholder,::-ms-input-placeholder  { /* Chrome, Firefox, Opera, Safari 10.1+*/
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+    .myinfo{
+        margin-left: 0px;
+    }
+
+
+    
+
+
+}
