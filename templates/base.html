@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/jpg" href="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/webIcon.png">
+    <link href="/static/css/base.css" rel="stylesheet" type="text/css"/>
+    {% block link%}{% endblock link%}
+    {% block title%}{% endblock title%}
+</head>
+<body>
+
+<div class="overlay"><div><img src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/loading.gif"/></div></div>
+
+
+<div class="box0">
+    <div class="box0_contain">
+            <div class="website">
+                <a href="/">Meetgather</a>
+                <div class="search">
+                    <input type="text" id="keyword" placeholder="輸入活動關鍵字"/>
+                    <button><img src='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/magnify.png'/></button>
+                </div>
+            </div>
+
+            <div class="frame1" style="display: none;">
+                <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+                <span class ='login opc'>登入</span>
+            </div>
+            <div class="fr2" style="display: none;">
+                <div class="frame2">
+                    <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+                    <span class ='message opc'> <img src='/static/img/message.svg'/></span>
+                    <span class ='alarm opc'> <img src='/static/img/alarm.svg'/></span>
+                    <div class ='shot opc'><img referrerpolicy="no-referrer"></img></div>
+                </div>
+                <div class="myinfo" style="display: none;">
+                    <div>
+                        <div class="0 opc">你的活動</div>
+                        <div class="1 opc">建立活動</div>
+                        <div class="2 opc">個人檔案</div>
+                        <div class="3 opc logoutA">登出</div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div> 
+
+
+<div class="laptop">
+    <div class="row1">
+        <div class="website">
+            <a href="/">Meetgather</a>
+        </div>
+        <div class="frame1" style="display: none;">
+            <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+            <span class ='login opc'>登入</span>
+        </div>
+        <div class="frame2" style="display: none;">
+            <span class='earth opc'> <img src='/static/img/earth.svg'/><span>English</span></span>
+            <span class ='message opc'> <img src='/static/img/message.svg'/></span>
+            <span class ='alarm opc'> <img src='/static/img/alarm.svg'/></span>
+        </div>
+
+    </div>
+    <div class="row2">
+        <div class="fr3">
+            <div class ='shot opc'><img referrerpolicy="no-referrer"/></img></div>
+            <div class="myinfo opc" style="display: none;">
+                <div>
+                    <div class="0 opc">你的活動</div>
+                    <div class="1 opc">建立活動</div>
+                    <div class="2 opc">個人檔案</div>
+                    <div class="3 opc logoutB">登出</div>
+                </div>
+            </div>
+        </div>
+        <div class="search">
+            <input type="text" id="keyword" placeholder="輸入活動關鍵字"/>
+            <button><img src='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/magnify.png'/></button>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<div class="wrapper">
+
+    <div class="box2">
+        {% block content%}{% endblock content%}
+    </div>
+</div>
+<div class = 'footer'><div>© COPYRIGHT <span class="year"></span> PamelaLin</div></div>  
+
+<script type="text/javascript" src="/static/js/base.js"></script>
+{% block script %}{% endblock  script%}
+</body>
+</html>
