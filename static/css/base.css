@@ -46,6 +46,7 @@ html, body{
     width: 100%;
     z-index: 1;
     border-bottom: 1px solid #BEBEBE;
+    background-color: white;
 }
 
 .box0_contain{
@@ -196,6 +197,12 @@ input[type="text"]{
     color: gray
 }
 
+input:focus {
+	outline: none;
+  	border: 1px solid #f6d819;
+    border-right: none;
+}
+
 ::placeholder, :-ms-input-placeholder,::-ms-input-placeholder  { /* Chrome, Firefox, Opera, Safari 10.1+*/
     font-size: 16px;
     font-style: normal;
@@ -289,7 +296,6 @@ input[type="text"]{
     input[type="text"]{
         font-size: 13px;
         font-weight: 300;
-        border: 1px solid #f6d819;
         width: 180px;
     }
     ::placeholder, :-ms-input-placeholder,::-ms-input-placeholder  { /* Chrome, Firefox, Opera, Safari 10.1+*/

@@ -1,5 +1,5 @@
 //畫面一載入先要做的事
-window.onload=function(){
+async function load(){
     console.log('onload...')
     createYear()
     if (document.cookie.includes('access_token')){
@@ -10,7 +10,8 @@ window.onload=function(){
                 access_token = myArray[i].replace('access_token=','').replace(/\s/g,'')
             }
         }
-        googleInfo(access_token)
+        await googleInfo(access_token)
+
     }
     else{
         console.log('未登入')
@@ -22,13 +23,17 @@ window.onload=function(){
         }
     } 
 
-    setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 500);
+    if (current_url.includes('/create')){
+        create()
+    }
+    setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 800);
 }
 
 
+
 //fetch登入者資料。已登入時，右上角要做相應變化，還有token過期時的調整
-function googleInfo(para){
-    fetch("/api/user",{headers: {Authorization: `Bearer ${para}`}})
+async function googleInfo(para){
+    await fetch("/api/user",{headers: {Authorization: `Bearer ${para}`}})
         .then(function(response){
             if(response.ok) {
                 return response.json();
@@ -37,7 +42,8 @@ function googleInfo(para){
         .catch(error => {
             console.error('GET /api/user 錯誤:', error)
         })
-        .then(function(dict){
+        .then(function(ele){
+            dict = ele
             console.log('GET /api/user 回傳值',dict)
             if (dict === undefined){
                 deleteAllCookies()
@@ -84,6 +90,7 @@ function googleInfo(para){
         });  
 
 }
+
 
 // delete all cookies
 function deleteAllCookies() {
@@ -148,18 +155,6 @@ document.getElementsByTagName('body')[0].addEventListener('click',function(e){
     }
 })
 
-
-
-//置頂搜尋活動input顏色改變
-document.getElementById('keyword').addEventListener('mouseover',function(){
-    document.getElementById('keyword').style.border='1px solid #f6d819'
-    document.getElementById('keyword').style.borderRight='none'
-})
-document.getElementById('keyword').addEventListener('mouseout',function(){
-    document.getElementById('keyword').style.border='1px solid #BEBEBE'
-    document.getElementById('keyword').style.borderRight='none'
-})
-
 //點擊登入
 for (i=0; i<document.querySelectorAll('.login').length; i++){
     document.querySelectorAll('.login')[i].addEventListener('click',function(){
@@ -196,4 +191,8 @@ document.querySelector('.logoutA').addEventListener('click',logout)
 document.querySelector('.logoutB').addEventListener('click',logout)
 
 
-var access_token, userName, userEmail, userPicture
+var access_token, userName, userEmail, userPicture, dict
+
+var current_url = window.location.href
+console.log('當前網址',current_url)
+load()

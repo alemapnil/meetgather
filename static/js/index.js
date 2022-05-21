@@ -102,7 +102,6 @@ function createYear(){
 
 //op透明度改變
 for (let i = 0; i < document.querySelectorAll('.opc').length; i++){
-    console.log(i,'()')
     document.querySelectorAll('.opc')[i].addEventListener('mouseover',function(){
         document.querySelectorAll('.opc')[i].classList.add("op")
 

@@ -50,6 +50,15 @@ def index():
 def find():
 	return render_template("find.html")
 
+@app.route('/create')
+def create():
+	return render_template("create.html")
+
+@app.route('/canvas')
+def canvas():
+    return render_template("canvas.html")
+
+
 
 ## Google oauth
 @app.route('/login')
@@ -72,13 +81,12 @@ def authorize():
         identity = {"email": user_info['email'],
                     "name": user_info['name'],
                     "picture": user_info['picture']
-                    },expires_delta = timedelta(seconds = 3600))
+                    },expires_delta = timedelta(seconds = 7200))
 
     currentpage = request.cookies.get('currentpage')
     resp = make_response(redirect(currentpage))
     resp.set_cookie('access_token', access_token)
     return resp
-
 
 
 app.run(host='0.0.0.0',port=2000)
