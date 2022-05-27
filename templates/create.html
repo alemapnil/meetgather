@@ -3,6 +3,11 @@
 
 {% block link%}
 <link rel="stylesheet"  type= "text/css" href="/static/css/create.css?v=0.0.244">
+<link rel="stylesheet" type= "text/css" href="/static/css/calender.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
 {% endblock link%}
 
 {% block title%}
@@ -12,7 +17,10 @@
 
 
 {% block content%}
-<form enctype=multipart/form-data>
+
+<div class="preview"></div>
+<form enctype=multipart/form-data id="form">
+<div class="acti_pho">
 <div class="title">活動圖示</div>
 <div class="enter">
     <div class="activity_photo">
@@ -20,19 +28,62 @@
     </div>
     <span class="notice">請選擇一張照片</span> <input type="file"  id='file' name="picture"  accept="image/*"/><input type='submit' value="送出" id='send'/>
 </div>
+</div>
 
+
+<div class="acti_name">
 <div class="title">活動標題</div>
 <div class="enter">
     <input type="text" placeholder="請填寫活動名稱" id='gathername'/>
     <div class="notice">活動標題不可為空</div>
 </div>
+</div>
 
+
+<div class="acti_descp">
 <div class="title">活動描述</div>
 <div class="enter">
     <textarea id="story" name="story" placeholder="請描述活動內容"></textarea>
     <div class="notice">活動描述不可為空</div>
 </div>
+</div>
 
+
+<div class="acti_cate">
+    <div class="title">活動類別</div>
+    <div class="enter">
+        <select name="category" class="category" >
+            <option value="">--選擇類別--</option>
+            <option value="0">商業投資</option>
+            <option value="1">科技</option>
+            <option value="2">體驗學習</option>
+            <option value="3">外語</option>
+            <option value="4">影音藝術</option>
+            <option value="5">遊戲</option>
+            <option value="6">美容時尚</option>
+            <option value="7">命理心靈</option>
+            <option value="8">戶外旅遊</option>
+            <option value="9">運動健身</option>
+            <option value="10">美食美酒</option>
+            <option value="11">唱歌派對</option>
+            <option value="12">社交</option>
+            <option value="13">其他</option>
+        </select>
+        <div class="notice">活動類別不可為空</div>
+    </div>
+</div>
+
+
+<div class="acti_num">
+    <div class="title">活動人數上限</div>
+    <div class="enter">
+        <input type="text" placeholder="請填寫活動人數上限" id='gathernumber'/>
+        <div class="notice"></div>
+    </div>
+</div>
+    
+
+<div class="acti_add">
 <div class="title">活動地點</div>
 <div class="enter">
     <select name="city" class="city" >
@@ -61,17 +112,74 @@
         <option value="20">金門縣</option>
         <option value="21">連江縣</option>
     </select>
+
+    <div class="search">
+        <input type="text" id="location" placeholder="輸入活動地點"/>
+    </div>
+    <div id="map"></div>
     <div class="notice">活動地點不可為空</div>
 </div>
 
+</div>
 
+
+<div class="acti_tm">
+<div class="title">活動時間</div>
+<div class="enter">
+    <div class="calender">
+        <div class="month">
+            <i class="fas fa-angle-left prev "></i>
+            <div class="date">
+                <h1>May</h1>
+                <p></p>
+            </div>
+            <i class="fas fa-angle-right next"></i>
+        </div>
+        <div class="weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thr</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+        <div class="days"></div>
+    </div>        
+
+    <div class="when">--選擇日期--</div>
+    <select name="time" class="time" >
+        <option value="">--選擇時間--</option>
+    </select>
+
+    <div class="notice"></div>
+</div>
+</div>
 </form>
+
+<div class="acti_view">
+    <div class="view"><div class="check">預覽</div></div>
+    <div class="backToEdit"><div  class="check">返回編輯</div></div>
+    <div class="confirm"><div  class="check">確認送出</div></div>
+</div>
+
 {% endblock content%}
 
 
 
 {% block script %}
+
+
+
+<script type="text/javascript" src="/static/js/calender.js"></script>
 <script type="text/javascript" src="/static/js/create.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{api}}&libraries=places&callback=initMap">
+</script>
+<script type="text/javascript" src="/static/js/map.js"></script>
+
+
 {% endblock  script%}
+
 </body>
 </html>

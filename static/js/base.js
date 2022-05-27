@@ -1,6 +1,18 @@
 //畫面一載入先要做的事
 async function load(){
     console.log('onload...')
+
+    //clear all input values
+    for (i=0; i<document.getElementsByTagName('input').length; i++){
+        document.getElementsByTagName('input')[i].value = ''
+    }
+    for (i=0; i<document.getElementsByTagName('textarea').length; i++){
+        document.getElementsByTagName('textarea')[i].value = ''
+    }
+
+
+
+
     createYear()
     if (document.cookie.includes('access_token')){
         const myArray = document.cookie.split(";");
@@ -196,3 +208,4 @@ var access_token, userName, userEmail, userPicture, dict
 var current_url = window.location.href
 console.log('當前網址',current_url)
 load()
+

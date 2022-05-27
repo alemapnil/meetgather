@@ -1,7 +1,6 @@
 import os
 from flask import *
 from flask_jwt_extended import (create_access_token, get_jwt_identity, jwt_required, JWTManager )
-from authlib.integrations.flask_client import OAuth
 from second import api
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -9,6 +8,7 @@ load_dotenv()
 
 app = Flask (__name__) 
 
+from authlib.integrations.flask_client import OAuth
 oauth = OAuth(app)
 google = oauth.register(
     name='google',client_id=os.getenv("GOOGLE_OAUTH_ID"),client_secret=os.getenv("GOOGLE_OAUTH_PASSWORD"),
@@ -52,7 +52,15 @@ def find():
 
 @app.route('/create')
 def create():
-	return render_template("create.html")
+	return render_template("create.html", api=os.getenv('GOOGLE_MAP_API'))
+
+
+@app.route('/calender')
+def calender():
+    return render_template("calender.html")
+
+
+
 
 @app.route('/canvas')
 def canvas():
@@ -65,6 +73,7 @@ def canvas():
 def login():
     google = oauth.create_client('google')
     redirect_uri = url_for('authorize', _external=True)
+    print(redirect_uri,'**')
     return google.authorize_redirect(redirect_uri)
 
 @app.route('/authorize')

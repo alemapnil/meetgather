@@ -41,8 +41,10 @@
     border-radius: 6px;
 }
 
-#gathername{
+#gathername, #gathernumber{
+    width: 100%;
     border: none;
+    outline: none;
     border-bottom:1px solid #bebebe;
     border-radius: 0px;
     color: black;
@@ -64,7 +66,62 @@
   	border: 1px solid #f6d819;
 }
 
-.city{
+
+.enter .search{
+    display: none;
+    margin-top: 20px;
+    align-items: center;
+    gap: 0px;
+    width: 100%;
+}
+
+
+#location{
+    box-sizing: border-box;
+    width: 100%;
+    height: 42px;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #BEBEBE;
+    border-radius: 6px;
+
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+#location:hover {
+	outline: none;
+  	border: 1px solid #f6d819;
+}
+    
+#map{
+    display: none;
+    width: 500px;
+    height: 300px;
+}
+
+
+
+.when{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    color: #bebebe;
+    border: 1px solid #bebebe;
+    outline:0px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+select{
+    margin-top: 10px;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -76,5 +133,92 @@
     cursor: pointer;
 }
 
+option[value=""]{
+    color: #bebebe;;
+}
 
-    
+
+.acti_view{
+    position: relative;
+    bottom:0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 2;
+}
+
+.check{
+    color: white;
+}
+.view{
+    display: none;
+    width: 200px;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #f6d819;
+    color: white;
+    font-size: x-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.backToEdit{
+    display: none;
+    width: 200px;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #f6d819;
+    color: white;
+    font-size: x-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    -webkit-filter:brightness(1.5);
+}
+
+.confirm{
+    display: none;
+    width: 200px;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #f6d819;
+    color: white;
+    font-size: x-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    -webkit-filter:brightness(1.5);
+}
+
+
+.preview{
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #f6d819;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+
+@media (max-width:600px){
+    #form{
+        margin-top: 20px;
+    }
+    .backToEdit{
+        width: 130px;
+    }
+    .confirm{
+        width: 130px;
+    }
+
+}

@@ -176,7 +176,7 @@ html, body{
 }
 
 
-input[type="text"]{
+#keyword{
     box-sizing: border-box;
     width: 300px;
     height: 42px;
@@ -197,13 +197,15 @@ input[type="text"]{
     color: gray
 }
 
-input:focus {
+#keyword:hover {
 	outline: none;
   	border: 1px solid #f6d819;
     border-right: none;
 }
 
-::placeholder, :-ms-input-placeholder,::-ms-input-placeholder  { /* Chrome, Firefox, Opera, Safari 10.1+*/
+
+
+  ::placeholder{
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -212,6 +214,27 @@ input:focus {
     text-align: left;
     color: #BEBEBE
   }
+
+
+  :-ms-input-placeholder{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #BEBEBE
+  }
+
+  ::-ms-input-placeholder{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #BEBEBE
+}  
 
 
 .laptop{
@@ -293,7 +316,7 @@ input:focus {
         right: 20px;
     }
     
-    input[type="text"]{
+    #keyword{
         font-size: 13px;
         font-weight: 300;
         width: 180px;
