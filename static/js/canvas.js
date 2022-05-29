@@ -12,6 +12,8 @@ document.getElementById("send").addEventListener("click",function(fe){
     reader.onload = function(event){
         const imgElement = document.createElement('img')
         imgElement.src = event.target.result
+
+        console.log(event.target.result.width,event.target.result.height,'*********')
         document.querySelector('#input').src = event.target.result      
           
         imgElement.onload = function(e){

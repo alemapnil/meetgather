@@ -1,57 +1,118 @@
 from flask import *
 from flask_jwt_extended import (create_access_token, get_jwt_identity, jwt_required, JWTManager )
-from model import *
-
+from models import db
+from datetime import datetime
+import traceback,re
 
 api = Blueprint('api',__name__)
 
+def nowTime():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+def IDTime():
+    return datetime.now().strftime("%Y%m%d%H%M_%S%f_")
+
+cate_list = ['商業投資', '影音藝術', '遊戲', '運動健身', '美容時尚', '外語', '體驗學習', '命理心靈', '美食美酒', '科技', '唱歌派對', '戶外旅遊', '社交', '其他']
+spots = ['線上', '基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣', '嘉義市', '嘉義縣', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣']
 
 @api.route('/api/user', methods = ['GET'])
 @jwt_required()
 def user_get():
     if request.method =='GET':
-        try:
-            decrypt = get_jwt_identity()
-            data = {"ok": True,"email":decrypt['email'], 
-                                "name":decrypt['name'],
-                                "picture":decrypt['picture']}
-        except:
-            data = {"error": True,'message':'JWT解碼出錯'}
-
+        decrypt = get_jwt_identity()
+        data = {"ok": True,"email":decrypt['email'], 
+                            "name":decrypt['name'],
+                            "picture":decrypt['picture']}
         return jsonify(data)
 
-@jwt_required()
 @api.route('/api/user', methods = ["DELETE"])
+@jwt_required()
 def user_delete():
     resp = make_response({"ok":True})
     resp.delete_cookie('access_token')
     return resp
 
-@jwt_required()
 @api.route('/api/send', methods = ['POST'])
+@jwt_required()
 def send():
-    global data
-    #測試上傳檔案正確與否
+    data = {'error':True}
     try:
-        file = request.files['file']
-    except :
-        print(traceback.format_exc())
-        data = {"error": True,"message": "輸入的檔案錯誤"}
-        return jsonify(data)
-	#附檔名是否合格
-    if allowed_file(file.filename):
-        s3_object = 'meetgather/activity/' + uuid.uuid1().hex +'.' + file.filename.rsplit('.', 1)[1].lower()
-        cdn_url = 'https://d3i2i3wop7mzlm.cloudfront.net/' + s3_object
+        acti_pho, acti_name = request.files['acti_pho'], request.form['acti_name'].strip(),
+        acti_story, acti_cate = request.form['acti_story'].strip(), request.form['acti_cate']
+        acti_num, acti_city = request.form['acti_num'], request.form['acti_city']
+        acti_tm = request.form['acti_tm']
+        acti_add, acti_lat, acti_lng = None, None, None
+        if acti_city == 'online' or acti_city == '線上':
+            pass
+        else:
+            acti_add, acti_lat, acti_lng = request.form['acti_add'].strip(), request.form['acti_lat'], request.form['acti_lng']
+            try:
+                float(acti_lat)
+                float(acti_lng) 
+            except:
+                data['message'] = '經緯度不符'
+                return jsonify(data)
+
+
         try:
-            s3.upload_fileobj(file, 'bucketfromaws', s3_object)	
-            upload_file(cdn_url)
-            data = {"ok":True,'position':cdn_url}
-        except: 
-            print(traceback.format_exc())
-            data = {"error": True,"message": "伺服器內部錯誤"}
+            acti_num = int(acti_num)
+        except:
+            data['message'] = '人數不符'
+            return jsonify(data)
+
+        print(acti_pho, acti_name, acti_story, acti_cate, acti_num, acti_city,acti_tm)
+        print('------')
+        print(acti_add, acti_lat, acti_lng)
+        print('------------------------')
+
+        if type(acti_pho).__name__ != 'FileStorage':
+            data['message'] = '照片不符規格'
+            return jsonify(data)
+
+        if re.compile('[\S]').findall(acti_name) == []:
+            data['message'] = '標題為空'
+            return jsonify(data)
+
+        if re.compile('[\S]').findall(acti_story) == []:
+            data['message'] = '描述為空'
+            return jsonify(data)
+        
+        if acti_cate not in cate_list:
+            data['message'] = '類別不符'
+            return jsonify(data)
+
+        if acti_num <= 1:
+            data['message'] = '人數過少'
+            return jsonify(data)
+
+        if acti_city not in spots:
+            data['message'] = '地點不符'
+            return jsonify(data)
+
+        if datetime.strptime(acti_tm, "%Y-%m-%d %H:%M:%S") <= datetime.now():
+            data['message'] = '活動時間已過期'
+            return jsonify(data)
+
+        if acti_city in spots[1:]:
+            if re.compile('[\S]').findall(acti_add) == []:
+                    data['message'] = '地址為空'
+                    return jsonify(data)
+
+        decrypt = get_jwt_identity()
+        member = db.Members(decrypt['email'], decrypt['name'], decrypt['picture'])
+        result = member.id()
+        if 'ok' not in result:
+            return jsonify(result)
+        else:
+            userId = IDTime() + str(result['message'])
+            activity = db.Activity(userId, decrypt['email'],acti_name, acti_story, acti_cate, acti_num, 0, 
+            acti_city, acti_add, acti_lat, acti_lng, acti_tm, nowTime(), nowTime(),acti_pho)
+            result = activity.create()
+            return jsonify(result)
+
+    except:
+        print(traceback.format_exc())
+        data['message'] ='輸入的值有誤'
         return jsonify(data)
 
-    else:
-        data = {"error": True,"message": "非圖片檔"}
-        return jsonify(data)
+

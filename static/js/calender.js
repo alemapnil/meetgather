@@ -115,7 +115,7 @@ function rederCalender(){
                 else{
                     this.style.color = 'black'
                     if (chooseWhen !== undefined){
-                        completeTime = chooseWhen + 'T' + this.options[this.selectedIndex].text + ':00'
+                        completeTime = chooseWhen + ' ' + this.options[this.selectedIndex].text + ':00'
             
                         if ((new Date(completeTime).getTime() - new Date().getTime()) < 0 ){
                             document.querySelector('.acti_tm .enter .notice').innerHTML = '活動時間有誤'
