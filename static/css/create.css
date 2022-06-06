@@ -67,7 +67,7 @@
 }
 
 
-.enter .search{
+.searchmap{
     display: none;
     margin-top: 20px;
     align-items: center;
@@ -299,6 +299,11 @@ option[value=""]{
     }
     .confirm{
         width: 130px;
+    }
+
+    #map{
+        width: 90%;
+        height: 220px;
     }
 
 }

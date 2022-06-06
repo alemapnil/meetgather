@@ -1,12 +1,12 @@
-import os
+import os, time, variable
 from flask import *
 from flask_jwt_extended import (create_access_token, get_jwt_identity, jwt_required, JWTManager)
 from second import api
 from models import db
-
-from datetime import timedelta
+from datetime import datetime,timezone,timedelta
 from dotenv import load_dotenv
 load_dotenv()
+
 
 app = Flask (__name__) 
 
@@ -39,17 +39,47 @@ def my_invalid_token_callback(invalid_token):
 	return jsonify(invalidToken = True), 200
 
 
+def nowTime():
+    dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
+    dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
+    return dt2.strftime("%Y-%m-%d %H:%M:%S")
+
+def IDTime():
+    dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
+    dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
+    return dt2.strftime("%Y%m%d%H%M_%S%f_")
+
+
 # Pages
 @app.route("/")
 def index():
 	return render_template("index.html")
+
 @app.route('/find')
 def find():
-	return render_template("find.html")
+    page = int(request.args.get('page',1))
+    if page == 1:
+        variable.startfrom = nowTime()
+    print('page',page,'startfrom',variable.startfrom)
+
+    keyword, datefrom, dateto = request.args.get('keyword',None), request.args.get('datefrom',None), request.args.get('dateto',None)
+    category, location, sortby = request.args.get('category',None), request.args.get('location',None), request.args.get('sortby',None)
+    
+    f = db.Find(variable.startfrom, page)
+    items = f.pick_orderbyTm(keyword, datefrom, dateto, category, location, sortby)
+    date, totalpage = [], items['totalpage']
+    for item in items['result']:
+        struct_time = time.strptime(str(item[18]), "%Y-%m-%d %H:%M:%S") # 轉成時間元組
+        new_timeString = time.strftime("%a, %b %d.%I:%M %p", struct_time).replace('.',' · ')+' GMT+8'
+        date.append(new_timeString.upper())
+    return render_template("find.html", page = page, totalpage = totalpage, items = items, date = date, zip = zip )
+
+
+    
+
 @app.route('/create')
 def create():
 	return render_template("create.html", api=os.getenv('GOOGLE_MAP_API'))
-
 
 ## Google oauth
 @app.route('/login')

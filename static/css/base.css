@@ -18,8 +18,8 @@ html, body{
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: white;
@@ -27,8 +27,8 @@ html, body{
 }
 
 .overlay div{
-    width: 250px;
-    height: 250px;
+    width: 150px;
+    height: 150px;
 }
 
 .overlay div img{
@@ -44,7 +44,7 @@ html, body{
     position: fixed;
     top: 0px;
     width: 100%;
-    z-index: 1;
+    z-index: 90;
     border-bottom: 1px solid #BEBEBE;
     background-color: white;
 }
@@ -243,7 +243,7 @@ html, body{
     position: fixed;
     top: 0px;
     width: 100%;
-    z-index: 1;
+    z-index: 90;
     background-color: white; 
 }
 

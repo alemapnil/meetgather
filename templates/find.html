@@ -3,6 +3,12 @@
 
 {% block link%}
 <link rel="stylesheet"  type= "text/css" href="/static/css/find.css?v=0.0.243">
+<link rel="stylesheet" type= "text/css" href="/static/css/calender_find.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
 {% endblock link%}
 
 {% block title%}
@@ -15,19 +21,23 @@
 <div class="leftrows">
 
     <div class="filter">
-        <div>
-            <select name="date" >
+
+        <div class="choosePeriod">
+            <button><span>起訖時段</span></button>
+
+        </div>
+        
+        <div class="choose">
+            <select name="date"  id = "selectdate">
             <option value="">--任何時段--</option>
-            <option value="0">即將開始</option>
-            <option value="1">今天</option>
-            <option value="2">明天</option>
-            <option value="3">本週末</option>
-            <option value="4">自選時段</option>
+            <option value="0">今天</option>
+            <option value="1">明天</option>
+            <option value="2">自選時段</option>
             </select>
         </div>
-    
-        <div>
-            <select name="category" >
+
+        <div class="choose">
+            <select name="category" id ="selectcategory">
             <option value="">--任何類別--</option>
             <option value="0">商業投資</option>
             <option value="1">科技</option>
@@ -46,8 +56,8 @@
             </select>
         </div>
     
-        <div>
-            <select name="city" >
+        <div class="choose">
+            <select name="city" id="selectcity">
                 <option value="">--任何地點--</option>
                 <option value="online">線上</option>
                 <option value="0">基隆市</option>
@@ -76,30 +86,55 @@
     
         </div>
     
-        <div>
-            <select name="sort" class="selectChange" >
+        <div class="choose">
+            <select name="sort" class="selectChange"  id ="selectsort">
                 <option value="0" >排序 : 時間</option>
                 <option value="1">排序 : 熱門</option>
             </select>    
         </div>
     
-        <div class="refresh"><button>刷新篩選器</button></div>
+        <div class="refresh choose"><button>刷新篩選器</button></div>
         
 
     </div>
-    
+
+    <div class="calender">
+        <div class="month">
+            <i class="fas fa-angle-left prev "></i>
+            <div class="date">
+                <h1></h1>
+                <p></p>
+            </div>
+            <i class="fas fa-angle-right next"></i>
+        </div>
+        <div class="weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thr</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+        <div class="days"></div>
+    </div> 
+
+
+    <div id="resultLoading"><img src= '/static/img/loading.gif'/></div>
+
+    {% if items.result != [] %}
     <div class="result">
-
+        {% for I, item in zip(date,items.result) %}
         <div class="event">
-            <div class="event_in">
-                <div class="picture"><img src = "/static/img/test.jpg"></div>
+            <div class="event_in" data-id="{{item[7]}}">
+                <div class="picture"><img src = "{{item[21]}}"></div>
                 <div class="section">
-                    <div class="time">SUN, MAY 22 · 8:30 PM GMT+8</div>
-                    <div class="title">The First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and Smarter</div>
-                    <div class="host">Peter W.<span> |台北市</span></div>
+                    <div class="time">{{I}}</div>
+                    <div class="title">{{item[9]}}</div>
+                    <div class="host">{{item[2]}}<span> | {{item[14]}}</span></div>
 
                     <div class="lastRow">
-                        <div class="attendee"><span>3</span>人參加</div>
+                        <div class="attendee"><span>{{item[13]}}</span>人參加</div>
                         <div class="items">
                             <div class="share"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/share.png"/></div>
                             <div class="fav"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite1.png"/></div>
@@ -109,61 +144,32 @@
             </div>
         </div> 
 
-        <div class="event">
-            <div class="event_in">
-                <div class="picture"><img src = "/static/img/test.jpg"></div>
-                <div class="section">
-                    <div class="time">SUN, MAY 22 · 8:30 PM GMT+8</div>
-                    <div class="title">The First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and Smarter</div>
-                    <div class="host">Peter W.<span> |台北市</span></div>
+        {% endfor%}
 
-                    <div class="lastRow">
-                        <div class="attendee"><span>3</span>人參加</div>
-                        <div class="items">
-                            <div class="share"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/share.png"/></div>
-                            <div class="fav"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite1.png"/></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-
-        <div class="event">
-            <div class="event_in">
-                <div class="picture"><img src = "/static/img/test.jpg"></div>
-                <div class="section">
-                    <div class="time">SUN, MAY 22 · 8:30 PM GMT+8</div>
-                    <div class="title">The First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and SmarterThe First 90 Days: Proven Strategies for Getting Up to Speed Faster and Smarter</div>
-                    <div class="host">Peter W.<span> |台北市</span></div>
-
-                    <div class="lastRow">
-                        <div class="attendee"><span>3</span>人參加</div>
-                        <div class="items">
-                            <div class="share"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/share.png"/></div>
-                            <div class="fav"><img src = "https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite1.png"/></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-
-
+   
     </div>
     <div class="page">
         <div>
-        <span class="first"><</span>
-        <span class="former">前</span>
-        <span class="num">1</span>
-        <span class="next">後</span>
-        <span class="last">></span>
+        <span class="former"><</span>
+        <span class="curentPage">{{page}}</span>
+        <span>/</span>
+        <span class="totalPage">{{totalpage}}</span>
+        <span class="next">></span>
         </div>
-    </div>  
+    </div> 
+
+    {% else %}
+    <div id = "nofound"><img src= '/static/img/nofound2.png'/></div>
+    {% endif %}
+
+ 
 </div> 
 {% endblock content%}
 
 
 
 {% block script %}
+<script type="text/javascript" src="/static/js/calender_find.js"></script>
 <script type="text/javascript" src="/static/js/find.js?"></script>
 {% endblock  script%}
 </body>

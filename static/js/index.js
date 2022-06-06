@@ -139,6 +139,15 @@ document.getElementsByTagName('body')[0].addEventListener('click',function(e){
 })
 
 
+//建立活動
+for (let i =0; i < document.querySelectorAll('.myinfo div .create').length; i++){
+    document.querySelectorAll('.myinfo div .create')[i].addEventListener('click',function(e){
+        window.location.href = '/create'
+    })
+}
+
+
+
 //點擊登入
 for (i=0; i<document.querySelectorAll('.login').length; i++){
     document.querySelectorAll('.login')[i].addEventListener('click',function(){
@@ -147,6 +156,8 @@ for (i=0; i<document.querySelectorAll('.login').length; i++){
 
     })
 }
+
+
 
 
 // // //點擊登出

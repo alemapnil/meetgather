@@ -37,8 +37,14 @@ async function load(){
 
     if (current_url.includes('/create')){
         create()
+        setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 700);
+        
     }
-    setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 800);
+
+    if (current_url.includes('/find')){
+        find()
+        setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 1000);
+    }
 }
 
 
@@ -179,7 +185,7 @@ for (i=0; i<document.querySelectorAll('.login').length; i++){
 
 //點擊登出
 function logout(){
-    fetch("/api/user",{'method':'DELETE'})
+    fetch("/api/user",{'method':'DELETE',headers: {Authorization: `Bearer ${access_token}`}})
     .then(function(response){
         if(response.ok) {
             return response.json();
@@ -203,8 +209,16 @@ document.querySelector('.logoutA').addEventListener('click',logout)
 document.querySelector('.logoutB').addEventListener('click',logout)
 
 
-var access_token, userName, userEmail, userPicture, dict
 
+//建立活動
+for (let i =0; i < document.querySelectorAll('.myinfo div .create').length; i++){
+    document.querySelectorAll('.myinfo div .create')[i].addEventListener('click',function(e){
+        window.location.href = '/create'
+    })
+}
+
+
+var access_token, userName, userEmail, userPicture, dict
 var current_url = window.location.href
 console.log('當前網址',current_url)
 load()

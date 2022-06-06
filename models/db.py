@@ -1,4 +1,6 @@
 import os, boto3, traceback, uuid
+
+from numpy import insert
 import mysql.connector.pooling
 from flask import *
 from dotenv import load_dotenv
@@ -92,24 +94,7 @@ class Members:
             cursor.close()
             CN1.close()
             return data
-    def id(self):
-        try:
-            CN1 = pool.get_connection() #get a connection with pool.  
-            print(CN1.connection_id,'Members.id > pool create')   
-            cursor = CN1.cursor()
-            command = """select `id` from `members` where `email` = %s """
-            cursor.execute(command, (self.email,))
-            result = cursor.fetchone() #tuple or None
-            data ={'ok':True, 'message': result[0]}
-        except:
-            print(traceback.format_exc())
-            data = {"error": True,"message": "伺服器內部錯誤"}
-            print('Members.id > 發生錯誤')
-        finally:
-            print(CN1.connection_id, 'Members.id > pool close, ', CN1.is_connected())
-            cursor.close()
-            CN1.close()
-            return data
+
         
 
 
@@ -128,13 +113,24 @@ class Activity:
             return uploadResult
 
         try:
+            crud = 0
             CN1 = pool.get_connection() #get a connection with pool.  
             print(CN1.connection_id,'Activity.create > pool create')   
             cursor = CN1.cursor()
-            command = "insert into `activity` values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            insertValue = (self.id, self.host, self.title, self.descp, self.cate, self.limit, self.attend,\
-                self.city, self.adr, self.lat, self.lng, self.st, self.ct, self.et, cdn_url)
-            cursor.execute(command, insertValue)
+
+            cursor.execute("""select `id` from `members` where `email` = %s """, (self.host,))
+            result = cursor.fetchone() #tuple or None
+
+            if result is None:
+                data = {'error':True, 'message': '找不到使用者編號'}
+            else:
+                self.id = self.id + str(result[0])
+                command = "insert into `activity` values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                insertValue = (self.id, self.host, self.title, self.descp, self.cate, self.limit, self.attend,\
+                    self.city, self.adr, self.lat, self.lng, self.st, self.ct, self.et, cdn_url)
+                cursor.execute(command, insertValue)
+                data = {"ok": True}
+                crud += 1
         except:
             print(traceback.format_exc())
             data = {"error": True,"message": "伺服器內部錯誤"}
@@ -142,9 +138,9 @@ class Activity:
             CN1.rollback()
             delete_pic_s3(pic_s3Object) 
         else:
-            print('Activity.create > commit')
-            CN1.commit()
-            data = {"ok": True}
+            if crud > 0:
+                print('Activity.create > commit')
+                CN1.commit()
         finally:
             print(CN1.connection_id, 'Activity.create > pool close, ', CN1.is_connected())
             cursor.close()
@@ -152,7 +148,103 @@ class Activity:
             return data
 
 
+class Find:
+    def __init__(self, nowTime, page):
+        self.nowTime = nowTime
+        if page == 1:
+            self.offset = 0
+        else:
+            self.offset = (page - 1)*10
 
+    def pick_orderbyTm(self,keyword, datefrom, dateto, category, location, sortby):
+        try:
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Find.all_orderbyTm > pool create')   
+            cursor = CN1.cursor()
+
+            insertTuple = tuple()
+
+            cmd1 = """SELECT * FROM `members`right JOIN `activity`ON `members`.`email` = `activity`.`host` where"""
+            cmd2 = """SELECT COUNT(*) FROM `activity` where"""
+            if keyword is not None:
+                trans_key = '%' + keyword + '%'
+                s = """`title` LIKE %s and"""
+                cmd1 += s
+                cmd2 += s
+                insertTuple += (trans_key,)
+
+            if datefrom is not None:
+                if datefrom == dateto:
+                    s = """`starttime` >= %s and `starttime` <= %s and `starttime`> %s and"""
+                    cmd1 += s
+                    cmd2 += s
+                    insertTuple += (f"{datefrom} 00:00:00", f"{datefrom} 23:59:59",self.nowTime)
+                else:
+                    trans_key_A ,trans_key_B = f"{datefrom} 00:00:00", f"{dateto} 23:59:59"
+                    s = """`starttime` >= %s and `starttime` <= %s and `starttime`> %s and"""
+                    cmd1 += s
+                    cmd2 += s
+                    insertTuple += (trans_key_A,trans_key_B,self.nowTime)
+            else:
+                s = """`starttime` > %s and"""
+                cmd1 += s
+                cmd2 += s
+                insertTuple += (self.nowTime,)
+
+            if category is not None:
+                s = """`category` = %s and"""
+                cmd1 += s
+                cmd2 += s
+                insertTuple += (category,)
+
+            if location is not None:
+                s = """`location` = %s and"""
+                cmd1 += s
+                cmd2 += s
+                insertTuple += (location,)
+            
+            if sortby is None: #按照時間排序
+                cmd1, cmd2 = cmd1.rstrip('and'), cmd2.rstrip('and')
+                s = """order by starttime, attendees DESC limit 10 offset %s;"""
+                cmd1 += s
+                insertTuple += (self.offset,)
+            else:
+                cmd1, cmd2 = cmd1.rstrip('and'), cmd2.rstrip('and')
+                s = """order by attendees DESC, starttime limit 10 offset %s;"""
+                cmd1 += s
+                insertTuple += (self.offset,)
+
+
+            cursor.execute(cmd1, insertTuple)
+            result = cursor.fetchall() #tuple or None
+
+            print(cmd2)
+            print(insertTuple[:-1])
+            print('---------')
+            cursor.execute(cmd2, insertTuple[:-1])
+            count = cursor.fetchone() #tuple or None
+            print('count',count)
+            count = count[0]
+            print('mysql未來活動個數',count)
+
+            quotient, remainder = count // 10, count % 10
+            if remainder > 0:
+                totalpage = quotient + 1
+            else:
+                totalpage = quotient
+
+            print(quotient, remainder, '>>',totalpage)
+            data = {"ok":True, "result": result, "totalpage": totalpage} #totalpage有可能是0
+
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Find.pick_orderbyTm > 發生錯誤')
+        finally:
+            print(CN1.connection_id, 'Find.pick_orderbyTm > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
 
 
 

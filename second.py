@@ -1,16 +1,25 @@
 from flask import *
 from flask_jwt_extended import (create_access_token, get_jwt_identity, jwt_required, JWTManager )
 from models import db
-from datetime import datetime
+from datetime import datetime,timezone,timedelta
 import traceback,re
 
 api = Blueprint('api',__name__)
 
+def nowTime_dateform():
+    dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
+    dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
+    return dt2
+
 def nowTime():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
+    dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
+    return dt2.strftime("%Y-%m-%d %H:%M:%S")
 
 def IDTime():
-    return datetime.now().strftime("%Y%m%d%H%M_%S%f_")
+    dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
+    dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
+    return dt2.strftime("%Y%m%d%H%M_%S%f_")
 
 cate_list = ['商業投資', '影音藝術', '遊戲', '運動健身', '美容時尚', '外語', '體驗學習', '命理心靈', '美食美酒', '科技', '唱歌派對', '戶外旅遊', '社交', '其他']
 spots = ['線上', '基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣', '嘉義市', '嘉義縣', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣']
@@ -32,6 +41,7 @@ def user_delete():
     resp.delete_cookie('access_token')
     return resp
 
+
 @api.route('/api/send', methods = ['POST'])
 @jwt_required()
 def send():
@@ -40,7 +50,7 @@ def send():
         acti_pho, acti_name = request.files['acti_pho'], request.form['acti_name'].strip(),
         acti_story, acti_cate = request.form['acti_story'].strip(), request.form['acti_cate']
         acti_num, acti_city = request.form['acti_num'], request.form['acti_city']
-        acti_tm = request.form['acti_tm']
+        acti_tm = ' '.join(request.form['acti_tm'].split(' ')[:2])
         acti_add, acti_lat, acti_lng = None, None, None
         if acti_city == 'online' or acti_city == '線上':
             pass
@@ -53,7 +63,6 @@ def send():
                 data['message'] = '經緯度不符'
                 return jsonify(data)
 
-
         try:
             acti_num = int(acti_num)
         except:
@@ -65,7 +74,7 @@ def send():
         print(acti_add, acti_lat, acti_lng)
         print('------------------------')
 
-        if type(acti_pho).__name__ != 'FileStorage':
+        if 'image/' not in acti_pho.content_type:
             data['message'] = '照片不符規格'
             return jsonify(data)
 
@@ -89,7 +98,7 @@ def send():
             data['message'] = '地點不符'
             return jsonify(data)
 
-        if datetime.strptime(acti_tm, "%Y-%m-%d %H:%M:%S") <= datetime.now():
+        if datetime.strptime(acti_tm, "%Y-%m-%d %H:%M") <= nowTime_dateform():
             data['message'] = '活動時間已過期'
             return jsonify(data)
 
@@ -99,20 +108,15 @@ def send():
                     return jsonify(data)
 
         decrypt = get_jwt_identity()
-        member = db.Members(decrypt['email'], decrypt['name'], decrypt['picture'])
-        result = member.id()
-        if 'ok' not in result:
-            return jsonify(result)
-        else:
-            userId = IDTime() + str(result['message'])
-            activity = db.Activity(userId, decrypt['email'],acti_name, acti_story, acti_cate, acti_num, 0, 
-            acti_city, acti_add, acti_lat, acti_lng, acti_tm, nowTime(), nowTime(),acti_pho)
-            result = activity.create()
-            return jsonify(result)
+        print(nowTime())
+        activity = db.Activity(IDTime(), decrypt['email'],acti_name, acti_story, acti_cate, acti_num, 0, 
+        acti_city, acti_add, acti_lat, acti_lng, acti_tm, nowTime(), nowTime(),acti_pho)
+        result = activity.create()
+        print(nowTime())
+        return jsonify(result)
 
     except:
         print(traceback.format_exc())
         data['message'] ='輸入的值有誤'
         return jsonify(data)
-
 

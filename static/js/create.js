@@ -118,19 +118,19 @@ document.querySelector('.city').addEventListener('change',function(){
     let select = document.querySelector('.city')
     if (select.value ===''){
         select.style.color = '#bebebe'
-        document.querySelector('.enter .search').style.display = 'none';
+        document.querySelector('.searchmap').style.display = 'none';
         document.getElementById('map').style.display = 'none'
         document.querySelector('.acti_add .enter .notice').innerHTML = '活動縣市不可為空'
     }
     else if(select.value === 'online'){
         select.style.color = 'black'
-        document.querySelector('.enter .search').style.display = 'none';
+        document.querySelector('.searchmap').style.display = 'none';
         document.getElementById('map').style.display = 'none'
         document.querySelector('.acti_add .enter .notice').innerHTML = ''
     }
     else{
         select.style.color = 'black'
-        document.querySelector('.enter .search').style.display = 'block';
+        document.querySelector('.searchmap').style.display = 'block';
         document.getElementById('map').style.display = 'block'
         document.querySelector('.acti_add .enter .notice').innerHTML = ''
     }

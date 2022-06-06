@@ -185,7 +185,7 @@ function createTime(){
             let hm = padZero(arr_h[i]) + ':' + arr_m[j]
 
             let option = document.createElement('option')
-            option.appendChild(document.createTextNode(hm))
+            option.appendChild(document.createTextNode(hm + ' GMT+8'))
             option.value = count
             document.querySelector('.time').appendChild(option)
             count += 1

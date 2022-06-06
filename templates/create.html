@@ -3,7 +3,7 @@
 
 {% block link%}
 <link rel="stylesheet"  type= "text/css" href="/static/css/create.css?v=0.0.244">
-<link rel="stylesheet" type= "text/css" href="/static/css/calender.css">
+<link rel="stylesheet" type= "text/css" href="/static/css/calender_create.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,7 +114,7 @@
         <option value="21">連江縣</option>
     </select>
 
-    <div class="search">
+    <div class="searchmap">
         <input type="text" id="location" placeholder="輸入活動地點"/>
     </div>
     <div id="map"></div>
@@ -125,13 +125,13 @@
 
 
 <div class="acti_tm">
-<div class="title">活動時間</div>
+<div class="title">活動時間()</div>
 <div class="enter">
     <div class="calender">
         <div class="month">
             <i class="fas fa-angle-left prev "></i>
             <div class="date">
-                <h1>May</h1>
+                <h1></h1>
                 <p></p>
             </div>
             <i class="fas fa-angle-right next"></i>
@@ -191,7 +191,7 @@
 
 
 {% block script %}
-<script type="text/javascript" src="/static/js/calender.js"></script>
+<script type="text/javascript" src="/static/js/calender_create.js"></script>
 <script type="text/javascript" src="/static/js/create.js"></script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{api}}&libraries=places&callback=initMap">
