@@ -14,17 +14,11 @@ function create(){
         document.querySelector('.view').style.display = 'flex';
         document.querySelector('.backToEdit').style.display = 'none';
         document.querySelector('.confirm').style.display = 'none';
-
-        //create time
-        createTime()
-        //delete time
-        deleteTime()
     }
     else{
         window.location.href = '/'
     }
 }
-
 
 
 //活動 form submit 取消
@@ -139,6 +133,22 @@ document.querySelector('.city').addEventListener('change',function(){
 let nonSpacePat = /[\S]/g
 let NonInt = /[\s\D]/g
 
+
+//活動時間
+document.getElementById('localtime').addEventListener('input',function(){
+
+    document.getElementById('localtime').style.color = 'black'
+    if (new Date(this.value) <= new Date()){
+        document.querySelector('.acti_tm .enter .notice').innerHTML = '活動時間有誤'
+    }
+    else{
+        document.querySelector('.acti_tm .enter .notice').innerHTML = ''
+        acti_tm = this.value
+    }
+
+
+})
+
 //點擊預覽
 document.querySelector('.view').addEventListener('click',()=>{
     if(document.getElementById('file').files.length === 0){
@@ -206,7 +216,6 @@ document.querySelector('.view').addEventListener('click',()=>{
             }
             else{
                 document.querySelector('.acti_add .enter .notice').innerHTML = ''
-                console.log(acti_add,acti_lat,acti_lng)
             }
         }
     }
@@ -215,8 +224,9 @@ document.querySelector('.view').addEventListener('click',()=>{
     }
 
 
-    if( completeTime !== undefined){
+    if( acti_tm !== undefined && new Date(acti_tm)> new Date()){
         document.querySelector('.acti_tm .enter .notice').innerHTML = ''
+        acti_tm = acti_tm.replace('T',' ')
     }
     else{
         document.querySelector('.acti_tm .enter .notice').innerHTML = '活動時間有誤'
@@ -235,7 +245,6 @@ document.querySelector('.view').addEventListener('click',()=>{
         alert('資料輸入不完善')
     }
     else{
-        console.log('input data success')
         document.querySelector('.preview').style.display = 'block'
 
         //預覽按鈕控制
@@ -247,7 +256,7 @@ document.querySelector('.view').addEventListener('click',()=>{
 })
 
 
-var acti_pho, acti_name, acti_story, acti_cate, acti_num, acti_city;
+var acti_pho, acti_name, acti_story, acti_cate, acti_num, acti_city, acti_tm;
 
 //返回編輯
 document.querySelector('.backToEdit').addEventListener('click',()=>{
@@ -276,7 +285,7 @@ document.querySelector('.confirm').addEventListener('click',()=>{
         formdata.append('acti_lat', acti_lat)
         formdata.append('acti_lng', acti_lng)
     }
-    formdata.append('acti_tm', completeTime)
+    formdata.append('acti_tm', acti_tm)
 
     fetch('/api/send',{
         method : 'POST',

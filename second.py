@@ -6,10 +6,7 @@ import traceback,re
 
 api = Blueprint('api',__name__)
 
-def nowTime_dateform():
-    dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
-    dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
-    return dt2
+
 
 def nowTime():
     dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
@@ -98,7 +95,7 @@ def send():
             data['message'] = '地點不符'
             return jsonify(data)
 
-        if datetime.strptime(acti_tm, "%Y-%m-%d %H:%M") <= nowTime_dateform():
+        if datetime.strptime(acti_tm, "%Y-%m-%d %H:%M") <= datetime.strptime(nowTime(), "%Y-%m-%d %H:%M:%S"):
             data['message'] = '活動時間已過期'
             return jsonify(data)
 

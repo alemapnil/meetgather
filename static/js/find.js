@@ -1,9 +1,6 @@
 document.querySelector('.overlay').style.display = 'flex'
 
-
-
-
-
+let dateCount = 0 //因為點擊自選時段的特殊性，所以select date用click事件，其他選擇器用change
 
 
 function today_tomorrow(){
@@ -39,6 +36,7 @@ function today_tomorrow(){
 function periodButNone(){
     document.querySelector('.choosePeriod').style.display = 'none'
     document.querySelector('.calender').style.display = 'none'
+    clearHas_calender()
 }
 
 function clearHas_calender(){
@@ -67,6 +65,13 @@ function find(){
     if (! current_url.includes('?')){
         current_url += '?'
     }
+    if (current_url.includes('datefrom=') || current_url.includes('category=') || current_url.includes('location=') ){
+
+        document.querySelector('.refresh').style.display = 'flex'
+    }
+    else{
+        document.querySelector('.refresh').style.display = 'none'
+    }
 
     console.log(current_url,'目前網址')
 
@@ -88,7 +93,14 @@ function find(){
         let arr = current_url.split('&')
         for(let i = 0; i < arr.length; i++){
             if (arr[i].includes('datefrom=')){
-                document.querySelector('.choosePeriod button span').innerHTML = `${arr[i].split('=')[1]}~ ${ arr[i+1].split('=')[1]}`
+
+                if (arr[i].split('=')[1] !==  arr[ i + 1].split('=')[1] ){
+                    document.querySelector('.choosePeriod button span').innerHTML = `${arr[i].split('=')[1]}~ ${ arr[i+1].split('=')[1]}`
+                }
+                else{
+                    document.querySelector('.choosePeriod button span').innerHTML = `${arr[i].split('=')[1]}`
+                }
+
             }
         }
     }
@@ -98,10 +110,10 @@ function find(){
 
     //重整頁面後，篩選器的顯示(類別)
     let cateOptions= document.getElementsByTagName('select')[1].options
-    let arr = current_url.split('&')
-    for (let c = 0; c < arr.length; c++){
-        if (arr[c].includes('category=')){
-            let cateName = decodeURI(arr[c].replace('category=',''))
+    let arrCate = current_url.split('&')
+    for (let c = 0; c < arrCate.length; c++){
+        if (arrCate[c].includes('category=')){
+            let cateName = decodeURI(arrCate[c].replace('category=',''))
             for (let d = 0; d < cateOptions.length; d++){
                 if (cateName === cateOptions[d].text){
                     cateOptions[parseInt(cateOptions[d].value)+1].selected = true
@@ -111,186 +123,196 @@ function find(){
         }
     }
 
-
-
-
-    // filter choose time
-    for (let i = 0; i < document.querySelectorAll('#selectdate option').length; i++){
-        let option = document.querySelectorAll('#selectdate option')[i]
-        option.addEventListener('click',function(){
-    
-            if (option.value === ''){ //任何時段
-                document.getElementById('selectdate').classList.remove('selectChange')
-                periodButNone()
-                if (current_url.includes('datefrom=')){
-                    let arr = current_url.split('&')
-                    for(let i = 0; i < arr.length; i++){
-                        if (arr[i].includes('datefrom=')){
-                            //去掉URL頁碼
-                            let newUrl;
-                            newUrl = (arr.slice(0, i).concat(arr.slice(i+2,))).join('&')
-                            if (newUrl.includes('page=')){
-                                let _2newUrl = newUrl.split('&')
-                                for(let n = 0; n < _2newUrl.length; n++){
-                                    if (_2newUrl[n].includes('page=')){
-                                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                    }
-                                }                                
-                            }
-                            window.location.href = newUrl
-                        }
-                    }
+    //重整頁面後，篩選器的顯示(地點)
+    let spotOptions= document.getElementsByTagName('select')[2].options
+    let arrSpot = current_url.split('&')
+    for (let c = 0; c < arrSpot.length; c++){
+        if (arrSpot[c].includes('location=')){
+            let spotName = decodeURI(arrSpot[c].replace('location=',''))
+            for (let d = 0; d < spotOptions.length; d++){
+                if (spotName === spotOptions[d].text){
+                    spotOptions[parseInt(d)].selected = true
+                    document.getElementsByTagName('select')[2].classList.add('selectChange')
                 }
             }
-    
-            else if (option.value === '0'){//今天
-                document.getElementById('selectdate').className = 'selectChange'
-                periodButNone()
-                if (current_url.includes('datefrom=')){
-                    let arr = current_url.split('&')
-                    for(let i = 0; i < arr.length; i++){
-                        if (arr[i].includes('datefrom=')){
-                            let time = [`datefrom=${today_tomorrow()[0]}`,`dateto=${today_tomorrow()[0]}`]
-                            //去掉URL頁碼
-                            let newUrl;
-                            newUrl = (arr.slice(0, i).concat(time).concat(arr.slice(i+2,))).join('&')
-                            if (newUrl.includes('page=')){
-                                let _2newUrl = newUrl.split('&')
-                                for(let n = 0; n < _2newUrl.length; n++){
-                                    if (_2newUrl[n].includes('page=')){
-                                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                    }
-                                }                                
-                            }
-                            window.location.href = newUrl
-                        }
-                    }
-                }
-                else{
-                        //去掉URL頁碼
-                        let newUrl;
-                        newUrl = current_url + `&datefrom=${today_tomorrow()[0]}&dateto=${today_tomorrow()[0]}`
-                        if (newUrl.includes('page=')){
-                            let _2newUrl = newUrl.split('&')
-                            for(let n = 0; n < _2newUrl.length; n++){
-                                if (_2newUrl[n].includes('page=')){
-                                    newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                }
-                            }                                
-                        }
-                        window.location.href = newUrl
-                    }
-            }
-    
-            else if (option.value === '1'){ //明天
-                document.getElementById('selectdate').className = 'selectChange'
-                periodButNone()
-                if (current_url.includes('datefrom=')){
-                    let arr = current_url.split('&')
-                    for(let i = 0; i < arr.length; i++){
-                        if (arr[i].includes('datefrom=')){
-                            let time = [`datefrom=${today_tomorrow()[1]}`,`dateto=${today_tomorrow()[1]}`]
-                            //去掉URL頁碼
-                            let newUrl;
-                            newUrl = (arr.slice(0, i).concat(time).concat(arr.slice(i+2,))).join('&')
-                            if (newUrl.includes('page=')){
-                                let _2newUrl = newUrl.split('&')
-                                for(let n = 0; n < _2newUrl.length; n++){
-                                    if (_2newUrl[n].includes('page=')){
-                                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                    }
-                                }                                
-                            }
-                            window.location.href = newUrl
-                        }
-                    }
-                }
-                else{
-                        //去掉URL頁碼
-                        let newUrl;
-                        newUrl = current_url + `&datefrom=${today_tomorrow()[1]}&dateto=${today_tomorrow()[1]}`
-                        if (newUrl.includes('page=')){
-                            let _2newUrl = newUrl.split('&')
-                            for(let n = 0; n < _2newUrl.length; n++){
-                                if (_2newUrl[n].includes('page=')){
-                                    newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                }
-                            }                                
-                        }
-                        window.location.href = newUrl
-                    }
-            }
-    
-            else if (option.value === '2'){ //自選時段
-                document.getElementById('selectdate').className = 'selectChange'
-                document.querySelector('.choosePeriod').style.display = 'flex'
-                document.querySelector('.calender').style.display = 'block'
-                addHas_calender()
-            }
-        })
+        }
     }
-    
 
-    // filter choose category
-    for (let i = 0; i < document.querySelectorAll('#selectcategory option').length; i++){
-        let option = document.querySelectorAll('#selectcategory option')[i]
-        option.addEventListener('click',function(){
 
-            console.log(this.text)
-    
-            if (option.value === ''){ //任何類別
-                document.getElementById('selectcategory').classList.remove('selectChange')
-                if (current_url.includes('category=')){
-                    let arr = current_url.split('&')
-                    for(let i = 0; i < arr.length; i++){
-                        if (arr[i].includes('category=')){
+    //重整頁面後，篩選器的顯示(排序)
+    let sortOptions= document.getElementsByTagName('select')[3].options
+    let arrSort= current_url.split('&')
+    for (let c = 0; c < arrSort.length; c++){
+        if (arrSort[c].includes('sortby=')){
+            let sortValue = decodeURI(arrSort[c].replace('sortby=',''))
+            sortOptions[parseInt(sortValue)].selected = true
+        }
+    }
 
-                            //去掉URL頁碼
-                            let newUrl;
-                            newUrl = (arr.slice(0, i).concat(arr.slice(i+1,))).join('&')
-                            if (newUrl.includes('page=')){
-                                let _2newUrl = newUrl.split('&')
-                                for(let n = 0; n < _2newUrl.length; n++){
-                                    if (_2newUrl[n].includes('page=')){
-                                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                    }
-                                }                                
-                            }
 
-                            window.location.href = newUrl
+    // filter choose time : any, today, tomorrow
+    let selectdate = document.getElementById('selectdate')
+    selectdate.addEventListener('change',function(e){
+        if (selectdate.value ==='' ){ //任何時段
+            selectdate.classList.remove('selectChange')
+            periodButNone()
+            if (current_url.includes('datefrom=')){
+                let arr = current_url.split('&')
+                for(let i = 0; i < arr.length; i++){
+                    if (arr[i].includes('datefrom=')){
+                        //去掉URL頁碼
+                        let newUrl;
+                        newUrl = (arr.slice(0, i).concat(arr.slice(i+2,))).join('&')
+                        if (newUrl.includes('page=')){
+                            let _2newUrl = newUrl.split('&')
+                            for(let n = 0; n < _2newUrl.length; n++){
+                                if (_2newUrl[n].includes('page=')){
+                                    newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                                }
+                            }                                
                         }
+                        window.location.href = newUrl
                     }
                 }
             }
-    
-            else { // 其他類別
-                document.getElementById('selectcategory').className = 'selectChange'
-                if (current_url.includes('category=')){
-                    let arr = current_url.split('&')
-                    for(let i = 0; i < arr.length; i++){
-                        if (arr[i].includes('category=')){
+        }
 
-                            //去掉URL頁碼
-                            let newUrl;
-                            newUrl = (arr.slice(0, i).concat([`category=${this.text}`]).concat(arr.slice(i+1,))).join('&')
-                            console.log(newUrl,'*')
-                            if (newUrl.includes('page=')){
-                                let _2newUrl = newUrl.split('&')
-                                for(let n = 0; n < _2newUrl.length; n++){
-                                    if (_2newUrl[n].includes('page=')){
-                                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
-                                    }
-                                }                                
-                            }
-                            window.location.href = newUrl
+        else if (selectdate.value ==='0'){//今天
+            selectdate.className = 'selectChange'
+            periodButNone()
+            if (current_url.includes('datefrom=')){
+                let arr = current_url.split('&')
+                for(let i = 0; i < arr.length; i++){
+                    if (arr[i].includes('datefrom=')){
+                        let time = [`datefrom=${today_tomorrow()[0]}`,`dateto=${today_tomorrow()[0]}`]
+                        //去掉URL頁碼
+                        let newUrl;
+                        newUrl = (arr.slice(0, i).concat(time).concat(arr.slice(i+2,))).join('&')
+                        if (newUrl.includes('page=')){
+                            let _2newUrl = newUrl.split('&')
+                            for(let n = 0; n < _2newUrl.length; n++){
+                                if (_2newUrl[n].includes('page=')){
+                                    newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                                }
+                            }                                
                         }
+                        window.location.href = newUrl
                     }
                 }
-                else{
+            }
+            else{
                     //去掉URL頁碼
                     let newUrl;
-                    newUrl = current_url + `&category=${this.text}`
-                    console.log(newUrl,')')
+                    newUrl = current_url + `&datefrom=${today_tomorrow()[0]}&dateto=${today_tomorrow()[0]}`
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+                    window.location.href = newUrl
+                }
+        }
+
+        else if (selectdate.value === '1'){ //明天
+            selectdate.className = 'selectChange'
+            periodButNone()
+            if (current_url.includes('datefrom=')){
+                let arr = current_url.split('&')
+                for(let i = 0; i < arr.length; i++){
+                    if (arr[i].includes('datefrom=')){
+                        let time = [`datefrom=${today_tomorrow()[1]}`,`dateto=${today_tomorrow()[1]}`]
+                        //去掉URL頁碼
+                        let newUrl;
+                        newUrl = (arr.slice(0, i).concat(time).concat(arr.slice(i+2,))).join('&')
+                        if (newUrl.includes('page=')){
+                            let _2newUrl = newUrl.split('&')
+                            for(let n = 0; n < _2newUrl.length; n++){
+                                if (_2newUrl[n].includes('page=')){
+                                    newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                                }
+                            }                                
+                        }
+                        window.location.href = newUrl
+                    }
+                }
+            }
+            else{
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = current_url + `&datefrom=${today_tomorrow()[1]}&dateto=${today_tomorrow()[1]}`
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+                    window.location.href = newUrl
+                }
+        }
+    })
+
+    //filter choose 自選時段
+    selectdate.addEventListener('click',function(){
+        dateCount +=1
+        if(document.getElementById('selectdate').value ==='2' && dateCount > 1){
+            dateCount = 0
+
+            document.getElementById('selectdate').className = 'selectChange'
+            document.querySelector('.choosePeriod').style.display = 'flex'
+            document.querySelector('.calender').style.display = 'block'
+            addHas_calender()
+        }
+    })
+
+
+
+    // filter choose category
+    let selectcategory = document.getElementById('selectcategory')
+    selectcategory.addEventListener('change',function(){
+
+
+    let cateText = this.options[this.selectedIndex].text
+
+    if (this.value === ''){ //任何類別
+        selectcategory.classList.remove('selectChange')
+        if (current_url.includes('category=')){
+            let arr = current_url.split('&')
+            for(let i = 0; i < arr.length; i++){
+                if (arr[i].includes('category=')){
+
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = (arr.slice(0, i).concat(arr.slice(i+1,))).join('&')
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+
+                    window.location.href = newUrl
+                }
+            }
+        }
+    }
+
+    else { // 其他類別
+        selectcategory.className = 'selectChange'
+        if (current_url.includes('category=')){
+            let arr = current_url.split('&')
+            for(let i = 0; i < arr.length; i++){
+                if (arr[i].includes('category=')){
+
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = (arr.slice(0, i).concat([`category=${cateText}`]).concat(arr.slice(i+1,))).join('&')
                     if (newUrl.includes('page=')){
                         let _2newUrl = newUrl.split('&')
                         for(let n = 0; n < _2newUrl.length; n++){
@@ -302,19 +324,162 @@ function find(){
                     window.location.href = newUrl
                 }
             }
-    
-        })
+        }
+        else{
+            //去掉URL頁碼
+            let newUrl;
+            newUrl = current_url + `&category=${cateText}`
+            if (newUrl.includes('page=')){
+                let _2newUrl = newUrl.split('&')
+                for(let n = 0; n < _2newUrl.length; n++){
+                    if (_2newUrl[n].includes('page=')){
+                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                    }
+                }                                
+            }
+            window.location.href = newUrl
+        }
     }
+
+    })
     
 
+    // filter choose city
+    let selectcity = document.getElementById('selectcity')
+    selectcity.addEventListener('change',function(){
 
-    //重整篩選器，之後向API要搜尋結果
+    let cityText = this.options[this.selectedIndex].text
+
+    if (this.value === ''){ //任何類別
+        selectcity.classList.remove('selectChange')
+        if (current_url.includes('location=')){
+            let arr = current_url.split('&')
+            for(let i = 0; i < arr.length; i++){
+                if (arr[i].includes('location=')){
+
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = (arr.slice(0, i).concat(arr.slice(i+1,))).join('&')
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+
+                    window.location.href = newUrl
+                }
+            }
+        }
+    }
+
+    else { // 其他類別
+        selectcity.className = 'selectChange'
+        if (current_url.includes('location=')){
+            let arr = current_url.split('&')
+            for(let i = 0; i < arr.length; i++){
+                if (arr[i].includes('location=')){
+
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = (arr.slice(0, i).concat([`location=${cityText}`]).concat(arr.slice(i+1,))).join('&')
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+                    window.location.href = newUrl
+                }
+            }
+        }
+        else{
+            //去掉URL頁碼
+            let newUrl;
+            newUrl = current_url + `&location=${cityText}`
+            if (newUrl.includes('page=')){
+                let _2newUrl = newUrl.split('&')
+                for(let n = 0; n < _2newUrl.length; n++){
+                    if (_2newUrl[n].includes('page=')){
+                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                    }
+                }                                
+            }
+            window.location.href = newUrl
+        }
+    }
+    })
+
+
+
+    // filter choose sort
+    let selectsort = document.getElementById('selectsort')
+    selectsort.addEventListener('change',function(){
+
+    if (this.value === '0'){ //時間
+        if (current_url.includes('sortby=')){
+            let arr = current_url.split('&')
+            for(let i = 0; i < arr.length; i++){
+                if (arr[i].includes('sortby=')){
+
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = (arr.slice(0, i).concat(arr.slice(i+1,))).join('&')
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+
+                    window.location.href = newUrl
+                }
+            }
+        }
+    }
+
+    else { // 熱門
+        if (current_url.includes('sortby=')){
+            
+        }
+        else{
+            //去掉URL頁碼
+            let newUrl;
+            newUrl = current_url + `&sortby=${this.value}`
+            if (newUrl.includes('page=')){
+                let _2newUrl = newUrl.split('&')
+                for(let n = 0; n < _2newUrl.length; n++){
+                    if (_2newUrl[n].includes('page=')){
+                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                    }
+                }                                
+            }
+            window.location.href = newUrl
+        }
+    }
+    })
+
+
+
+
+
+    //refresh filter
     document.querySelector('.refresh button').addEventListener('click',function(){
-        for (let i=0; i<document.getElementsByTagName('select').length-1; i++){
+        for (let i=0; i < document.getElementsByTagName('select').length-1; i++){
             let select = document.getElementsByTagName('select')[i]
             select.value=''
             select.classList.remove('selectChange')
         }
+        document.getElementById('selectsort').value = '0'
+        periodButNone()
+        let find_i = current_url.indexOf('find')
+        window.location.href = current_url.slice(0, find_i) + 'find'
     })
 
 

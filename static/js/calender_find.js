@@ -86,7 +86,7 @@ function rederCalender(){
                     chooseDate_list[i].classList.add('pick')
                     mark_i = i
 
-                    document.querySelector('.choosePeriod button span').innerHTML = `${chooseWhen} ~`
+                    document.querySelector('.choosePeriod button span').innerHTML = `${chooseWhen}`
 
 
                 }  
@@ -97,7 +97,10 @@ function rederCalender(){
                         chooseDate_list[i].classList.add('pick')
                         mark_i = i
 
-                        document.querySelector('.choosePeriod button span').innerHTML = `${period[0]}~ ${period[1]}`
+                        if (period[0] !== period[1]){
+                            document.querySelector('.choosePeriod button span').innerHTML = `${period[0]}~ ${period[1]}`
+                        }
+
                         if (current_url.includes('datefrom=')){
                             let arr = current_url.split('&')
                             for(let i = 0; i < arr.length; i++){
@@ -136,7 +139,6 @@ function rederCalender(){
                         period = []
                     }
                 }
-                console.log(period)
             }
 
             else if(chooseDate_list[i].classList.contains('today')){
@@ -150,7 +152,7 @@ function rederCalender(){
                     chooseDate_list[i].classList.add('pick','notoday')
                     mark_i = i
 
-                    document.querySelector('.choosePeriod button span').innerHTML = `${chooseWhen} ~`
+                    document.querySelector('.choosePeriod button span').innerHTML = `${chooseWhen}`
                 }  
                 
                 else if (period.length === 1){
@@ -160,7 +162,10 @@ function rederCalender(){
                         chooseDate_list[i].classList.add('pick','notoday')
                         mark_i = i
 
-                        document.querySelector('.choosePeriod button span').innerHTML = `${period[0]}~ ${period[1]}`
+                        if (period[0] !== period[1]){
+                            document.querySelector('.choosePeriod button span').innerHTML = `${period[0]}~ ${period[1]}`
+                        }
+
                         if (current_url.includes('datefrom=')){
                             let arr = current_url.split('&')
                             for(let i = 0; i < arr.length; i++){
@@ -198,7 +203,6 @@ function rederCalender(){
                         period = []
                     }
                 }
-                console.log(period)
             }
 
             else{
