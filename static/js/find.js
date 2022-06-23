@@ -62,15 +62,72 @@ function addHas_calender(){
 function find(){
     clearHas_calender()
 
-    if (! current_url.includes('?')){
-        current_url += '?'
-    }
     if (current_url.includes('datefrom=') || current_url.includes('category=') || current_url.includes('location=') ){
 
         document.querySelector('.refresh').style.display = 'flex'
     }
     else{
         document.querySelector('.refresh').style.display = 'none'
+    }
+
+    let main_url = current_url.slice(0,current_url.indexOf('/find'))+'/find?'
+    //去除重複的query string，防止使用者惡搞
+    let keyCo = [], dateFromCo = [], dateToCo = [], cateCo = [], locateCo = [], sortCo = [], pageCo = []
+    let lastCo = [] //最後完成的集合
+
+    let split = current_url.split('&')
+
+    for (let s = 0; s < split.length; s++){
+        if (split[s].slice(0,8) === 'keyword=' && keyCo.length === 0){
+            keyCo.push(split[s])
+        }
+        else if(split[s].slice(0,9) === 'datefrom=' && dateFromCo.length === 0){
+            dateFromCo.push(split[s])
+        }
+        else if (split[s].slice(0,7) === 'dateto=' && dateToCo.length === 0){
+            dateToCo.push(split[s])
+        }
+        else if (split[s].slice(0,9) === 'category=' && cateCo.length === 0){
+            cateCo.push(split[s])
+        }
+        else if (split[s].slice(0,9) === 'location=' && locateCo.length === 0){
+            locateCo.push(split[s])
+        }
+        else if (split[s].slice(0,7) === 'sortby=' && sortCo.length === 0){
+            sortCo.push(split[s])
+        }
+        else if (split[s].slice(0,5) === 'page=' && pageCo.length === 0){
+            pageCo.push(split[s])
+        }
+    }
+
+    if (keyCo.length > 0){
+        lastCo.push(keyCo[0])
+    }
+    if (dateFromCo.length > 0){
+        lastCo.push(dateFromCo[0])
+    }
+    if (dateToCo.length > 0){
+        lastCo.push(dateToCo[0])
+    }
+    if (cateCo.length > 0){
+        lastCo.push(cateCo[0])
+    }
+    if (locateCo.length > 0){
+        lastCo.push(locateCo[0])
+    }
+    if (sortCo.length > 0){
+        lastCo.push(sortCo[0])
+    }
+    if (pageCo.length > 0){
+        lastCo.push(pageCo[0])
+    }
+
+    if (lastCo.length > 0){
+        current_url = main_url + '&' + lastCo.join('&')
+    }
+    else{
+        current_url = main_url
     }
 
     console.log(current_url,'目前網址')
@@ -142,11 +199,12 @@ function find(){
     //重整頁面後，篩選器的顯示(排序)
     let sortOptions= document.getElementsByTagName('select')[3].options
     let arrSort= current_url.split('&')
-    for (let c = 0; c < arrSort.length; c++){
-        if (arrSort[c].includes('sortby=')){
-            let sortValue = decodeURI(arrSort[c].replace('sortby=',''))
-            sortOptions[parseInt(sortValue)].selected = true
-        }
+
+    if(current_url.includes('sortby=')){
+        sortOptions[1].selected = true 
+    }
+    else{
+        sortOptions[0].selected = true 
     }
 
 
@@ -350,7 +408,7 @@ function find(){
 
     let cityText = this.options[this.selectedIndex].text
 
-    if (this.value === ''){ //任何類別
+    if (this.value === ''){ //任何地點
         selectcity.classList.remove('selectChange')
         if (current_url.includes('location=')){
             let arr = current_url.split('&')
@@ -368,7 +426,6 @@ function find(){
                             }
                         }                                
                     }
-
                     window.location.href = newUrl
                 }
             }
@@ -483,25 +540,13 @@ function find(){
     })
 
 
-    //愛心圖示改變，空心與紅心
-    for (let i=0; i < document.querySelectorAll('.fav img').length; i++){
-        document.querySelectorAll('.fav img')[i].addEventListener('click',function(e){
-            e.stopPropagation()
-            let src = document.querySelectorAll('.fav img')[i].src
-            if (src.includes('favorite1.png')){
-                document.querySelectorAll('.fav img')[i].src = 'https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite2.png'
-            }
-            else if (src.includes('favorite2.png')){
-                document.querySelectorAll('.fav img')[i].src = 'https://d3i2i3wop7mzlm.cloudfront.net/meetgather/favorite1.png'
-            }
-        },true)
-    }
 
     //超連結到各頁面
     for (let i=0; i < document.querySelectorAll('.event').length; i++){
         document.querySelectorAll('.event')[i].addEventListener('click',function(e){
             e.stopPropagation()
-            window.location.href = document.querySelectorAll('.event')[i].dataset.id
+            let id = document.querySelectorAll('.event')[i].querySelector('.event_in').dataset.id
+            window.location.href = current_url.slice(0,current_url.indexOf('/find')) + `/event/${id}`
         })
     }
 
@@ -553,3 +598,4 @@ function find(){
         
 }
 }
+

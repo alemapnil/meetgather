@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+
+{% block link%}
+<link rel="stylesheet"  type= "text/css" href="/static/css/event.css?v=0.0.246">
+
+<meta property="og:title" content=""/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content=""/>
+<meta property="og:image" content=""/>
+<meta property="og:site_name" content="meetgather.site"/>
+{% endblock link%}
+
+{% block title%}
+<title></title>
+{% endblock title%}
+
+
+
+{% block content%}
+<div class="modal1"></div>
+<div class = "window1">
+    <div class="popup1">
+        <div class="close">×</div>
+        <div class="warn">請登入</div>
+    </div>
+</div>
+
+<div class="modal2"></div>
+<div class = "window2">
+    <div class="popup2">
+        <div class="back"><div><img src ='/static/img/arrow-left-outline.svg'/></div><span>回到活動</span></div>
+        <h2>你即將參加</h2>
+        <div class="title"></div>
+        <div class="tm"></div>
+        <div class="add_calender"><a target="_blank"><span>紀錄在日曆中</span></a></div>
+    </div>
+</div>
+
+<div class="modal3"></div>
+<div class = "window3">
+    <div class="popup3">
+        <div class="close3">×</div>
+        <h2>分享活動</h2>
+        <div class="fb"><div><img src="/static/img/Facebook.png"/></div><a target="_blank">Facebook</a></div>
+        <div class="twi"><div><img src='/static/img/twitter.png'/></div><a target="_blank">Twitter</a></div>          
+    </div>
+</div>
+
+<div class="modal4"></div>
+<div class = "window4">
+    <div class="popup4">
+        <div class="c4">
+            <div class="person">參加者 <span>12</span> 人</div>
+            <div class="close4">×</div>
+        </div>
+
+        <div class = "nameList">
+            <!-- <div class="row" data-id="">
+                <div><img referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/a/AATXAJx8_jM8P1758zRI9alfP75rjIzEp0h75-YQiUUe=s96-c"></div>
+                <span>林婉茹</span>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+
+<div class="header">
+    <div class="header_block">
+        <div class="ev_tm"></div>
+        <h1 class="ev_title"></h1>
+        <div class="ev_host">
+            <div class="photo"><img referrerpolicy="no-referrer"/></div>
+            <div class="photo_right">
+                <div>主辦人</div>
+                <div class="host"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="content_desk">
+    <div class="c_header">
+        <div class="ev_pic"><img/></div>
+        <div class="tm_spot">
+            <div class="ev_tm">
+                <div class="tm_pic"><img src="/static/img/clock.svg"/></div>
+                <div class="tm_word"></div>
+            </div>
+            <br/>
+            <div class="ev_spot">
+                <div class="spot_pic"><img src="/static/img/marker.svg"/></div>
+                <div class="spot_word"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="c_detail">
+        <h2>活動描述</h2>
+        <div class="detail"></div>
+    </div>
+
+    <div class="c_attendee">
+        <h2>活動參加</h2>
+        <div>參加者<span class="c_now_attend_p"></span>人, 上限<span class="c_now_attend_l"></span>人</div>
+        <div class="seeAll">(查看全部)</div>
+    </div>
+
+
+    <div class="c_join">
+        <div class="share"><span>分享</span><div><img src = "https://bucketfromaws.s3.amazonaws.com/meetgather/share.png"/></div></div>
+        <!-- <div class="fav"><span>最愛</span><div><img src = "https://bucketfromaws.s3.amazonaws.com/meetgather/fav.png"/></div></div> -->
+        <div class="join"><span></span></div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+{% endblock content%}
+
+
+
+{% block script %}
+<script type="text/javascript" src="/static/js/event.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{api}}&libraries=places&callback=initMap">
+</script>
+{% endblock  script%}
+
+</body>
+</html>

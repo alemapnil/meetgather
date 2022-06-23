@@ -55,8 +55,13 @@ def IDTime():
 def index():
 	return render_template("index.html")
 
+
+
 @app.route('/find')
 def find():
+    t = db.Test('xyz')
+    t.do()
+
     page = int(request.args.get('page',1))
     if page == 1:
         variable.startfrom = nowTime()
@@ -64,7 +69,8 @@ def find():
 
     keyword, datefrom, dateto = request.args.get('keyword',None), request.args.get('datefrom',None), request.args.get('dateto',None)
     category, location, sortby = request.args.get('category',None), request.args.get('location',None), request.args.get('sortby',None)
-    
+    print(sortby,'sortby')
+
     f = db.Find(variable.startfrom, page)
     items = f.pick_orderbyTm(keyword, datefrom, dateto, category, location, sortby)
     date, totalpage = [], items['totalpage']
@@ -73,9 +79,13 @@ def find():
         new_timeString = time.strftime("%a, %b %d.%I:%M %p", struct_time).replace('.',' · ')+' GMT+8'
         date.append(new_timeString.upper())
     return render_template("find.html", page = page, totalpage = totalpage, items = items, date = date, zip = zip )
-
-
     
+
+@app.route('/event/<id>')
+def event(id):
+	return render_template("event.html", api=os.getenv('GOOGLE_MAP_API'))
+
+
 
 @app.route('/create')
 def create():
@@ -86,7 +96,7 @@ def create():
 def login():
     google = oauth.create_client('google')
     redirect_uri = url_for('authorize', _external=True)
-    print(redirect_uri,'**')
+    currentpage = request.cookies.get('currentpage')
     return google.authorize_redirect(redirect_uri)
 
 @app.route('/authorize')

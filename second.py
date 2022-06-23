@@ -32,7 +32,6 @@ def user_get():
         return jsonify(data)
 
 @api.route('/api/user', methods = ["DELETE"])
-@jwt_required()
 def user_delete():
     resp = make_response({"ok":True})
     resp.delete_cookie('access_token')
@@ -117,3 +116,52 @@ def send():
         data['message'] ='輸入的值有誤'
         return jsonify(data)
 
+
+
+@api.route("/api/event/<string:id>", methods = ['GET']) #後端取得該活動的所有資料，標題、時間、地點、主辦等
+def event(id):
+    e = db.Event(id)
+    result = e.content()
+    return jsonify(result)
+
+
+@api.route("/api/attend/<string:id>", methods = ['GET'])
+@jwt_required(optional=True)
+def attendGet(id):
+    activity = id
+    decrypt = get_jwt_identity()
+    if decrypt is None:
+        e = db.Event(activity)
+        result = e.mystatus_notLogin()
+        return jsonify(result)
+
+    else:
+        e = db.Event(activity)
+        result = e.mystatus_Login(decrypt['email'])
+        return jsonify(result)
+
+
+@api.route("/api/attend", methods = ['POST'])
+@jwt_required()
+def attendPost():
+    activity, attendee = request.get_json()['activity'], request.get_json()['attendee']
+    e = db.Event(activity)
+    result =e.attend(attendee)
+    return jsonify(result)
+
+
+@api.route("/api/attend", methods = ['DELETE'])
+@jwt_required()
+def attendDelete():
+    activity, attendee = request.get_json()['activity'], request.get_json()['attendee']
+    e = db.Event(activity)
+    result = e.not_going(attendee)
+    return jsonify(result)
+
+
+@api.route('api/allJoinNum/<string:id>', methods = ['GET'])
+def allJoinNum(id):
+    activity = id
+    e = db.Event(activity)
+    result = e.allJoinNum()
+    return jsonify(result)

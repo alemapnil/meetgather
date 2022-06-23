@@ -223,7 +223,7 @@ document.querySelector('.view').addEventListener('click',()=>{
         document.querySelector('.acti_add .enter .notice').innerHTML = '活動縣市不可為空'
     }
 
-
+    acti_tm = document.getElementById('localtime').value
     if( acti_tm !== undefined && new Date(acti_tm)> new Date()){
         document.querySelector('.acti_tm .enter .notice').innerHTML = ''
         acti_tm = acti_tm.replace('T',' ')

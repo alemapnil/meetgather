@@ -176,6 +176,7 @@ html, body{
 }
 
 
+
 #keyword{
     box-sizing: border-box;
     width: 300px;
@@ -205,7 +206,7 @@ html, body{
 
 
 
-  ::placeholder{
+::placeholder{
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -216,7 +217,7 @@ html, body{
   }
 
 
-  :-ms-input-placeholder{
+:-ms-input-placeholder{
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -226,7 +227,7 @@ html, body{
     color: #BEBEBE
   }
 
-  ::-ms-input-placeholder{
+::-ms-input-placeholder{
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -245,6 +246,7 @@ html, body{
     width: 100%;
     z-index: 90;
     background-color: white; 
+    border-bottom: 1px solid #BEBEBE;
 }
 
 

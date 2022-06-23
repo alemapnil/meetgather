@@ -187,3 +187,15 @@ document.querySelector('.logoutA').addEventListener('click',logout)
 
 
 var access_token, userName, userEmail, userPicture
+
+
+var index_Url = window.location.href
+
+//首頁關鍵字搜尋
+document.querySelector('.searchBar div').addEventListener('click',function(){
+    let keyin = document.getElementById('keyword').value
+    if (! index_Url.includes('/find')){ //不是在搜尋頁面
+        let slash_i = index_Url.indexOf('/')
+        window.location.href = index_Url.slice(0,slash_i)+`/find?&keyword=${keyin}`
+    }
+})

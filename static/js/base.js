@@ -11,8 +11,6 @@ async function load(){
     }
 
 
-
-
     createYear()
     if (document.cookie.includes('access_token')){
         const myArray = document.cookie.split(";");
@@ -44,6 +42,11 @@ async function load(){
     if (current_url.includes('/find')){
         find()
         setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 1000);
+    }
+
+    if (current_url.includes('/event/')){
+        await event()
+        setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 0);
     }
 }
 
@@ -82,6 +85,7 @@ async function googleInfo(para){
                 }
             }
             else if ('ok' in dict){
+                userEmail = dict['email']
                 for(let i=0; i<document.querySelectorAll('.frame1').length; i++){
                     document.querySelectorAll('.frame1')[i].style.display='none'
                     document.querySelectorAll('.frame2')[i].style.display='flex'
@@ -176,12 +180,27 @@ document.getElementsByTagName('body')[0].addEventListener('click',function(e){
 //點擊登入
 for (i=0; i<document.querySelectorAll('.login').length; i++){
     document.querySelectorAll('.login')[i].addEventListener('click',function(){
-        document.cookie = "currentpage="+window.location.href
         window.location.href = '/login'
 
     })
 }
 
+//fresh page and set cookie
+console.log(document.cookie,'前')
+if (document.cookie.includes('currentpage=')){
+    document.cookie = "currentpage=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    if (window.location.href.includes('/event')){
+        document.cookie = `currentpage=${window.location.href};path=/ `
+    }
+    else{
+      document.cookie = "currentpage="+window.location.href  
+    }
+}
+else{
+    document.cookie = "currentpage="+window.location.href
+}
+
+console.log(document.cookie,'後')
 
 //點擊登出
 function logout(){
@@ -220,6 +239,82 @@ for (let i =0; i < document.querySelectorAll('.myinfo div .create').length; i++)
 
 var access_token, userName, userEmail, userPicture, dict
 var current_url = window.location.href
-console.log('當前網址',current_url)
+console.log('base.js 當前網址',current_url)
 load()
+
+
+//搜尋欄hover
+document.getElementById('keyword').addEventListener('mouseover',function(){
+    document.getElementById('keyword').style.borderColor = '#f6d819'
+})
+document.getElementById('keyword').addEventListener('mouseout',function(){
+    document.getElementById('keyword').style.borderColor = '#BEBEBE'
+})
+
+
+//關鍵字放大鏡
+document.querySelector('.search button').addEventListener('mouseover',function(){
+    document.getElementById('keyword').style.borderColor = '#f6d819'
+},false)
+document.querySelector('.search button').addEventListener('mouseout',function(){
+    document.getElementById('keyword').style.borderColor = '#BEBEBE'
+},false)
+
+//關鍵字搜尋
+document.querySelector('.search button').addEventListener('click',function(){
+    let keyin = document.getElementById('keyword').value
+    if (! current_url.includes('/find')){ //不是在搜尋頁面
+        let slash_i = current_url.indexOf('/')
+        window.location.href = current_url.slice(0,slash_i)+`/find?&keyword=${keyin}`
+    }
+    else{ //在搜尋頁面
+        if (current_url.includes('keyword=')){//先前有輸入過關鍵字
+            let arr = current_url.split('&')
+            for(let i = 0; i < arr.length; i++){
+                if (arr[i].includes('keyword=')){
+
+                    //去掉URL頁碼
+                    let newUrl;
+                    newUrl = (arr.slice(0, i).concat([`keyword=${keyin}`]).concat(arr.slice(i+1,))).join('&')
+                    if (newUrl.includes('page=')){
+                        let _2newUrl = newUrl.split('&')
+                        for(let n = 0; n < _2newUrl.length; n++){
+                            if (_2newUrl[n].includes('page=')){
+                                newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                            }
+                        }                                
+                    }
+                    window.location.href = newUrl
+                }
+            }
+        }
+        else{ //先前沒輸入過關鍵字
+            
+            //去掉URL頁碼
+            let newUrl;
+            newUrl = current_url + `&keyword=${keyin}`
+            if (newUrl.includes('page=')){
+                let _2newUrl = newUrl.split('&')
+                for(let n = 0; n < _2newUrl.length; n++){
+                    if (_2newUrl[n].includes('page=')){
+                        newUrl = (_2newUrl.slice(0,n).concat(_2newUrl.slice(n+1,))).join('&')
+                    }
+                }                                
+            }
+            window.location.href = newUrl
+        }
+    }    
+})
+
+
+//搜尋欄中出現輸入的關鍵字
+if (current_url.includes('keyword=')){//先前有輸入過關鍵字
+    let arr = current_url.split('&')
+    for(let i = 0; i < arr.length; i++){
+        if (arr[i].includes('keyword=')){
+            document.getElementById('keyword').value = decodeURI(arr[i].replace('keyword=',''))
+        }
+    }
+}
+
 
