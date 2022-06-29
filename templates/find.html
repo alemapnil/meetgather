@@ -124,17 +124,17 @@
 
     {% if items.result != [] %}
     <div class="result">
-        {% for I, item in zip(date,items.result) %}
+        {% for D, P ,item in zip(date,people,items.result) %}
         <div class="event">
-            <div class="event_in" data-id="{{item[7]}}">
-                <div class="picture"><img src = "{{item[21]}}"></div>
+            <div class="event_in" data-id="{{item[0]}}">
+                <div class="picture"><img src = "{{item[13]}}"></div>
                 <div class="section">
-                    <div class="time">{{I}}</div>
-                    <div class="title">{{item[9]}}</div>
-                    <div class="host">{{item[2]}}<span> | {{item[14]}}</span></div>
+                    <div class="time">{{D}}</div>
+                    <div class="title">{{item[2]}}</div>
+                    <div class="host">{{item[18]}}<span> | {{item[6]}}</span></div>
 
                     <div class="lastRow">
-                        <div class="attendee"><span>{{item[13]}}</span>人參加</div>
+                        <div class="attendee"><span>{{P}}</span>人參加</div>
                     </div>
                 </div>
             </div>

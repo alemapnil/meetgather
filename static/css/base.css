@@ -12,6 +12,9 @@ html, body{
     margin:0;
     padding: 0;
 }
+textarea{
+    resize: none;
+}
 
 .overlay{
     display: flex;

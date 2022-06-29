@@ -59,12 +59,13 @@ def index():
 
 @app.route('/find')
 def find():
-    t = db.Test('xyz')
-    t.do()
-
     page = int(request.args.get('page',1))
     if page == 1:
         variable.startfrom = nowTime()
+    else:
+        if variable.startfrom == '':
+            variable.startfrom = nowTime()
+
     print('page',page,'startfrom',variable.startfrom)
 
     keyword, datefrom, dateto = request.args.get('keyword',None), request.args.get('datefrom',None), request.args.get('dateto',None)
@@ -73,12 +74,17 @@ def find():
 
     f = db.Find(variable.startfrom, page)
     items = f.pick_orderbyTm(keyword, datefrom, dateto, category, location, sortby)
-    date, totalpage = [], items['totalpage']
+    date, people, totalpage = [], [], items['totalpage']
+
     for item in items['result']:
-        struct_time = time.strptime(str(item[18]), "%Y-%m-%d %H:%M:%S") # 轉成時間元組
+        struct_time = time.strptime(str(item[10]), "%Y-%m-%d %H:%M:%S") # 轉成時間元組
         new_timeString = time.strftime("%a, %b %d.%I:%M %p", struct_time).replace('.',' · ')+' GMT+8'
         date.append(new_timeString.upper())
-    return render_template("find.html", page = page, totalpage = totalpage, items = items, date = date, zip = zip )
+        if item[15] is None:
+            people.append(0)
+        else:
+            people.append(item[15])
+    return render_template("find.html", page = page, totalpage = totalpage, items = items, date = date,people = people, zip = zip )
     
 
 @app.route('/event/<id>')

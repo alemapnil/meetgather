@@ -186,7 +186,6 @@ for (i=0; i<document.querySelectorAll('.login').length; i++){
 }
 
 //fresh page and set cookie
-console.log(document.cookie,'前')
 if (document.cookie.includes('currentpage=')){
     document.cookie = "currentpage=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     if (window.location.href.includes('/event')){
@@ -200,7 +199,6 @@ else{
     document.cookie = "currentpage="+window.location.href
 }
 
-console.log(document.cookie,'後')
 
 //點擊登出
 function logout(){
@@ -216,7 +214,7 @@ function logout(){
     .then(function(dict){
         console.log('DELETE /api/user 回傳值',dict)
 
-        if('ok' in dict){
+        if('ok' in dict || 'invalidToken' in dict){
             window.location.reload();
         }
         else{

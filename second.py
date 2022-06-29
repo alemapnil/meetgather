@@ -105,7 +105,7 @@ def send():
 
         decrypt = get_jwt_identity()
         print(nowTime())
-        activity = db.Activity(IDTime(), decrypt['email'],acti_name, acti_story, acti_cate, acti_num, 0, 
+        activity = db.Activity(IDTime(), decrypt['email'],acti_name, acti_story, acti_cate, acti_num,
         acti_city, acti_add, acti_lat, acti_lng, acti_tm, nowTime(), nowTime(),acti_pho)
         result = activity.create()
         print(nowTime())
@@ -159,9 +159,54 @@ def attendDelete():
     return jsonify(result)
 
 
-@api.route('api/allJoinNum/<string:id>', methods = ['GET'])
+@api.route('/api/allJoinNum/<string:id>', methods = ['GET'])
 def allJoinNum(id):
     activity = id
     e = db.Event(activity)
     result = e.allJoinNum()
+    return jsonify(result)
+
+
+@api.route('/api/board', methods = ['POST'])
+@jwt_required()
+def boardPost():
+    activity, message = request.get_json()['activity'], request.get_json()['message']
+    decrypt = get_jwt_identity()
+    e = db.Event(activity)
+    result = e.boardPost(decrypt['email'],message, nowTime())
+    return jsonify(result)
+
+@api.route('/api/board', methods = ['DELETE'])
+@jwt_required()
+def boardDelete():
+    activity, board_id = request.get_json()['activity'], request.get_json()['board_id']
+    decrypt = get_jwt_identity()
+    e = db.Event(activity)
+    result = e.boardDelete(decrypt['email'],board_id)
+    return jsonify(result)
+
+
+@api.route('/api/board', methods = ['PATCH'])
+@jwt_required()
+def boardPatch():
+    activity, board_id = request.get_json()['activity'], request.get_json()['board_id']
+    message = request.get_json()['message']
+    decrypt = get_jwt_identity()
+    e = db.Event(activity)
+    result = e.boardPatch(decrypt['email'], board_id, message)
+    return jsonify(result)
+
+@api.route('/api/board/<string:id_page>', methods = ['GET'])
+@jwt_required(optional=True)
+def boardGet(id_page):
+    page = int(id_page.split('_')[-1])
+    activity = '_'.join(id_page.split('_')[:-1])
+    print(activity, page)
+    e = db.Event(activity)
+
+    decrypt = get_jwt_identity()
+    if decrypt is None:
+        result = e.boardGet(page,None)
+    else:
+        result = e.boardGet(page,decrypt['email'])
     return jsonify(result)

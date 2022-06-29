@@ -48,7 +48,7 @@
     width: 240px;
     height:150px;
     border-radius: 6px;
-    background-color: #f6d819;
+    background-color: rgb(246, 88, 88);
     animation: appear 1s;
 }
 
@@ -264,7 +264,7 @@
 .ev_host .photo{
     width: 60px;
     height: 60px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .ev_host .photo img{
@@ -280,7 +280,8 @@
 }
 .photo_right .host{
     font-weight: 450;
-    cursor: pointer;
+    /* cursor: pointer; */
+    color:rgba(0, 0, 0, 0.75);
 }
 
 
@@ -323,6 +324,10 @@
     opacity: 0.6;
 }
 
+.tm_word{
+    color:rgba(0, 0, 0, 0.75);
+}
+
 .tm_word div a{
     color:#448899;
     font-size: 15px;
@@ -330,6 +335,9 @@
     cursor: pointer;
 }
 
+.spot_word a{
+    color:rgba(0, 0, 0, 0.75);
+}
 .spot_word a, .tm_word div a{
     text-decoration: none;
 }
@@ -347,18 +355,19 @@
 .c_detail{
     margin-top: 20px;
 }
+.c_detail .detail{
+    color:rgba(0, 0, 0, 0.75);
+}
 
 .c_join{
     box-sizing: content-box;
-    padding: 10px 20px 10px 20px;
+    padding: 10px 20px 0 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     /* background-color: white; */
     height: 80px;
     gap: 20px;
-    margin-top: 40px;
-
 }
 
 .share, .fav{
@@ -418,6 +427,12 @@
 
 .c_attendee span{
     margin: 0 5px 0 5px;
+    color:rgba(0, 0, 0, 0.75);
+}
+
+
+.c_attendee div:first-of-type{
+    color:rgba(0, 0, 0, 0.75);
 }
 
 .seeAll{
@@ -452,6 +467,224 @@
     font-size: large;
 }
 
+.c_write h2{
+    margin-top: 0;
+}
+
+
+
+#message_text{
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 15px;
+    width: 60%;
+    height: 80px;
+    border-radius: 6px;
+    border:1px solid #bebebe;
+    color: gray;
+    background-color: transparent;
+}
+
+#message_text:focus {
+	outline: none;
+  	border: 1px solid #f6d819;
+    box-shadow: 0 0 10px 0 #f6d819;
+}
+
+#message_text::placeholder{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: gray
+  }
+
+.c_message{
+    margin: 20px auto 60px auto;
+}
+
+.c_message .empty{
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.75);
+}
+.leaveM{
+    margin-top: 10px;
+    width: 60%;
+    display: flex;
+    justify-content: flex-end;
+}
+.sendM{
+    width: 70px;
+    height: 40px;
+    background-color: #f6d819;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sendM span{
+    color: gray;
+}
+
+.sendM div{
+    width: 30px;
+    height: 30px;
+}
+
+.sendM div img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.line{
+    width: 60%;
+    min-height: 120px;
+    display: grid;
+    grid-template-columns: 80px 1fr 40px;
+    align-items: center;
+}
+
+.editline{
+    width: 100%;
+    height: 40px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 60px 60px;
+    gap:5px
+}
+
+.editline div{
+    background-color: #f6d819;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+} 
+
+.editline div span{
+    color: gray;
+}
+
+.editline div:hover{
+    cursor: pointer;
+}
+
+#edit_text{
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    border:1px solid #bebebe;
+    color: gray;
+    background-color: transparent;
+}
+
+#edit_text:focus {
+	outline: none;
+  	border: 1px solid #f6d819;
+    box-shadow: 0 0 10px 0 #f6d819;
+}
+
+.editsend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editsend div{
+    width: 20px;
+    height: 20px;
+}
+
+.editsend div img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.message_photo div{
+    width: 45px;
+    height: 45px;
+    margin: 10px auto auto auto;
+}
+
+.message_photo img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.message_middle{
+    box-sizing: content-box;
+    padding: 10px;
+}
+
+.personName{
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.75);
+}
+.personMsg{
+    color: rgba(0, 0, 0, 0.75);
+    margin: 5px auto 5px auto;
+}
+.personTm{
+    color: gray
+}
+
+.message_work{
+    box-sizing: content-box;
+    padding-top: 10px;
+    height: 100%;
+}
+
+.message_work img:hover{
+    cursor: pointer;;
+}
+
+.message_work_expand{
+    display: none;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    position: relative;
+    left: 0px;
+    width: 100px;
+    height: 70px;
+    background-color: whitesmoke;
+}
+.message_work_expand div{
+    text-align: center;
+}
+
+.message_work_expand .edit, .message_work_expand .delete{
+    cursor: pointer;
+}
+
+.messageLoad{
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.messageLoad_div{
+    width: 30px;
+    height: 30px;
+}
+
+.messageLoad_div_img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
 
 
 @media (max-width:1200px){
