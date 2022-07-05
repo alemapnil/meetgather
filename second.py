@@ -170,10 +170,19 @@ def allJoinNum(id):
 @api.route('/api/board', methods = ['POST'])
 @jwt_required()
 def boardPost():
-    activity, message = request.get_json()['activity'], request.get_json()['message']
+    activity, message = request.get_json()['activity'], request.get_json()['message'].strip(' ')
     decrypt = get_jwt_identity()
     e = db.Event(activity)
     result = e.boardPost(decrypt['email'],message, nowTime())
+    return jsonify(result)
+
+@api.route('/api/reply', methods = ['POST'])
+@jwt_required()
+def replyPost():
+    activity, message, board_id = request.get_json()['activity'], request.get_json()['message'].strip(' '), int(request.get_json()['board_id'])
+    decrypt = get_jwt_identity()
+    e = db.Event(activity)
+    result = e.replyPost(decrypt['email'],message, nowTime(), board_id)
     return jsonify(result)
 
 @api.route('/api/board', methods = ['DELETE'])
@@ -186,15 +195,36 @@ def boardDelete():
     return jsonify(result)
 
 
+@api.route('/api/reply', methods = ['DELETE'])
+@jwt_required()
+def replyDelete():
+    activity, reply_id = request.get_json()['activity'], request.get_json()['reply_id']
+    decrypt = get_jwt_identity()
+    e = db.Event(activity)
+    result = e.replyDelete(decrypt['email'],reply_id)
+    return jsonify(result)
+
 @api.route('/api/board', methods = ['PATCH'])
 @jwt_required()
 def boardPatch():
     activity, board_id = request.get_json()['activity'], request.get_json()['board_id']
-    message = request.get_json()['message']
+    message = request.get_json()['message'].strip(' ')
     decrypt = get_jwt_identity()
     e = db.Event(activity)
     result = e.boardPatch(decrypt['email'], board_id, message)
     return jsonify(result)
+
+
+@api.route('/api/reply', methods = ['PATCH'])
+@jwt_required()
+def replyPatch():
+    activity, reply_id = request.get_json()['activity'], request.get_json()['reply_id']
+    message = request.get_json()['message'].strip(' ')
+    decrypt = get_jwt_identity()
+    e = db.Event(activity)
+    result = e.replyPatch(decrypt['email'], reply_id, message)
+    return jsonify(result)
+
 
 @api.route('/api/board/<string:id_page>', methods = ['GET'])
 @jwt_required(optional=True)

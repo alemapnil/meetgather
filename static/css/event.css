@@ -361,11 +361,10 @@
 
 .c_join{
     box-sizing: content-box;
-    padding: 10px 20px 0 20px;
+    padding: 0 20px 0 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* background-color: white; */
     height: 80px;
     gap: 20px;
 }
@@ -548,7 +547,31 @@
     align-items: center;
 }
 
-.editline{
+.reply{
+    width: 60%;
+    box-sizing: content-box;  
+    border-bottom: 1px solid #BEBEBE; 
+}
+.replynote{
+    color: red;
+}
+
+._2line{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+    justify-content: space-between;
+}
+
+.right{
+    min-height: 120px;
+    display: grid;
+    grid-template-columns: 80px 1fr 40px;
+    align-items: center;
+}
+
+
+.editline, ._2editline{
     width: 100%;
     height: 40px;
     display: grid;
@@ -557,7 +580,7 @@
     gap:5px
 }
 
-.editline div{
+.editline div, ._2editline div{
     background-color: #f6d819;
     border-radius: 6px;
     display: flex;
@@ -566,15 +589,15 @@
     height: 30px;
 } 
 
-.editline div span{
+.editline div span, ._2editline div span{
     color: gray;
 }
 
-.editline div:hover{
+.editline div, ._2editline div:hover{
     cursor: pointer;
 }
 
-#edit_text{
+#edit_text, #_2edit_text{
     box-sizing: border-box;
     font-size: 16px;
     padding: 10px;
@@ -585,52 +608,60 @@
     background-color: transparent;
 }
 
-#edit_text:focus {
+#edit_text,#_2edit_text:focus {
 	outline: none;
   	border: 1px solid #f6d819;
     box-shadow: 0 0 10px 0 #f6d819;
 }
 
-.editsend{
+.editsend, ._2editsend{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.editsend div{
+.editsend div, ._2editsend div{
     width: 20px;
     height: 20px;
 }
 
-.editsend div img{
+.editsend div img, ._2editsend div img{
     object-fit: cover;
     width: 100%;
     height: 100%;
 }
 
-.message_photo div{
+.message_photo div, ._2message_photo div{
     width: 45px;
     height: 45px;
     margin: 10px auto auto auto;
 }
 
-.message_photo img{
+._2message_photo div{
+    width: 40px;
+    height: 40px;
+    margin: 10px auto auto auto;
+}
+
+
+
+.message_photo img, ._2message_photo img{
     object-fit: cover;
     width: 100%;
     height: 100%;
     border-radius: 50%;
 }
 
-.message_middle{
+.message_middle, ._2message_middle{
     box-sizing: content-box;
     padding: 10px;
 }
 
-.personName{
+.personName, ._2personName{
     font-weight: bold;
     color: rgba(0, 0, 0, 0.75);
 }
-.personMsg{
+.personMsg, ._2personMsg{
     color: rgba(0, 0, 0, 0.75);
     margin: 5px auto 5px auto;
 }
@@ -638,17 +669,23 @@
     color: gray
 }
 
-.message_work{
+.response{
+    color:  rgba(0, 0, 0, 0.5);
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.message_work, ._2message_work{
     box-sizing: content-box;
     padding-top: 10px;
     height: 100%;
 }
 
-.message_work img:hover{
+.message_work img, ._2message_work img:hover{
     cursor: pointer;;
 }
 
-.message_work_expand{
+.message_work_expand, ._2message_work_expand{
     display: none;
     grid-template-columns: 1fr;
     justify-content: center;
@@ -660,11 +697,8 @@
     height: 70px;
     background-color: whitesmoke;
 }
-.message_work_expand div{
+.message_work_expand div, ._2message_work_expand div{
     text-align: center;
-}
-
-.message_work_expand .edit, .message_work_expand .delete{
     cursor: pointer;
 }
 
@@ -685,6 +719,155 @@
     height: 100%;
     border-radius: 50%;
 }
+
+
+.replycontent{
+    display: none;
+    height: 80px;
+    width: 100%;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    animation: popup 0.5s;
+    box-sizing: content-box;
+    padding: 10px;
+}
+
+
+@keyframes popup {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes popupGone {
+    from {
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(100%);
+    }
+}
+
+
+.keyinUpper{
+    width: 100%;
+    height: 50%;
+    display: grid;
+    grid-template-columns: 1fr 60px;
+}
+
+.floorContent{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+
+    overflow: hidden;
+    white-space: nowrap;
+}
+.floorContent div:first-of-type{
+    color:rgba(0, 0, 0, 0.5);
+}
+
+.floorContent div:nth-of-type(4n){
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.floorContent div{
+    color:rgba(0, 0, 0, 0.3);
+}
+
+
+
+.replyclose{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.replyclose span{
+    width: 10px;
+    font-weight: bolder;
+    color:black;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+.keyinreply{
+    width: 100%;
+    height: 50%;
+    display: grid;
+    grid-template-columns: 1fr 80px 40px;
+}
+
+
+.keyinreply input[type="text"]{
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    height: 100%;
+    color:rgba(0, 0, 0, 0.75);
+}
+
+.keyinreply input[type="text"]:focus {
+	outline: none;
+}
+
+.keyinreply div:first-of-type{
+    width: 100%;
+    height: 100%;
+    background-color: #26619c;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.keyinreply div:first-of-type span{
+    color: white;
+}
+
+/* ///
+#message_text{
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 15px;
+    width: 60%;
+    height: 80px;
+    border-radius: 6px;
+    border:1px solid #bebebe;
+    color: gray;
+    background-color: transparent;
+}
+
+#message_text:focus {
+	outline: none;
+  	border: 1px solid #f6d819;
+    box-shadow: 0 0 10px 0 #f6d819;
+}
+
+#message_text::placeholder{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: gray
+  }
+/// */
 
 
 @media (max-width:1200px){

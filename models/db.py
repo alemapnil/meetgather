@@ -98,7 +98,6 @@ class Members:
             return data
 
 
-
 class Activity:
     def __init__(self, id, host, title, descp, cate, limit, city, adr, lat, lng, st, ct, et, pic):
         self.id, self.host, self.title, self.descp= id, host, title, descp
@@ -241,7 +240,6 @@ class Find:
             return data
 
 
-
 class Event:
     def __init__(self, eventId):
         self.eventId = eventId
@@ -269,7 +267,6 @@ class Event:
                             join `members` on `attendees`.`attendee_email` =`members`.`email` where `attendee_eventID` = %s;"""
                 cursor.execute(command, (self.eventId,))
                 namelist = cursor.fetchall() 
-                print(namelist,'參加者名單')
 
                 data = {"ok":True, "host": host,"result": result,"namelist":namelist}
         except:
@@ -312,25 +309,9 @@ class Event:
                         players = cursor.fetchone()
 
                         if limit[0] > players[0]:
-                            ## 參加者名單 新增前
-                            command = """select `attendee_email` from attendees where `attendee_eventID`=%s;"""
-                            cursor.execute(command, (self.eventId,))
-                            namelist = cursor.fetchall() 
-                            print(namelist,'namelist新增前')
-
                             ##新增
                             command = "insert into `attendees` (`attendee_eventID`, `attendee_email`) values(%s, %s);" #增加參加者名單
                             cursor.execute(command, (self.eventId, attendee))
-
-
-                            ## 參加者名單 新增後
-                            command = """select * from `attendees`
-                                        join `members` on `attendees`.`attendee_email` =`members`.`email` where `attendee_eventID` = %s;"""
-                            cursor.execute(command, (self.eventId,))
-                            namelist = cursor.fetchall() 
-                            print(namelist,'namelist新增後')
-
-                            data ={'ok':True, 'allJoinNum': len(namelist), 'namelist': namelist}
                             crud += 1
                         else:
                             data = {"error": True, "message":"已滿額"}
@@ -350,6 +331,12 @@ class Event:
             if crud > 0:
                 print('Event.attend > commit')
                 CN1.commit()
+                command = """select * from `attendees`
+                            join `members` on `attendees`.`attendee_email` =`members`.`email` where `attendee_eventID` = %s;"""
+                cursor.execute(command, (self.eventId,))
+                namelist = cursor.fetchall() 
+                print(namelist,'namelist新增後')
+                data ={'ok':True, 'allJoinNum': len(namelist), 'namelist': namelist}
         finally:
             print(CN1.connection_id, 'Event.attend > pool close, ', CN1.is_connected())
             cursor.close()
@@ -367,24 +354,9 @@ class Event:
             cursor.execute(command, (self.eventId, attendee))
             player = cursor.fetchone()
             if player is not None:
-                ## 參加者名單 新增前
-                command = """select `attendee_email` from attendees where `attendee_eventID`=%s;"""
-                cursor.execute(command, (self.eventId,))
-                namelist = cursor.fetchall() 
-                print(namelist,'namelist 刪除前')
-
                 ##刪除
                 command ="""delete from `attendees` where `attendee_eventID` =%s and `attendee_email` =%s""" #刪除參加者名單
                 cursor.execute(command, (self.eventId, attendee))
-
-                ## 參加者名單 刪除後
-                command = """select * from `attendees`
-                            join `members` on `attendees`.`attendee_email` =`members`.`email` where `attendee_eventID` = %s;"""
-                cursor.execute(command, (self.eventId,))
-                namelist = cursor.fetchall() 
-                print(namelist,'namelist刪除後')
-
-                data = {'ok':True, 'allJoinNum':len(namelist), 'namelist': namelist}
                 crud += 1
             else:
                 data = {"error": True,"message": "無參加紀錄"}
@@ -398,6 +370,13 @@ class Event:
             if crud > 0:
                 print('Event.not_going > commit')
                 CN1.commit()
+                ## 參加者名單 刪除後
+                command = """select * from `attendees`
+                            join `members` on `attendees`.`attendee_email` =`members`.`email` where `attendee_eventID` = %s;"""
+                cursor.execute(command, (self.eventId,))
+                namelist = cursor.fetchall() 
+                print(namelist,'namelist刪除後')
+                data = {'ok':True, 'allJoinNum':len(namelist), 'namelist': namelist}
         finally:
             print(CN1.connection_id, 'Event.not_going > pool close, ', CN1.is_connected())
             cursor.close()
@@ -511,7 +490,6 @@ class Event:
                 command = """SELECT * FROM `activity` WHERE `id` = %s """
                 cursor.execute(command, (self.eventId,))
                 event = cursor.fetchone()
-                print(event[1], JWTemail)
                 if event is not None:  #有此活動
                     command = """SELECT * FROM `boardlist` WHERE `board_name` = %s order by `board_time` DESC for update;"""
                     cursor.execute(command, (self.eventId,))
@@ -658,6 +636,7 @@ class Event:
                 sql = """SELECT `member_id` FROM `members` where `email`=%s;"""
                 cursor.execute(sql, (JWTemail,))
                 member_id = cursor.fetchone() 
+                member_id = member_id[0]
             else:
                 member_id = 0
 
@@ -674,6 +653,11 @@ class Event:
 
             datalist = []
             for one in _10message:
+                sql = """SELECT * FROM `boardreply` left join `members` on`boardreply`.`reply_email` =`members`.`email`where\
+                    `boardreply`.`reply_boardID` =%s order by `reply_time` DESC;"""
+                cursor.execute(sql, (one[0],))
+                reply = cursor.fetchall() 
+
                 data={
                     'board_id' : one[0],
                     'board_name' : one[1],
@@ -683,7 +667,8 @@ class Event:
                     'board_time' : one[5],
                     'member_id': one[7],
                     'person' :one[9],
-                    'photo': one[10]
+                    'photo': one[10],
+                    'reply': reply
                 }
                 datalist.append(data)
 
@@ -703,6 +688,156 @@ class Event:
             print('Event.boardGet > 發生錯誤', data)
         finally:
             print(CN1.connection_id, 'Event.boardGet > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+
+    def replyPost(self,JWTemail, message, time, boardID):
+        try:
+            crud = 0
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Event.replyPost > pool create')   
+            cursor = CN1.cursor(buffered=True)
+
+            command = """SELECT * FROM `members` WHERE `email` = %s """
+            cursor.execute(command, (JWTemail,))
+            member = cursor.fetchone() #tuple or None
+
+            if member is not None: #有此會員
+                command = """SELECT * FROM `boardlist` WHERE `board_id` = %s """
+                cursor.execute(command, (boardID,))
+                line = cursor.fetchone()
+                if line is not None:  #有此樓
+                    command = """SELECT * FROM `boardreply` WHERE `reply_boardID` = %s order by `reply_time` DESC for update;"""
+                    cursor.execute(command, (boardID,))
+                    result = cursor.fetchone() 
+
+                    if result is None:  #此樓無回覆
+                        thisfloor = f'{line[4]}_1'
+                        if line[2] == JWTemail: #樓主自己留言就標註已讀
+                            board_satatus = 'read'
+                        else:
+                            board_satatus = 'not read'
+
+                        command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`) \
+                            values(%s, %s, %s, %s, %s, %s);"
+
+                        inserttuple = (boardID, JWTemail, message, thisfloor, time, board_satatus)
+                        cursor.execute(command, inserttuple)
+                    else: ##此樓有回覆
+                        a, b = result[4].split('_')[0],int(result[4].split('_')[1])
+                        thisfloor = f'{a}_{b+1}'
+                        if line[2] == JWTemail: #樓主自己留言就標註已讀
+                            board_satatus = 'read'
+                        else:
+                            board_satatus = 'not read'
+
+                        command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`) \
+                            values(%s, %s, %s, %s, %s, %s);"
+                        
+                        inserttuple = (boardID, JWTemail, message, thisfloor, time, board_satatus)
+                        cursor.execute(command, inserttuple)
+
+                    inserttuple += (member[2],member[3])
+                    crud += 1
+                else:
+                    data = {"error": True, "message":"無此樓"}
+            else:
+                data = {"error": True, "message":"無此會員"}
+
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Event.replyPost > 發生錯誤', data)
+            CN1.rollback()
+        else:
+            if crud > 0:
+                print('Event.replyPost > commit')
+                CN1.commit()
+                command = """SELECT * FROM `boardreply` WHERE `reply_floor` = %s and `reply_boardID` = %s;"""
+                cursor.execute(command, (thisfloor,boardID))
+                reply = cursor.fetchone()
+                data = {"ok": True,"inserttuple":inserttuple,"logger":member[0],"reply_id":reply[0]}
+
+        finally:
+            print(CN1.connection_id, 'Event.replyPost > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+
+    def replyDelete(self, JWTemail,reply_id):
+        try:
+            crud = 0
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Event.replyDelete > pool create')   
+            cursor = CN1.cursor(buffered=True)
+
+            command = """SELECT * FROM `boardreply` WHERE `reply_id` = %s;"""
+            cursor.execute(command, (reply_id,))
+            result = cursor.fetchone() #tuple or None
+
+            if result is not None:  #有此回覆ID
+                if JWTemail == result[2]:
+                    ##刪除
+                    command ="""delete from `boardreply` where `reply_id` =%s ;"""
+                    cursor.execute(command, (reply_id,))
+                    data = {"ok": True}
+                    crud += 1
+                else:
+                    data = {"error": True, "message":"非本人無法刪除回覆"}
+            else:
+                data = {"error": True, "message":"無此回覆ID"}
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Event.replyDelete > 發生錯誤', data)
+            CN1.rollback()
+        else:
+            if crud > 0:
+                print('Event.replyDelete > commit')
+                CN1.commit()
+        finally:
+            print(CN1.connection_id, 'Event.replyDelete > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+
+    def replyPatch(self, JWTemail,reply_id, message):
+        try:
+            crud = 0
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Event.replyPatch > pool create')   
+            cursor = CN1.cursor(buffered=True)
+
+            command = """SELECT * FROM `boardreply` WHERE `reply_id` = %s;"""
+            cursor.execute(command, (reply_id,))
+            result = cursor.fetchone() #tuple or None
+
+            if result is not None:  #有此回覆ID
+                if JWTemail == result[2]: #確實為本人
+                    # 更新
+                    command ="""update `boardreply` set `reply_msg` =%s where `reply_id` =%s ;"""
+                    cursor.execute(command, (message,reply_id))
+                    data = {"ok": True}
+                    crud += 1
+                else:
+                    data = {"error": True, "message":"非本人無法編輯回覆"}
+            else:
+                data = {"error": True, "message":"無此回覆ID"}
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Event.replyPatch > 發生錯誤', data)
+            CN1.rollback()
+        else:
+            if crud > 0:
+                print('Event.replyPatch > commit')
+                CN1.commit()
+        finally:
+            print(CN1.connection_id, 'Event.replyPatch > pool close, ', CN1.is_connected())
             cursor.close()
             CN1.close()
             return data

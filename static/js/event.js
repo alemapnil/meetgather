@@ -6,7 +6,8 @@ var days_cn = ['週日', '週一', '週二', '週三', '週四', '週五', '週�
 var month_cn = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月', '8 月', '9 月', '10 月', '11 月', '12 月']
 
 var ev_dayStr, ev_HrMin, google_calender, id, namelist, map, nextPage, record = []
-var nonSpacePat = /[\S]/g
+var nonSpacePat = /[\S]/gd
+var sendCount = 0, deleteCount = 0, replyDeleteCount = 0, editCount = 0, replyEditCount = 0, replyCount = 0
 
 
 async function event(){
@@ -228,11 +229,34 @@ function loadMsg(para, access_token){
                     let board_id = boardData[b]['board_id'], memberId = boardData[b]['member_id']
                     let board_msg = boardData[b]['board_msg'],  board_time = boardData[b]['board_time'].replace('GMT','')
                     let board_floor = boardData[b]['board_floor'], person = boardData[b]['person'], photo = boardData[b]['photo']
+                    let reply = boardData[b]['reply']
+
 
                     let board_tm = new Date(board_time);
                     let strBoardTm = `${board_tm.getFullYear()}-${String(board_tm.getMonth()+1).padStart(2, '0')}-${String(board_tm.getDate()).padStart(2, '0')} ${String(board_tm.getHours()).padStart(2, '0')}:${String(board_tm.getMinutes()).padStart(2, '0')}`
-
+                    
                     msgDiv(dict['logger'],memberId,board_id,board_msg, strBoardTm, person, photo, board_floor)
+
+                    if (reply.length > 0){ //有回覆
+                        replyMain(board_id)
+                        for (let r=0; r<reply.length; r++){
+                            let row = reply[r]
+                            let reply_time = new Date(row[5].replace('GMT',''));
+                            let strReplyTm = `${reply_time.getFullYear()}-${String(reply_time.getMonth()+1).padStart(2, '0')}-${String(reply_time.getDate()).padStart(2, '0')} ${String(reply_time.getHours()).padStart(2, '0')}:${String(reply_time.getMinutes()).padStart(2, '0')}`
+                            replyLine(dict['logger'],row[7],row[1],row[0],row[3], strReplyTm, row[9], row[10], row[4])
+                        }
+
+                        // document.querySelector(`[boardID="${board_id}"]`).querySelector('._2line').style.display = 'none'
+                        
+
+
+                        document.querySelectorAll('.reply')[document.querySelectorAll('.reply').length-1].style.borderBottom='1px solid #BEBEBE'
+                    }
+
+                    else{ //無回覆
+                        document.querySelectorAll('.line')[document.querySelectorAll('.line').length-1].style.borderBottom='1px solid #BEBEBE'
+                    }
+
                 }
             }
             else if(boardData.length === 0 && record.length === 0){
@@ -241,7 +265,6 @@ function loadMsg(para, access_token){
             document.querySelector('.messageLoad').remove()
             hambergerMsg()
             hambergerMsgGone()     
-   
         }  
     }); 
 }
@@ -257,7 +280,7 @@ function emptyMsgDiv(){
 }
 
 
-//製作留言板
+//製作留言板 .line
 function msgDiv(logger,memberId,board_id,board_msg, strBoardTm, person, photo, board_floor){
     let line = document.createElement('div')
     line.className ='line'
@@ -301,34 +324,136 @@ function msgDiv(logger,memberId,board_id,board_msg, strBoardTm, person, photo, b
     personTM.className ='personTM'
     personTM.appendChild(document.createTextNode(strBoardTm))
     personBT.appendChild(personTM)
+
+
+    if (access_token !== undefined){
+        let response = document.createElement('span')
+        response.className ='response'
+        response.appendChild(document.createTextNode('回覆'))
+        personBT.appendChild(response)
+    }
+
     message_middle.appendChild(personBT)
     line.appendChild(message_middle)
 
     let message_work = document.createElement('div')
     message_work.className ='message_work'
-    let imgwork = document.createElement('img')
-    imgwork .src = '/static/img/comment.svg'
-    message_work.appendChild(imgwork)
 
+    if (memberId === logger){
+        let imgwork = document.createElement('img')
+        imgwork .src = '/static/img/comment.svg'
+        message_work.appendChild(imgwork)
 
-    let message_work_expand = document.createElement('div')
-    message_work_expand.className = 'message_work_expand'
+        let message_work_expand = document.createElement('div')
+        message_work_expand.className = 'message_work_expand'
 
-    let edit = document.createElement('div')
-    edit.className = 'edit'
-    edit.appendChild(document.createTextNode('編輯留言'))
-    message_work_expand.appendChild(edit)
+        let edit = document.createElement('div')
+        edit.className = 'edit'
+        edit.appendChild(document.createTextNode('編輯留言'))
+        message_work_expand.appendChild(edit)
 
-    let deleteD = document.createElement('div')
-    deleteD.className = 'delete'
-    deleteD.appendChild(document.createTextNode('刪除留言'))
-    message_work_expand.appendChild(deleteD)
-    message_work.appendChild(message_work_expand)
-    //
+        let deleteD = document.createElement('div')
+        deleteD.className = 'delete'
+        deleteD.appendChild(document.createTextNode('刪除留言'))
+        message_work_expand.appendChild(deleteD)
+        message_work.appendChild(message_work_expand)        
+    }
     line.appendChild(message_work)
     document.querySelector('.c_message').appendChild(line)
 }
 
+
+//製作回覆板
+function replyMain(board_id){
+    let reply = document.createElement('div')
+    reply.className = 'reply'
+    reply.setAttribute('boardID',board_id)
+    document.querySelector('.c_message').appendChild(reply)
+}
+
+function replyLine(logger,memberId,board_id,reply_id,reply_msg, reply_time, person, photo, reply_floor){
+
+    let _2line = document.createElement('div')
+    _2line.className ='_2line'
+    _2line.setAttribute('replyID',reply_id)
+
+    let left = document.createElement('div')
+    left.className ='left'
+    let right = document.createElement('div')
+    right.className ='right'
+
+    let _2message_photo = document.createElement('div')
+    _2message_photo.className = '_2message_photo'
+    _2message_photo.setAttribute('memberId',memberId)
+    _2message_photo.setAttribute('logger',logger)
+
+    let imgdiv = document.createElement('div')
+    let img = document.createElement('img')
+    img.src = photo
+    img.setAttribute('referrerpolicy',"no-referrer")
+    imgdiv.appendChild(img)
+    _2message_photo.appendChild(imgdiv)
+    right.appendChild(_2message_photo)
+
+    let _2message_middle = document.createElement('div')
+    _2message_middle.className ='_2message_middle'
+
+    let _2personName = document.createElement('div')
+    _2personName.className ='_2personName'
+    _2personName.appendChild(document.createTextNode(person))
+    _2message_middle.appendChild(_2personName)
+
+    let _2personMsg = document.createElement('div')
+    _2personMsg.className ='_2personMsg'
+    _2personMsg.appendChild(document.createTextNode(reply_msg))
+    _2message_middle.appendChild(_2personMsg)
+
+    let _2personBT = document.createElement('div')
+    _2personBT.className ='_2personBT'
+
+    let _2floor = document.createElement('span')
+    _2floor.className ='_2floor'
+    _2floor.appendChild(document.createTextNode(reply_floor+' · '))
+    _2personBT.appendChild(_2floor)
+
+    let _2personTM = document.createElement('span')
+    _2personTM.className ='_2personTM'
+    _2personTM.appendChild(document.createTextNode(reply_time))
+    _2personBT.appendChild(_2personTM)
+    _2message_middle.appendChild(_2personBT)
+    right.appendChild(_2message_middle)
+
+    let _2message_work = document.createElement('div')
+    _2message_work.className ='_2message_work'
+
+    console.log(logger === memberId, logger, memberId)
+
+    if (logger === memberId){
+        let imgwork = document.createElement('img')
+        imgwork .src = '/static/img/comment.svg'
+        _2message_work.appendChild(imgwork)
+
+        let _2message_work_expand = document.createElement('div')
+        _2message_work_expand.className = '_2message_work_expand'
+
+        let _2edit = document.createElement('div')
+        _2edit.className = '_2edit'
+        _2edit.appendChild(document.createTextNode('編輯留言'))
+        _2message_work_expand.appendChild(_2edit)
+
+        let _2delete = document.createElement('div')
+        _2delete.className = '_2delete'
+        _2delete.appendChild(document.createTextNode('刪除留言'))
+        _2message_work_expand.appendChild(_2delete)
+        _2message_work.appendChild(_2message_work_expand)
+    }
+    //
+    right.appendChild(_2message_work)
+    _2line.appendChild(left)
+    _2line.appendChild(right)
+
+    document.querySelector(`[boardID="${board_id}"]`).appendChild(_2line)
+}
 
 //製作第一個節點留言
 function leaveMsg(logger,memberId,board_id,board_msg, strBoardTm, person, photo, board_floor){
@@ -374,6 +499,14 @@ function leaveMsg(logger,memberId,board_id,board_msg, strBoardTm, person, photo,
     personTM.className ='personTM'
     personTM.appendChild(document.createTextNode(strBoardTm))
     personBT.appendChild(personTM)
+
+    if (access_token !== undefined){
+        let response = document.createElement('span')
+        response.className ='response'
+        response.appendChild(document.createTextNode('回覆'))
+        personBT.appendChild(response)
+    }
+
     message_middle.appendChild(personBT)
     line.appendChild(message_middle)
 
@@ -437,7 +570,6 @@ function initMap(para1, para2){
         map: map
     })
 }
-
 
 
 //點參加
@@ -559,7 +691,7 @@ function joinCursor(){
     else{
         document.querySelector('.join').style.cursor = 'pointer'
     }
-    }
+}
 
 
 //login warn close
@@ -645,7 +777,6 @@ document.querySelector('.sendM').addEventListener('mouseover',()=>{
 })
 
 // click 留下你的話之留言
-var sendCount = 0
 document.querySelector('.sendM').addEventListener('click',function(){
     let message = document.getElementById('message_text').value
     if (message.match(nonSpacePat)){
@@ -683,7 +814,7 @@ document.querySelector('.sendM').addEventListener('click',function(){
 
                             let logger = dict['logger'], memberId = dict['logger'], board_id = dict['board_id']
                             document.querySelector(".c_message").insertBefore(leaveMsg(logger,memberId,board_id,board_msg, strBoardTm, person, photo, board_floor),document.querySelector(".line"))
-                            
+                            document.querySelector('.line').style.borderBottom='1px solid #BEBEBE'
                             document.querySelector('.sendM').innerHTML =''
                             document.querySelector('.sendM').innerHTML += "<span>留言</span>"
 
@@ -710,40 +841,111 @@ document.querySelector('.sendM').addEventListener('click',function(){
 })
 
 
+function editGone(){
+    //先使其他編輯留言消失
+    for (let j =0; j< document.querySelectorAll('.line').length; j++){
+        if (document.querySelectorAll('.line')[j].querySelector('.editline') !=null){
+            document.querySelectorAll('.line')[j].querySelector('.editline').remove()
+            document.querySelectorAll('.line')[j].querySelector('.personMsg').style.display = 'block'
+            document.querySelectorAll('.line')[j].querySelector('.personBT').style.display = 'block'
+            document.querySelectorAll('.line')[j].querySelector('.message_work').style.display = 'block'
+        }
+    }
+    for (let j =0; j< document.querySelectorAll('._2line').length; j++){
+        if (document.querySelectorAll('._2line')[j].querySelector('._2editline') !=null){
+            document.querySelectorAll('._2line')[j].querySelector('._2editline').remove()
+            document.querySelectorAll('._2line')[j].querySelector('._2personMsg').style.display = 'block'
+            document.querySelectorAll('._2line')[j].querySelector('._2personBT').style.display = 'block'
+            document.querySelectorAll('._2line')[j].querySelector('._2message_work').style.display = 'block'
+        }
+    }    
+}
+
 // //點擊留言漢堡圖
 function hambergerMsg(){
     for (let i=0; i<document.querySelectorAll('.message_work img').length;i++){
         document.querySelectorAll('.message_work img')[i].addEventListener('click',function(e){
-            let memberid = document.querySelectorAll('.message_photo')[i].getAttribute('data-memberid')
-            let logger = document.querySelectorAll('.message_photo')[i].getAttribute('data-logger')
+            if (document.querySelector('.replyclose span') !== null){
+                document.querySelector('.replyclose span').click()
+            }
+            editGone()
+            let mainLine = this.parentElement.parentElement
+            let memberid = mainLine.querySelector('.message_photo').getAttribute('data-memberid')
+            let logger = mainLine.querySelector('.message_photo').getAttribute('data-logger')
 
-            if (document.querySelectorAll('.message_work_expand')[i].style.display !== 'grid' && memberid === logger){
-                document.querySelectorAll('.message_work_expand')[i].style.display = 'grid'
-                hambergerEdit()
-                hambergerDelete()
+            for (let j = 0; j < document.querySelectorAll('._2message_work_expand').length; j++){
+                document.querySelectorAll('._2message_work_expand')[j].style.display = 'none'
             }
             for (let j = 0; j < document.querySelectorAll('.message_work_expand').length; j++){
-                if (j !== i ){
-                    document.querySelectorAll('.message_work_expand')[j].style.display = 'none'
-                }
+                document.querySelectorAll('.message_work_expand')[j].style.display = 'none'
+            }
+
+            if (mainLine.querySelector('.message_work_expand').style.display !== 'grid' && memberid === logger){
+                mainLine.querySelector('.message_work_expand').style.display = 'grid'
+                Edit()
+                mainDelete()
             }
             e.stopPropagation() 
         }
         )
     }
+    //回覆留言
+    for (let i=0; i<document.querySelectorAll('._2message_work img').length;i++){
+        document.querySelectorAll('._2message_work img')[i].addEventListener('click',function(e){
+            if (document.querySelector('.replyclose span') !== null){
+                document.querySelector('.replyclose span').click()
+            }
+            editGone()
+            let mainLine = this.parentElement.parentElement
+            let memberid = mainLine.querySelector('._2message_photo').getAttribute('memberId')
+            let logger = mainLine.querySelector('._2message_photo').getAttribute('logger')
+
+            for (let j = 0; j < document.querySelectorAll('._2message_work_expand').length; j++){
+                document.querySelectorAll('._2message_work_expand')[j].style.display = 'none'
+            }
+            for (let j = 0; j < document.querySelectorAll('.message_work_expand').length; j++){
+                document.querySelectorAll('.message_work_expand')[j].style.display = 'none'
+            }
+
+            if (mainLine.querySelector('._2message_work_expand').style.display !== 'grid' && memberid === logger){
+                mainLine.querySelector('._2message_work_expand').style.display = 'grid'
+                Edit()
+                replyDelete()
+            }
+            e.stopPropagation() 
+        }
+        )
+    }
+    //點擊回覆
+    clickReply()
 }
 
 
 //點擊任何一處都使留言編輯消失
 function hambergerMsgGone(){
     document.getElementsByTagName('body')[0].addEventListener('click',function(e){
-        e.stopPropagation()
+        ///回覆留言
+        for(let i=0; i<document.querySelectorAll('._2message_work_expand').length;i++){
+            if (document.querySelectorAll('._2message_work_expand')[i].style.display==='grid'){
+                document.querySelectorAll('._2message_work_expand')[i].style.display='none'
+            }
+        }
+        for(let i=0; i<document.querySelectorAll('._2line').length;i++){
+            if (document.querySelectorAll('._2line')[i].querySelector('._2editline') !== null){
+                document.querySelectorAll('._2line')[i].querySelector('._2editline').remove()
+                document.querySelectorAll('._2line')[i].querySelector('._2personMsg').style.display = 'block'
+                document.querySelectorAll('._2line')[i].querySelector('._2personBT').style.display = 'block'
+                document.querySelectorAll('._2line')[i].querySelector('._2message_work').style.display = 'block'
+            }
+        }
+
+
+        //本樓
         for(let i=0; i<document.querySelectorAll('.message_work_expand').length;i++){
             if (document.querySelectorAll('.message_work_expand')[i].style.display==='grid'){
                 document.querySelectorAll('.message_work_expand')[i].style.display='none'
             }
         }
-
 
         for(let i=0; i<document.querySelectorAll('.line').length;i++){
             if (document.querySelectorAll('.line')[i].querySelector('.editline') !== null){
@@ -753,49 +955,53 @@ function hambergerMsgGone(){
                 document.querySelectorAll('.line')[i].querySelector('.message_work').style.display = 'block'
             }
         }
+        e.stopPropagation()
     })
 }
 
+
 //編輯留言
-function hambergerEdit(){
+function Edit(){
     for (let i=0; i<document.querySelectorAll('.edit').length;i++){
         document.querySelectorAll('.edit')[i].addEventListener('click',function(e){
-            e.stopPropagation()
-            let msgID = document.querySelectorAll('.edit')[i].parentElement.parentElement.parentElement.getAttribute('data-id')
+            let msgID = this.parentElement.parentElement.parentElement.getAttribute('data-id')
             let line = document.querySelector(`[data-id="${msgID}"]`)
             if (line.querySelector('.personMsg').style.display !== 'none'){
-
                 line.querySelector('.personMsg').style.display = 'none'
                 line.querySelector('.personBT').style.display = 'none'
                 line.querySelector('.message_work').style.display = 'none'
-
                 let editline = '<div class="editline"><input id = "edit_text"/><div class="editsend"><span>編輯</span></div><div class="editcancel"><span>取消</span></div></div>'
                 line.querySelector('.message_middle').innerHTML += editline
-
                 line.querySelector('#edit_text').value = line.querySelector('.personMsg').innerHTML
-                keyinEdit(msgID)
+                mainEdit(msgID)
             }
-            //使其他編輯留言消失
-            for (let j =0; j< document.querySelectorAll('.line').length; j++){
-                if (j !== i && document.querySelectorAll('.line')[j].querySelector('.editline') !=null){
-                    document.querySelectorAll('.line')[j].querySelector('.editline').remove()
-                    document.querySelectorAll('.line')[j].querySelector('.personMsg').style.display = 'block'
-                    document.querySelectorAll('.line')[j].querySelector('.personBT').style.display = 'block'
-                    document.querySelectorAll('.line')[j].querySelector('.message_work').style.display = 'block'
-                }
+            e.stopPropagation()
+        })
+    }
+    for (let i=0; i<document.querySelectorAll('._2edit').length;i++){
+        document.querySelectorAll('._2edit')[i].addEventListener('click',function(e){
+            let replyid = this.parentElement.parentElement.parentElement.parentElement.getAttribute('replyid')
+            let _2line = document.querySelector(`[replyid="${replyid}"]`)
+            if (_2line.querySelector('._2personMsg').style.display !== 'none'){
+                _2line.querySelector('._2personMsg').style.display = 'none'
+                _2line.querySelector('._2personBT').style.display = 'none'
+                _2line.querySelector('._2message_work').style.display = 'none'
+                let _2editline = '<div class="_2editline"><input id = "_2edit_text"/><div class="_2editsend"><span>編輯</span></div><div class="_2editcancel"><span>取消</span></div></div>'
+                _2line.querySelector('._2message_middle').innerHTML += _2editline
+                _2line.querySelector('#_2edit_text').value = _2line.querySelector('._2personMsg').innerHTML
+                replyEdit(replyid)
             }
+            e.stopPropagation()
         })
     }
 }
 
-//刪除留言
-var deleteCount = 0
-function hambergerDelete(){
+//刪除樓層留言
+function mainDelete(){
     for (let d =0; d < document.querySelectorAll('.delete').length; d++){
         document.querySelectorAll('.delete')[d].addEventListener('click',function(e){
             deleteCount += 1
             e.stopPropagation()
-
             if (deleteCount === 1){
                 let line =this.parentElement.parentElement.parentElement
                 let msgID = line.getAttribute('data-id')
@@ -821,9 +1027,11 @@ function hambergerDelete(){
                         }
                         if('ok' in dict){
                             line.remove()
+                            if (document.querySelector(`[boardID="${msgID}"]`)!==null){
+                                document.querySelector(`[boardID="${msgID}"]`).remove()
+                            }
                             hambergerMsg()
                             deleteCount = 0   
-                            
                             if (document.querySelector('.line') === null){
                                 emptyMsgDiv()
                             }
@@ -834,9 +1042,58 @@ function hambergerDelete(){
     }
 }
 
-//keyin編輯留言
-var editCount = 0
-function keyinEdit(msgID){
+
+//刪除回覆留言
+function replyDelete(){
+    for (let d =0; d < document.querySelectorAll('._2delete').length; d++){
+        document.querySelectorAll('._2delete')[d].addEventListener('click',function(e){
+            replyDeleteCount += 1
+            e.stopPropagation()
+            if (replyDeleteCount === 1){
+                let _2line =this.parentElement.parentElement.parentElement.parentElement
+                let replyid = _2line.getAttribute('replyid')
+                this.innerHTML= '刪除中...'
+
+                fetch("/api/reply",{
+                    'method':'DELETE',
+                    body:JSON.stringify({"activity": id,"reply_id":replyid}),
+                    headers:{
+                        "Content-Type":"application/json; charset=UTF-8",
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                    })
+                    .then(function(response){
+                        return response.json();
+                        })
+                    .catch(error => console.error('Error:', error))
+                    .then(function(dict){
+                        console.log('DELETE /api/reply 回傳值',dict)
+                        if ('invalidToken' in dict){
+                            window.location.href =document.URL
+                        }
+                        if('ok' in dict){
+
+                            let replyDiv = _2line.parentElement
+                            let board_id = replyDiv.getAttribute('boardid')
+                            _2line.remove()
+                            if (replyDiv.innerHTML === ''){
+                                replyDiv.remove()
+                                document.querySelector(`[data-id="${board_id}"]`).style.borderBottom='1px solid #BEBEBE'
+                            }
+                            hambergerMsg()
+                            replyDeleteCount = 0
+                        }
+                    })  
+            }
+        })
+    }
+}
+
+
+
+//keyin編輯樓層留言
+function mainEdit(msgID){
     document.getElementById('edit_text').addEventListener('click',function(e){
         e.stopPropagation()
 
@@ -874,7 +1131,8 @@ function keyinEdit(msgID){
                             line.querySelector('.message_work').style.display = 'block'
                             line.querySelector('.message_work_expand').style.display = 'none'
                             editline.remove()
-                            editCount = 0                
+                            editCount = 0   
+                            clickReply()             
                         }
                     })   
             }
@@ -883,6 +1141,52 @@ function keyinEdit(msgID){
 }
 
 
+//keyin回覆編輯留言
+function replyEdit(replyid){
+    document.getElementById('_2edit_text').addEventListener('click',function(e){
+        e.stopPropagation()
+
+        document.querySelector('._2editsend').addEventListener('click',function(e){
+            e.stopPropagation()
+            replyEditCount += 1
+            if (replyEditCount === 1){
+                let message = document.getElementById('_2edit_text').value
+                let _2editline = this.parentElement, _2message_middle = this.parentElement.parentElement
+                let _2line = _2message_middle.parentElement.parentElement
+                _2editline.querySelector('._2editsend').innerHTML = ''
+                _2editline.querySelector('._2editsend').innerHTML += "<div><img src = '/static/img/loadingG.gif'/></div>"
+                fetch("/api/reply",{
+                    'method':'PATCH',
+                    body:JSON.stringify({"activity": id,"message": message,"reply_id":replyid}),
+                    headers:{
+                        "Content-Type":"application/json; charset=UTF-8",
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                    })
+                    .then(function(response){
+                        return response.json();
+                        })
+                    .catch(error => console.error('Error:', error))
+                    .then(function(dict){
+                        console.log('PATCH /api/reply 回傳值',dict)
+                        if ('invalidToken' in dict){
+                            window.location.href =document.URL
+                        }
+                        if('ok' in dict){
+                            _2message_middle.querySelector('._2personMsg').style.display ='block'
+                            _2message_middle.querySelector('._2personMsg').innerHTML = message
+                            _2message_middle.querySelector('._2personBT').style.display ='block'
+                            _2line.querySelector('._2message_work').style.display = 'block'
+                            _2line.querySelector('._2message_work_expand').style.display = 'none'
+                            _2editline.remove()
+                            replyEditCount = 0                
+                        }
+                    })   
+            }
+        })
+    })
+}
 
 //滑動載入留言
 window.addEventListener('scroll',()=>{
@@ -906,3 +1210,210 @@ window.addEventListener('scroll',()=>{
         }
     }}}
 )
+
+//點擊回覆
+function clickReply(){
+    for (let r=0; r < document.querySelectorAll('.response').length; r++){
+        document.querySelectorAll('.response')[r].addEventListener('click',function(){
+            document.querySelector('.replycontent').style.display= "block"
+            document.querySelector('.replycontent').style.animation = 'popup 0.5s'
+            let line = this.parentElement.parentElement.parentElement
+            let msgID = line.getAttribute('data-id')
+            let personName = line.querySelector('.personName').innerHTML
+            let personMsg = line.querySelector('.personMsg').innerHTML
+            let floor = line.querySelector('.floor').innerHTML.replace(' · ','')
+            document.querySelector('.floorContent div:nth-of-type(2n)').innerHTML= `${floor}`
+            document.querySelector('.floorContent div:nth-of-type(3n)').innerHTML= `${personName}`
+            document.querySelector('.floorContent div:nth-of-type(4n)').innerHTML= `${personMsg}`
+            document.querySelector('.replycontent').setAttribute('msgID',msgID)
+            closeReply()
+            replySend()
+        })            
+    }
+}
+
+//關閉回覆
+function closeReply(){
+    document.querySelector('.replyclose').addEventListener('click',function(){
+        document.querySelector('.replycontent').style.animation = 'popupGone 0.5s'
+        setTimeout(() => {document.querySelector('.replycontent').style.display= "none"}, 450);
+    })
+}
+
+// mouseover 送出
+document.querySelector('.keyinreply div:first-of-type').addEventListener('mouseover',function(){
+    let message = document.getElementById('reply_text').value
+    if (message.match(nonSpacePat)){
+        this.style.cursor = 'pointer'
+    }
+    else{
+        this.style.cursor = 'not-allowed'
+    }
+})
+
+
+function replySend(){
+    // click 送出
+    document.querySelector('.keyinreply div:first-of-type').addEventListener('click',function(){
+        let board_id = this.parentElement.parentElement.getAttribute('msgID')
+        let message = document.getElementById('reply_text').value
+        if (message.match(nonSpacePat)){
+            if (replyCount === 0){
+                replyCount += 1
+                document.querySelector('.keyinreply div:first-of-type').innerHTML =''
+                document.querySelector('.keyinreply div:first-of-type').innerHTML += "<span>送出中</span>"
+                fetch("/api/reply",{
+                    'method':'POST',
+                    body:JSON.stringify({"activity": id,"message": message,"board_id":board_id}),
+                    headers:{
+                        "Content-Type":"application/json; charset=UTF-8",
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                    })
+                    .then(function(response){
+                        return response.json();
+                        })
+                    .catch(error => console.error('Error:', error))
+                    .then(function(dict){
+                        console.log('POST /api/reply 回傳值',dict)
+                        if ('ok' in dict){
+                            document.querySelector('.keyinreply div:first-of-type').innerHTML =''
+                            document.querySelector('.keyinreply div:first-of-type').innerHTML += "<span>送出</span>"
+                            document.getElementById('reply_text').value =''
+                            if (document.querySelector('.replyclose span') !== null){
+                                document.querySelector('.replyclose span').click()
+                            }
+
+                            let reply_msg = dict['inserttuple'][2], strReplyTm = dict['inserttuple'][4]
+                            strReplyTm = strReplyTm.split(':')[0] + ':' + strReplyTm.split(':')[1]
+                            person = dict['inserttuple'][6],  photo = dict['inserttuple'][7], reply_floor= dict['inserttuple'][3]
+                            let logger = dict['logger'], memberId = dict['logger'], reply_id = dict['reply_id']
+
+
+                            let replyDiv = document.querySelector(`[boardid="${board_id}"]`)
+                            
+                            //先前無回覆，要建立reply div
+                            if (replyDiv === null){
+                                document.querySelector(`[data-id="${board_id}"]`).style.borderBottom = ''
+                                let replyDiv_1 = document.createElement('div')
+                                replyDiv_1.className = 'reply'
+                                replyDiv_1.setAttribute('boardid',board_id)
+                                insertAfter(replyDiv_1,document.querySelector(`[data-id="${board_id}"]`))
+                                replyLine(dict['logger'],memberId,board_id,reply_id,reply_msg, strReplyTm, person, photo, reply_floor)
+                            }
+
+                            else{
+                                replyDiv.insertBefore(leaveReplyMsg(logger,memberId,board_id,reply_id,reply_msg, strReplyTm, person, photo, reply_floor),replyDiv.querySelector("._2line"))
+                            }
+                            
+                            replyCount = 0
+                            hambergerMsg()
+                        }
+                        else if ('invalidToken' in dict){
+                            window.location.href =document.URL
+                        }
+
+                    })                
+            }
+        }
+        else{
+            document.querySelector('.keyinreply div:first-of-type').style.cursor = 'not-allowed'
+        }
+    })    
+}
+
+///回覆留言時，新增回覆
+function insertAfter(newElement,targetElement) {
+    var parent = targetElement.parentNode;
+    if (parent.lastChild == targetElement) {// 如果最後的節點是目標元素，則直接新增。因為預設是最後
+    parent.appendChild(newElement);
+    } else {
+    parent.insertBefore(newElement,targetElement.nextSibling);//如果不是，則插入在目標元素的下一個兄弟節點的前面。也就是目標元素的後面。
+    }
+}
+
+
+//製作第一個節點的回覆留言
+function leaveReplyMsg(logger,memberId,board_id,reply_id,reply_msg, reply_time, person, photo, reply_floor){
+    let _2line = document.createElement('div')
+    _2line.className ='_2line'
+    _2line.setAttribute('replyID',reply_id)
+
+    let left = document.createElement('div')
+    left.className ='left'
+    let right = document.createElement('div')
+    right.className ='right'
+
+    let _2message_photo = document.createElement('div')
+    _2message_photo.className = '_2message_photo'
+    _2message_photo.setAttribute('memberId',memberId)
+    _2message_photo.setAttribute('logger',logger)
+
+    let imgdiv = document.createElement('div')
+    let img = document.createElement('img')
+    img.src = photo
+    img.setAttribute('referrerpolicy',"no-referrer")
+    imgdiv.appendChild(img)
+    _2message_photo.appendChild(imgdiv)
+    right.appendChild(_2message_photo)
+
+    let _2message_middle = document.createElement('div')
+    _2message_middle.className ='_2message_middle'
+
+    let _2personName = document.createElement('div')
+    _2personName.className ='_2personName'
+    _2personName.appendChild(document.createTextNode(person))
+    _2message_middle.appendChild(_2personName)
+
+    let _2personMsg = document.createElement('div')
+    _2personMsg.className ='_2personMsg'
+    _2personMsg.appendChild(document.createTextNode(reply_msg))
+    _2message_middle.appendChild(_2personMsg)
+
+    let _2personBT = document.createElement('div')
+    _2personBT.className ='_2personBT'
+
+    let _2floor = document.createElement('span')
+    _2floor.className ='_2floor'
+    _2floor.appendChild(document.createTextNode(reply_floor+' · '))
+    _2personBT.appendChild(_2floor)
+
+    let _2personTM = document.createElement('span')
+    _2personTM.className ='_2personTM'
+    _2personTM.appendChild(document.createTextNode(reply_time))
+    _2personBT.appendChild(_2personTM)
+    _2message_middle.appendChild(_2personBT)
+    right.appendChild(_2message_middle)
+
+    let _2message_work = document.createElement('div')
+    _2message_work.className ='_2message_work'
+
+    console.log(logger === memberId, logger, memberId)
+
+    if (logger === memberId){
+        let imgwork = document.createElement('img')
+        imgwork .src = '/static/img/comment.svg'
+        _2message_work.appendChild(imgwork)
+
+        let _2message_work_expand = document.createElement('div')
+        _2message_work_expand.className = '_2message_work_expand'
+
+        let _2edit = document.createElement('div')
+        _2edit.className = '_2edit'
+        _2edit.appendChild(document.createTextNode('編輯留言'))
+        _2message_work_expand.appendChild(_2edit)
+
+        let _2delete = document.createElement('div')
+        _2delete.className = '_2delete'
+        _2delete.appendChild(document.createTextNode('刪除留言'))
+        _2message_work_expand.appendChild(_2delete)
+        _2message_work.appendChild(_2message_work_expand)
+    }
+    //
+    right.appendChild(_2message_work)
+    _2line.appendChild(left)
+    _2line.appendChild(right)
+
+    return _2line
+}
