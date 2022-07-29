@@ -85,12 +85,16 @@ def find():
         else:
             people.append(item[15])
     return render_template("find.html", page = page, totalpage = totalpage, items = items, date = date,people = people, zip = zip )
+
+
+
     
+
+
 
 @app.route('/event/<id>')
 def event(id):
 	return render_template("event.html", api=os.getenv('GOOGLE_MAP_API'))
-
 
 
 @app.route('/create')

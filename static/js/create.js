@@ -1,5 +1,5 @@
 function create(){
-    if (typeof(dict)==='object' && 'ok' in dict){
+    if (access_token !== undefined){
         document.body.style.backgroundColor = '#E5E5E5' //背景色調整
 
         for(s = 0; s < document.getElementsByTagName('select').length; s++){ //select歸零
@@ -9,11 +9,6 @@ function create(){
         for(s = 0; s < document.querySelectorAll('.notice').length; s++){ // clear notice
             document.querySelectorAll('.notice')[s].innerHTML = ''
         }
-
-        //預覽按鈕控制
-        document.querySelector('.view').style.display = 'flex';
-        document.querySelector('.backToEdit').style.display = 'none';
-        document.querySelector('.confirm').style.display = 'none';
     }
     else{
         window.location.href = '/'
@@ -80,7 +75,7 @@ document.querySelector('.category').addEventListener('change',function(){
         document.querySelector('.acti_cate .enter .notice').innerHTML = '活動類別不可為空'
     }
     else{
-        select.style.color = 'black'
+        select.style.color = 'rgb(0,0,0,0.75)'
         document.querySelector('.acti_cate .enter .notice').innerHTML = ''
     }
 })
@@ -117,13 +112,13 @@ document.querySelector('.city').addEventListener('change',function(){
         document.querySelector('.acti_add .enter .notice').innerHTML = '活動縣市不可為空'
     }
     else if(select.value === 'online'){
-        select.style.color = 'black'
+        select.style.color = 'rgb(0,0,0,0.75)'
         document.querySelector('.searchmap').style.display = 'none';
         document.getElementById('map').style.display = 'none'
         document.querySelector('.acti_add .enter .notice').innerHTML = ''
     }
     else{
-        select.style.color = 'black'
+        select.style.color = 'rgb(0,0,0,0.75)'
         document.querySelector('.searchmap').style.display = 'block';
         document.getElementById('map').style.display = 'block'
         document.querySelector('.acti_add .enter .notice').innerHTML = ''
@@ -137,7 +132,7 @@ let NonInt = /[\s\D]/g
 //活動時間
 document.getElementById('localtime').addEventListener('input',function(){
 
-    document.getElementById('localtime').style.color = 'black'
+    document.getElementById('localtime').style.color = 'rgb(0,0,0,0.75)'
     if (new Date(this.value) <= new Date()){
         document.querySelector('.acti_tm .enter .notice').innerHTML = '活動時間有誤'
     }
@@ -245,12 +240,7 @@ document.querySelector('.view').addEventListener('click',()=>{
         alert('資料輸入不完善')
     }
     else{
-        document.querySelector('.preview').style.display = 'block'
-
         //預覽按鈕控制
-        document.querySelector('.view').style.display = 'none';
-        document.querySelector('.backToEdit').style.display = 'flex';
-        document.querySelector('.confirm').style.display = 'flex';
     }
 
 })
@@ -258,53 +248,45 @@ document.querySelector('.view').addEventListener('click',()=>{
 
 var acti_pho, acti_name, acti_story, acti_cate, acti_num, acti_city, acti_tm;
 
-//返回編輯
-document.querySelector('.backToEdit').addEventListener('click',()=>{
-    document.querySelector('.preview').style.display = 'none'
-    //預覽按鈕控制
-    document.querySelector('.view').style.display = 'flex';
-    document.querySelector('.backToEdit').style.display = 'none';
-    document.querySelector('.confirm').style.display = 'none';
-})
 
-//確定送出
-document.querySelector('.confirm').addEventListener('click',()=>{
-    document.querySelector('.preview').style.display = 'none'
-    document.querySelector('.overlay').style.display='flex'
+// //確定送出
+// document.querySelector('.confirm').addEventListener('click',()=>{
+//     document.querySelector('.preview').style.display = 'none'
+//     document.querySelector('.overlay').style.display='flex'
 
-    let formdata = new FormData()
-    formdata.append('acti_pho', acti_pho)
-    formdata.append('acti_name', acti_name)
-    formdata.append('acti_story', acti_story)
-    formdata.append('acti_cate', acti_cate)
-    formdata.append('acti_num', acti_num)
-    formdata.append('acti_city', acti_city)
-    if (acti_city ==='online' || acti_city ==='線上'){}
-    else{
-        formdata.append('acti_add', acti_add)
-        formdata.append('acti_lat', acti_lat)
-        formdata.append('acti_lng', acti_lng)
-    }
-    formdata.append('acti_tm', acti_tm)
+//     let formdata = new FormData()
+//     formdata.append('acti_pho', acti_pho)
+//     formdata.append('acti_name', acti_name)
+//     formdata.append('acti_story', acti_story)
+//     formdata.append('acti_cate', acti_cate)
+//     formdata.append('acti_num', acti_num)
+//     formdata.append('acti_city', acti_city)
+//     if (acti_city ==='online' || acti_city ==='線上'){}
+//     else{
+//         formdata.append('acti_add', acti_add)
+//         formdata.append('acti_lat', acti_lat)
+//         formdata.append('acti_lng', acti_lng)
+//     }
+//     formdata.append('acti_tm', acti_tm)
 
-    fetch('/api/send',{
-        method : 'POST',
-        body: formdata,
-        headers: {Authorization: `Bearer ${access_token}`}
-    }).catch(error => console.error('Error:', error))
-    .then(response => response.json()) // 輸出成 json
-    .then(function(dict){
-        setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 0)
+//     fetch('/api/send',{
+//         method : 'POST',
+//         body: formdata,
+//         headers: {Authorization: `Bearer ${access_token}`}
+//     }).catch(error => console.error('Error:', error))
+//     .then(response => response.json()) // 輸出成 json
+//     .then(function(dict){
+//         setTimeout(() => {document.querySelector('.overlay').style.display='none'}, 0)
         
-        console.log('POST /send 回傳值',dict)
-        if ('ok' in dict){
-            document.querySelector('.success').style.display = 'flex'
-        }
-        else{
-            document.querySelector('.fail').style.display = 'flex'   
-        }
-    })
-})
+//         console.log('POST /send 回傳值',dict)
+//         if ('ok' in dict){
+//             document.querySelector('.success').style.display = 'flex'
+//         }
+//         else{
+//             document.querySelector('.fail').style.display = 'flex'   
+//         }
+//     })
+// })
 
 
 //建立活動結果後確認
@@ -313,5 +295,3 @@ for (i =0; i<document.querySelectorAll('.close').length; i++){
     window.location.href = '/find'
 })
 }
-
-

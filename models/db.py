@@ -1,4 +1,6 @@
 import os, boto3, traceback, uuid
+
+from sqlalchemy import true
 import mysql.connector.pooling
 from flask import *
 from datetime import datetime,timezone,timedelta
@@ -117,7 +119,7 @@ class Activity:
             print(CN1.connection_id,'Activity.create > pool create')   
             cursor = CN1.cursor(buffered=True)
 
-            cursor.execute("""select `id` from `members` where `email` = %s """, (self.host,))
+            cursor.execute("""select `member_id` from `members` where `email` = %s """, (self.host,))
             result = cursor.fetchone() #tuple or None
 
             if result is None:
@@ -498,26 +500,31 @@ class Event:
                     if result is None:  #此活動無留言
                         thisfloor ='B1'
                         if event[1] == JWTemail: #主辦人自己留言就標註已讀
-                            board_satatus = 'read'
+                            board_status = 'read'
+                            board_link = 'linked'
                         else:
-                            board_satatus = 'not read'
+                            board_status = 'not read'
+                            board_link = 'not link'
 
-                        command = "insert into `boardlist` (`board_name`, `board_email`, `board_msg`, `board_floor`,`board_time`,`board_satatus`) \
-                            values(%s, %s, %s, %s, %s, %s);"
+                        command = "insert into `boardlist` (`board_name`, `board_email`, `board_msg`, `board_floor`,`board_time`,`board_status`, `board_link`) \
+                            values(%s, %s, %s, %s, %s, %s,%s);"
 
-                        inserttuple = (self.eventId, JWTemail, message, thisfloor, time, board_satatus)
+                        inserttuple = (self.eventId, JWTemail, message, thisfloor, time, board_status, board_link)
                         cursor.execute(command, inserttuple)
                     else: #此活動有留言
                         thisfloor = f"B{int(result[4].lstrip('B')) + 1}"
                         if event[1] == JWTemail: #主辦人自己留言就標註已讀
-                            board_satatus = 'read'
-                        else:
-                            board_satatus = 'not read'
+                            board_status = 'read'
+                            board_link = 'linked'
 
-                        command = "insert into `boardlist` (`board_name`, `board_email`, `board_msg`, `board_floor`,`board_time`,`board_satatus`) \
-                            values(%s, %s, %s, %s, %s, %s);"
+                        else:
+                            board_status = 'not read'
+                            board_link = 'not link'
+
+                        command = "insert into `boardlist` (`board_name`, `board_email`, `board_msg`, `board_floor`,`board_time`,`board_status`,`board_link`) \
+                            values(%s, %s, %s, %s, %s, %s, %s);"
                         
-                        inserttuple = (self.eventId, JWTemail, message, thisfloor, time, board_satatus)
+                        inserttuple = (self.eventId, JWTemail, message, thisfloor, time, board_status, board_link)
                         cursor.execute(command, inserttuple)
 
                     inserttuple += (member[2],member[3])
@@ -651,6 +658,11 @@ class Event:
             cursor.execute(sql, (self.eventId,index))
             _10message = cursor.fetchall() 
 
+            sql = """SELECT * FROM `boardlist` left join `members` on `boardlist`.`board_email`=`members`.`email` where \
+                `boardlist`.`board_name` =%s order by `boardlist`.`board_time`DESC limit 5 offset %s;"""
+            cursor.execute(sql, (self.eventId,index+5))
+            _10message_next = cursor.fetchall() 
+
             datalist = []
             for one in _10message:
                 sql = """SELECT * FROM `boardreply` left join `members` on`boardreply`.`reply_email` =`members`.`email`where\
@@ -665,9 +677,9 @@ class Event:
                     'board_msg': one[3],
                     'board_floor' : one[4],
                     'board_time' : one[5],
-                    'member_id': one[7],
-                    'person' :one[9],
-                    'photo': one[10],
+                    'member_id': one[8],
+                    'person' :one[10],
+                    'photo': one[11],
                     'reply': reply
                 }
                 datalist.append(data)
@@ -676,7 +688,7 @@ class Event:
             cursor.execute(sql, (self.eventId,))
             total = cursor.fetchone()[0]
 
-            if _10message == []: #若為空，表示已無留言
+            if _10message_next == []: #若為空，表示已無留言
                 nextpage = None
             else:
                 nextpage = page + 1
@@ -714,29 +726,33 @@ class Event:
                     result = cursor.fetchone() 
 
                     if result is None:  #此樓無回覆
-                        thisfloor = f'{line[4]}_1'
+                        thisfloor = f'{line[4]}-1'
                         if line[2] == JWTemail: #樓主自己留言就標註已讀
-                            board_satatus = 'read'
+                            reply_status = 'read'
+                            reply_link = 'linked'
                         else:
-                            board_satatus = 'not read'
+                            reply_status = 'not read'
+                            reply_link = ' not link'
 
-                        command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`) \
-                            values(%s, %s, %s, %s, %s, %s);"
+                        command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`,`reply_link`) \
+                            values(%s, %s, %s, %s, %s, %s, %s);"
 
-                        inserttuple = (boardID, JWTemail, message, thisfloor, time, board_satatus)
+                        inserttuple = (boardID, JWTemail, message, thisfloor, time, reply_status, reply_link)
                         cursor.execute(command, inserttuple)
                     else: ##此樓有回覆
-                        a, b = result[4].split('_')[0],int(result[4].split('_')[1])
-                        thisfloor = f'{a}_{b+1}'
+                        a, b = result[4].split('-')[0],int(result[4].split('-')[1])
+                        thisfloor = f'{a}-{b+1}'
                         if line[2] == JWTemail: #樓主自己留言就標註已讀
-                            board_satatus = 'read'
+                            reply_status = 'read'
+                            reply_link = 'linked'
                         else:
-                            board_satatus = 'not read'
+                            reply_status = 'not read'
+                            reply_link = ' not link'
 
-                        command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`) \
-                            values(%s, %s, %s, %s, %s, %s);"
+                        command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`,`reply_link`) \
+                            values(%s, %s, %s, %s, %s, %s, %s);"
                         
-                        inserttuple = (boardID, JWTemail, message, thisfloor, time, board_satatus)
+                        inserttuple = (boardID, JWTemail, message, thisfloor, time, reply_status, reply_link)
                         cursor.execute(command, inserttuple)
 
                     inserttuple += (member[2],member[3])
@@ -838,6 +854,258 @@ class Event:
                 CN1.commit()
         finally:
             print(CN1.connection_id, 'Event.replyPatch > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+
+class Notify:
+    def __init__(self, JWTemail):
+        self.email = JWTemail
+
+
+    def notRead(self,time):
+        try:
+            notRead= {'a':0,'b':0}
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Notify.notRead > pool create')   
+            cursor = CN1.cursor(buffered=True)
+
+            #aList is 找出自己建的活動頁面上，他人的留言。時間在現在之前
+            command = """select count(*) from (select boardlist.*from boardlist join members on boardlist.board_email=members.email left join activity on \
+                boardlist.board_name = activity.id where activity.`host` = %s and boardlist.board_email <> %s and `boardlist`.`board_status`='not read'\
+                and `boardlist`.`board_time`< %s) as a;"""
+            cursor.execute(command, (self.email,self.email, time))
+            aList_notRead = cursor.fetchone() 
+            notRead['a']= aList_notRead[0]
+
+            #bList is 找出自己留言上，他人對我的回覆。時間在現在之前
+            command = """select count(*) from  (select boardlist.*from boardlist join (select *from  members) as a on boardlist.board_email=a.email right join\
+                 (select * from boardreply) as b join (select *from  members) as c on b.reply_email=c.email on boardlist.board_id=b.reply_boardID where \
+                    boardlist.board_email =%s and b.reply_email <> %s and b.reply_status='not read' and b.reply_time< %s) as d;
+                """
+            cursor.execute(command, (self.email,self.email, time))
+            bList_notRead = cursor.fetchone() 
+            notRead['b']= bList_notRead[0]
+
+            data = notRead
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Notify.notRead > 發生錯誤',data)
+
+        finally:
+            print(CN1.connection_id, 'Notify.notRead > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+
+    def read(self,time):
+        try:
+            crud = 0
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Notify.read > pool create')   
+            cursor = CN1.cursor(buffered=True)
+
+            #aList is 找出自己建的活動頁面上，他人的留言。時間在現在之前
+            command = """select `board_id` from boardlist join members on boardlist.board_email=members.email left join activity on \
+                boardlist.board_name = activity.id where activity.`host` = %s and boardlist.board_email <> %s and \
+                    `boardlist`.`board_status`='not read' and `boardlist`.`board_time`< %s;"""
+            cursor.execute(command, (self.email,self.email, time))
+            a_notRead_idTuple = cursor.fetchall() 
+            a_notRead_idList =[a[0] for a in a_notRead_idTuple]
+            a_notRead_idTuple = tuple(a_notRead_idList)
+            a_idLen = len(a_notRead_idList)
+
+
+            if a_idLen > 0:
+                #update  boardlists board_status
+                command= """update boardlist  set `board_status` = 'read' where `board_id` in"""
+                parastr = ' ('+','.join(['%s' for i in range(a_idLen)])+');'
+                command += parastr
+                cursor.execute(command, a_notRead_idTuple)
+                crud += 1
+
+            #bList is 找出自己留言上，他人對我的回覆。時間在現在之前
+            command = """select `reply_id` from boardlist join (select *from  members) as a on boardlist.board_email=a.email right join \
+                (select * from boardreply) as b join (select *from  members) as c on b.reply_email=c.email on boardlist.board_id=b.reply_boardID where \
+                    boardlist.board_email =%s and b.reply_email <> %s and \
+                    b.reply_status='not read' and b.reply_time< %s;"""
+            cursor.execute(command, (self.email,self.email, time))
+            b_notRead_idTuple = cursor.fetchall() 
+            b_notRead_idList =[b[0] for b in b_notRead_idTuple]
+            b_notRead_idTuple = tuple(b_notRead_idList)
+            b_idLen = len(b_notRead_idList)
+
+            if b_idLen > 0:
+                command= """update boardreply set `reply_status` = 'read' where `reply_id` in"""
+                parastr = ' ('+','.join(['%s' for i in range(b_idLen)])+');'
+                command += parastr
+                cursor.execute(command, b_notRead_idTuple)
+                crud += 1
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Notify.read > 發生錯誤',data)
+            CN1.rollback()
+        else:
+            if crud > 0:
+                print('Members.read > commit')
+                CN1.commit()
+            data = {"ok": True}
+
+        finally:
+            print(CN1.connection_id, 'Notify.read > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+    def msg_boardid(self, boardid):
+        try:
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Notify.msg_boardid > pool create')   
+            cursor = CN1.cursor(buffered=True)
+            command ="""select * from boardlist join members on boardlist.board_email=members.email where `board_id` =%s;"""
+            cursor.execute(command, (boardid,))
+            result = cursor.fetchone()
+            if result is None:
+                data = {"error": True,"message": "無此筆留言"}
+            else:
+                data = {"ok": True,"message": result}
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Notify.msg_boardid > 發生錯誤',data)
+        finally:
+            print(CN1.connection_id, 'Notify.msg_boardid > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+    def msg_replyid(self, replyid):
+        try:
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Notify.msg_replyid > pool create')   
+            cursor = CN1.cursor(buffered=True)
+            command ="""select *from boardlist join (select *from  members) as a on boardlist.board_email=a.email right join \
+                (select * from boardreply) as b join (select *from  members) as c on b.reply_email=c.email on \
+                boardlist.board_id=b.reply_boardID where b.reply_id =%s;"""
+            cursor.execute(command, (replyid,))
+            result = cursor.fetchone()
+            if result is None:
+                data = {"error": True,"message": "無此筆留言"}
+            else:
+                data = {"ok": True,"message": result}
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Notify.msg_replyid > 發生錯誤',data)
+
+        finally:
+            print(CN1.connection_id, 'Notify.msg_replyid > pool close, ', CN1.is_connected())
+            cursor.close()
+            CN1.close()
+            return data
+
+
+
+    def notice(self ,time, page):
+        try:
+            notification = []
+            CN1 = pool.get_connection() #get a connection with pool.  
+            print(CN1.connection_id,'Notify.notice > pool create')   
+            cursor = CN1.cursor(buffered=True)
+
+            ##輸出通知留言
+            if page > 0:
+                index = page * 12
+            else:
+                index = page
+
+            #aList is 找出自己建的活動頁面上，他人的留言
+            command = """select *from boardlist join members on boardlist.board_email=members.email  left join activity on boardlist.board_name = activity.id where\
+                activity.`host` = %s and boardlist.board_email <> %s and `boardlist`.`board_time`< %s order by `boardlist`.`board_time`DESC limit 12 offset %s ;"""
+            cursor.execute(command, (self.email, self.email, time, index))
+            aList = cursor.fetchall() 
+            for A in aList:
+                board_time = A[5].strftime('%Y-%m-%d %H:%M:%S')
+                a_content = {
+                    'board_id':A[0],
+                    'board_name':A[1],
+                    'board_PersonName':A[10],
+                    'board_PersonPhoto':A[11],
+                    'board_msg':A[3],
+                    'board_floor':A[4],
+                    'board_time':board_time,
+                    'board_status':A[6],
+                    'board_link':A[7]
+                }
+
+                row = {"name": 'a',"content": a_content,"time":board_time}
+                notification.append(row)
+
+            #查詢aList index後面是否也有留言
+            command = """select count(*) from  (select boardlist.*from boardlist join members on boardlist.board_email=members.email left join activity \
+                on boardlist.board_name = activity.id where activity.`host` = %s and boardlist.board_email <> %s and `boardlist`.`board_time`< %s \
+                    order by `boardlist`.`board_time`DESC limit 12 offset %s )as a;"""
+            cursor.execute(command, (self.email, self.email, time, index + 12))
+            aList_future_num = cursor.fetchone() 
+
+            #bList is 找出自己留言上，他人對我的回覆
+            command = """select *from boardlist join (select *from  members) as a on boardlist.board_email=a.email right join (select * from boardreply) as b \
+                join (select *from  members) as c on b.reply_email=c.email on boardlist.board_id=b.reply_boardID where\
+                    boardlist.board_email =%s and b.reply_email <> %s and b.reply_time< %s order by b.`reply_time` DESC limit 12 offset %s ;"""
+            cursor.execute(command, (self.email, self.email, time, index))
+            bList = cursor.fetchall() 
+            for B in bList:
+                reply_time = B[20].strftime('%Y-%m-%d %H:%M:%S')
+                b_content = {
+                    'board_id':B[0],
+                    'board_name':B[1],
+                    'board_PersonName':B[10],
+                    'board_PersonPhoto':B[11],
+                    'board_msg':B[3],
+                    'board_floor':B[4],
+                    'board_time':B[5].strftime('%Y-%m-%d %H:%M:%S'),
+                    'board_status':B[6],
+                    'board_link':B[7],
+
+                    'reply_id':B[15],
+                    'reply_PersonName':B[25],
+                    'reply_PersonPhoto':B[26],
+                    'reply_msg':B[18],
+                    'reply_floor':B[19],
+                    'reply_time':reply_time,
+                    'reply_status':B[21],
+                    'reply_link':B[22]
+                }
+                row = {"name": 'b',"content": b_content,"time":reply_time}
+                notification.append(row)
+            
+            #查詢bList 之後有無回覆留言
+            command = """select count(*) from  (select boardlist.*from boardlist join (select *from  members) as a on \
+                boardlist.board_email=a.email right join (select * from boardreply) as b join (select *from  members) as c on \
+                    b.reply_email=c.email on boardlist.board_id=b.reply_boardID where boardlist.board_email = %s and b.reply_email <> %s and b.reply_time< %s\
+                        order by b.`reply_time` DESC limit 12 offset %s) as d;"""
+            cursor.execute(command, (self.email, self.email, time, index + 12))
+            bList_future_num = cursor.fetchone() 
+
+
+            if aList_future_num[0] == 0 and bList_future_num[0] == 0:
+                nextPage = None
+            else:
+                nextPage= page + 1
+
+ 
+            data = {'nextPage':nextPage,'notice':notification}
+        except:
+            print(traceback.format_exc())
+            data = {"error": True,"message": "伺服器內部錯誤"}
+            print('Notify.notice > 發生錯誤',data)
+
+        finally:
+            print(CN1.connection_id, 'Notify.notice > pool close, ', CN1.is_connected())
             cursor.close()
             CN1.close()
             return data

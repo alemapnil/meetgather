@@ -3,7 +3,6 @@
 
 {% block link%}
 <link rel="stylesheet"  type= "text/css" href="/static/css/event.css?v=0.0.246">
-
 <meta property="og:title" content=""/>
 <meta property="og:type" content="article"/>
 <meta property="og:url" content=""/>
@@ -56,12 +55,13 @@
         </div>
 
         <div class = "nameList"></div>
+        <div style="height: 10px"></div>
     </div>
 </div>
 
 
 <div class="header">
-    <div class="header_block">
+     <div class="header_block">
         <div class="ev_tm"></div>
         <h1 class="ev_title"></h1>
         <div class="ev_host">
@@ -73,8 +73,6 @@
         </div>
     </div>
 </div>
-
-
 
 <div class="content_desk">
     <div class="c_header">
@@ -118,69 +116,8 @@
     </div>
 
     <div class="c_message">
-        <!-- <div class="messageLoad"><div><img src = '/static/img/loadingG.gif'/></div></div>
-        <span class="empty">目前沒有任何留言</span> -->
-        <!-- <div class="line">
-            <div class="message_photo"><div><img referrerpolicy="no-referrer" src = 'https://lh3.googleusercontent.com/a/AATXAJx8_jM8P1758zRI9alfP75rjIzEp0h75-YQiUUe=s96-c'/></div></div>
-            <div class="message_middle">
-                <div class="personName">Lin Wan Ju</div>
-
-                <div class="editline">
-                    <input id = "edit_text"/>
-                    <div class="editsend"><div><img src = '/static/img/loadingG.gif'/></div></div>
-                    <div class="editcancel"><span>取消</span></div>
-                </div>
-
-                <div class="personMsg">我愛你</div>
-                <div class="personBT">
-                    <span class="floor">B1 · </span>
-                    <span class="personTM">2022-06-25 13:00</span>
-                    <span class="response">回覆</span>
-                </div>
-            </div>
-            <div class="message_work">
-                <img src ='/static/img/comment.svg'/>
-                <div class="message_work_expand">
-                    <div class="edit">編輯留言</div>
-                    <div class="delete">刪除留言</div>
-                </div>            
-            </div>
-        </div>
-
-        <div class="reply">
-        <div class="_2line">
-            <div class="left"></div>
-            <div class="right">
-            <div class="_2message_photo"><div><img referrerpolicy="no-referrer" src = 'https://lh3.googleusercontent.com/a/AATXAJx8_jM8P1758zRI9alfP75rjIzEp0h75-YQiUUe=s96-c'/></div></div>
-            <div class="_2message_middle">
-                <div class="_2personName">Lin Wan Ju</div>
-
-                <div class="_2editline">
-                    <input id = "_2edit_text"/>
-                    <div class="_2editsend"><div><img src = '/static/img/loadingG.gif'/></div></div>
-                    <div class="_2editcancel"><span>取消</span></div>
-                </div>
-
-                <div class="_2personMsg">我愛你</div>
-                <div class="_2personBT">
-                    <span class="_2floor">B1 · </span>
-                    <span class="_2personTM">2022-06-25 13:00</span>
-                </div>
-            </div>
-            <div class="_2message_work">
-                <img src ='/static/img/comment.svg'/>
-                <div class="_2message_work_expand">
-                    <div class="_2edit">編輯留言</div>
-                    <div class="_2delete">刪除留言</div>
-                </div>            
-            </div>
-            </div>
-        </div>
-        </div> -->
     </div>
 </div>
-
-
 
 <div class="replycontent">
     <div class="keyinUpper">
@@ -190,7 +127,7 @@
             <div></div> 
             <div></div>
         </div>
-        <div class="replyclose"><span>x</span></div>
+        <div class="replyclose"><span>×</span></div>
     </div>
     <div class="keyinreply">
         <input id ="reply_text" type="text" placeholder="留言"/>
@@ -199,11 +136,6 @@
 
     </div>
 </div>
-
-
-
-
-
 
 {% endblock content%}
 

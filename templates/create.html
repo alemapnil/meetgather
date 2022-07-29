@@ -15,7 +15,20 @@
 
 {% block content%}
 
-<div class="preview"></div>
+<div class = "modal6"></div>
+<div class = "window6">
+    <div class="popup6">
+    <div class="view_row">
+        <div class="view_title"> <span>活動圖示</span></div>
+        <div class="view_enter">
+            <div class="view_photo">
+                <div class="photo"><img src="/static/img/upload.svg"/></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
 
 <form enctype=multipart/form-data id="form">
 <div class="acti_pho">
@@ -75,7 +88,7 @@
 <div class="acti_num">
     <div class="title">活動人數上限</div>
     <div class="enter">
-        <input type="text" placeholder="請填寫活動人數上限" id='gathernumber'/>
+        <input type="number" min="2" placeholder="請填寫活動人數上限" id='gathernumber' inputmode="numeric"/>
         <div class="notice"></div>
     </div>
 </div>
@@ -128,12 +141,11 @@
     <div class="notice"></div>
 </div>
 </div>
+
 </form>
 
 <div class="acti_view">
     <div class="view"><div class="check">預覽</div></div>
-    <div class="backToEdit"><div  class="check">返回編輯</div></div>
-    <div class="confirm"><div  class="check">確認送出</div></div>
 </div>
 
 

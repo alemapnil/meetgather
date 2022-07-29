@@ -29,6 +29,10 @@ def user_get():
         data = {"ok": True,"email":decrypt['email'], 
                             "name":decrypt['name'],
                             "picture":decrypt['picture']}
+        n = db.Notify(decrypt['email'])
+        tm = nowTime()
+        data['notRead'] = n.notRead(tm)
+        data['anchortm'] = tm
         return jsonify(data)
 
 @api.route('/api/user', methods = ["DELETE"])
@@ -36,6 +40,28 @@ def user_delete():
     resp = make_response({"ok":True})
     resp.delete_cookie('access_token')
     return resp
+
+
+@api.route('/api/user',methods = ["POST"])
+@jwt_required()
+def user_post():
+    decrypt = get_jwt_identity()
+    anchortm, page = request.get_json()['anchortm'], request.get_json()['page']
+    n = db.Notify(decrypt['email'])
+    data=n.notice(anchortm,page)
+    return jsonify(data)
+
+
+@api.route('/api/user',methods = ["PATCH"])
+@jwt_required()
+def user_patch():
+    decrypt = get_jwt_identity()
+    anchortm = request.get_json()['anchortm']
+    n = db.Notify(decrypt['email'])
+    data=n.read(anchortm)
+    return jsonify(data)
+
+
 
 
 @api.route('/api/send', methods = ['POST'])
@@ -240,3 +266,22 @@ def boardGet(id_page):
     else:
         result = e.boardGet(page,decrypt['email'])
     return jsonify(result)
+
+
+
+@api.route('/api/message/', methods = ['GET'])
+@jwt_required()
+def message():
+    decrypt = get_jwt_identity()
+    boardid, replyid  = request.args.get('boardid',None), request.args.get('replyid',None)
+    if boardid is not None and replyid is not None:
+        return '/api/message搜尋有誤'
+
+    if boardid is not None:
+        n = db.Notify(decrypt['email'])
+        result = n.msg_boardid(boardid)
+        return jsonify(result)
+    if replyid is not None:
+        n = db.Notify(decrypt['email'])
+        result = n.msg_replyid(replyid)
+        return jsonify(result)
