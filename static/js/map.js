@@ -1,7 +1,6 @@
 let map;
 var acti_add, acti_lat, acti_lng;
 
-initMap()
 
 
 function initMap(){    
@@ -62,6 +61,7 @@ function initMap(){
     //打字時地址歸零
     document.getElementById('location').addEventListener('input',function(){
         acti_add = undefined
+        map = new google.maps.Map(document.getElementById('map'),options)
     })
 
 }

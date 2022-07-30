@@ -616,6 +616,15 @@ for (let f = 0; f < document.querySelectorAll('.alarm').length; f++){
         else if(document.querySelector('.floatRight').style.display === 'block'){
             document.querySelector('.floatRight').style.display = 'none'
         }
+
+        //若頭像為開啟狀態須關閉
+        for(i=0; i<document.querySelectorAll('.myinfo').length;i++){
+            if (document.querySelectorAll('.myinfo')[i].style.display==='flex'){
+                document.querySelectorAll('.myinfo')[i].style.display='none'
+                document.querySelector('.fr2').style.marginTop='0px'
+                document.querySelector('.fr3').style.marginTop='0px'
+            }
+        }
         e.stopPropagation()
     })
 }
@@ -678,6 +687,12 @@ for (let i=0; i<document.querySelectorAll('.shot').length;i++){
             document.querySelector('.fr3').style.display='block'
             document.querySelector('.fr3').style.marginTop='150px'
         }
+
+        //若通知留言為開啟狀態須關閉
+        if(document.querySelector('.floatRight').style.display ==='block'){
+            document.querySelector('.floatRight').style.display ='none'
+        }
+
         e.stopPropagation()
     })
 }

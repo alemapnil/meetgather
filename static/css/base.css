@@ -19,6 +19,8 @@ textarea{
     resize: none;
 }
 
+.noscroll { overflow: hidden; }
+
 .overlay{
     display: flex;
     justify-content: center;

@@ -129,11 +129,6 @@
     color: rgb(0,0,0,0.75);
 }
 
-::-webkit-calendar-picker-indicator{
-    cursor: pointer;
-    border-radius: 6px;
-}
-
 .wholetime{
     display: flex;
     justify-items: center;
@@ -177,8 +172,6 @@ option:not([value=""]){
 
 
 .acti_view{
-    position: relative;
-    bottom:0;
     width: 100%;
     height: 60px;
     display: flex;
@@ -203,19 +196,13 @@ option:not([value=""]){
     cursor: pointer;
 }
 
-
-
 .modal6{
-    display: block;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    opacity:0.6;
-    background-color: black;
-    z-index: 90;
-    animation: fadebackground 0.5s;
+    display: none;
+    position: fixed; 
+    overflow-y: scroll;
+    top: 0; right: 0; bottom: 0; left: 0; 
+    background:  rgba(40,40,40, .75);
+    z-index: 1;
 }
 
 @keyframes fadebackground {
@@ -224,21 +211,11 @@ option:not([value=""]){
 }
 
 
-.window6{
-    width: 1200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 60px;
-    z-index: 91;
-    background-color: green;
-}
-
 .popup6{
+    display: none;
+    margin: 60px auto;
     padding: 20px;
-    width: 100%;
-    height: 400px;
+    width: 1200px;
     border-radius: 6px;
     background-color: whitesmoke;
     animation: appear 1s;
@@ -249,17 +226,6 @@ option:not([value=""]){
     to {opacity:1;}
 }
 
-.preview{
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: #f6d819;
-    opacity: 0.1;
-    z-index: 1;
-}
 
 .success, .fail{
     display: none;
@@ -338,22 +304,88 @@ option:not([value=""]){
 
 .popup6 .view_title{
     border-left: 4px solid #f6d819;
-    margin-bottom: 20px;
+    margin: 15px auto 15px auto;
     box-sizing: content-box;
     padding-left: 5px;
 }
 .popup6 .view_title span{
     color: #f6d819;
     font-size: 20px;
+    font-weight: 400;
+}
+
+.popup6 .view_photo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup6 .view_photo .photo{
+    width: 150px;
+    height: 150px;
+}
+
+.popup6 .view_photo .photo img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+}
+.popup6 .view_row div:nth-child(2), .popup6 .view_row div:nth-child(3){
+    margin-left: 10px;
+    color: rgb(0,0,0,0.75);
+}
+
+.popup6 .view_row .view_city{
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.popup6 .view_row .view_title span span{
+    font-size: 16px;
+}
+
+.popup6 .view_send{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    font-size: large;
+}
+
+.popup6 .view_send .back{
+    width: 120px;
+    height: 50px;
+    border-radius: 6px;
+    background-color: #f6d819;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.popup6 .view_send .send{
+    width: 120px;
+    height: 50px;
+    border-radius: 6px;
+    background-color: #26619c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.popup6 .view_send .back span, .popup6 .view_send .send span{
+    color: white;
 }
 
 
 
+
+
 @media (max-width:1240px){
-    .window6{
-        width: 95%;
-        margin: 0 auto;
-    }
+    .popup6{width: 85%;}
 }
 
 @media (max-width:780px){
@@ -361,7 +393,7 @@ option:not([value=""]){
         margin-top: 20px;
     }
     #map{
-        width: 90%;
+        width: 100%;
         height: 220px;
     }
     .title{
@@ -378,5 +410,11 @@ option:not([value=""]){
         width: 150px;
         height: 50px;
         font-size: 20px;
+    }
+    .popup6 .view_title span, .popup6 .view_send .back span,.popup6 .view_send .send span{
+        font-size: 16px;
+    }
+    .popup6 .view_row div:nth-child(2), .popup6 .view_row div:nth-child(3){
+        font-size: 14px;
     }
 }

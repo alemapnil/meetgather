@@ -747,7 +747,7 @@ function back(){
 //click share
 document.querySelector('.c_join .share').addEventListener('click',function(){
     document.querySelector('.modal3').style.display = 'block'
-    document.querySelector('.window3').style.display = 'flex'  
+    document.querySelector('.window3').style.display = 'flex' 
 })
 
 

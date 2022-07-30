@@ -12,23 +12,54 @@
 {% endblock title%}
 
 
-
 {% block content%}
-
-<div class = "modal6"></div>
-<div class = "window6">
-    <div class="popup6">
+<div class = "modal6">
+<div class="popup6">
     <div class="view_row">
         <div class="view_title"> <span>活動圖示</span></div>
-        <div class="view_enter">
             <div class="view_photo">
                 <div class="photo"><img src="/static/img/upload.svg"/></div>
             </div>
-        </div>
     </div>
-    </div>
-</div>
 
+    <div class="view_row">
+        <div class="view_title"> <span>活動標題</span></div>
+        <div class="view_gathername"></div>
+    </div>
+
+    <div class="view_row">
+        <div class="view_title"> <span>活動描述</span></div>
+        <div class="view_descp"></div>
+    </div>
+
+    <div class="view_row">
+        <div class="view_title"> <span>活動類別</span></div>
+        <div class="view_cate"></div>
+    </div>
+
+    <div class="view_row">
+        <div class="view_title"> <span>活動人數上限</span></div>
+        <div class="view_num"></div>
+    </div>
+
+    <div class="view_row">
+        <div class="view_title"> <span>活動地點</span></div>
+        <div class="view_city"></div>
+        <div class="view_add"></div>
+    </div>
+
+    <div class="view_row">
+        <div class="view_title"> <span>活動時間<span> GMT+8</span></span></div>
+        <div class="view_tm"></div>
+    </div>
+
+    <div class="view_send">
+        <div class="back"><span>返回編輯</span></div>
+        <div class="send"><span>送出</span></div>
+    </div>
+
+</div>
+</div>
 
 <form enctype=multipart/form-data id="form">
 <div class="acti_pho">
@@ -142,12 +173,11 @@
 </div>
 </div>
 
-</form>
-
 <div class="acti_view">
     <div class="view"><div class="check">預覽</div></div>
 </div>
 
+</form>
 
 <div class="success">
     <div class="section">

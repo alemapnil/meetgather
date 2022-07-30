@@ -19,10 +19,10 @@ document.getElementById("send").addEventListener("click",function(fe){
         imgElement.onload = function(e){
             var dataURL;
 
-            if (imgElement.width >= imgElement.height && imgElement.width > 400){
+            if (imgElement.width >= imgElement.height && imgElement.width > 150){
             console.log('原圖寬度過長')
             const canvas = document.createElement('canvas');
-            const max_width = 400;
+            const max_width = 150;
             const scaleSize = max_width/e.target.width;
             canvas.width = max_width;
             canvas.height = e.target.height* scaleSize;
@@ -32,10 +32,10 @@ document.getElementById("send").addEventListener("click",function(fe){
             dataURL = ctx.canvas.toDataURL(e.target,"image/jpeg")
             document.querySelector('#output').src = dataURL;
         }
-        else if (imgElement.height >= imgElement.width && imgElement.height > 400){
+        else if (imgElement.height >= imgElement.width && imgElement.height > 150){
             console.log('原圖高度過長')
             const canvas = document.createElement('canvas');
-            const max_height = 400;
+            const max_height = 150;
             const scaleSize = max_height/e.target.height;
             canvas.height = max_height;
             canvas.width= e.target.width* scaleSize;

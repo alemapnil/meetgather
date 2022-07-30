@@ -946,6 +946,12 @@
     .c_message .reply{
         width: 100%;
     }
+
+    .c_message .empty{
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.75);
+    }
+
     .hideReply{
         grid-template-columns: 60px 1fr;
         font-size: 14px;
