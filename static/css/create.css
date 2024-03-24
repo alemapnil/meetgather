@@ -1,0 +1,433 @@
+#form {
+  /* display: none; */
+}
+
+.title {
+  margin-left: 20px;
+  font-size: 22px;
+  color: #666666;
+}
+
+.gmt {
+  font-size: 14px;
+  color: #666666;
+  margin-left: 5px;
+}
+
+.enter {
+  margin: 10px auto 10px auto;
+  box-sizing: content-box;
+  padding: 15px;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.enter .notice {
+  color: red;
+  /* display: none; */
+  font-size: 13px;
+}
+
+#file,
+#send {
+  visibility: hidden;
+}
+.activity_photo {
+  border: none;
+}
+.activity_photo .photo {
+  margin: 0 auto 0 auto;
+  border-radius: 6px;
+  width: 180px;
+  height: 180px;
+  background-color: #bebebe;
+}
+
+.activity_photo div img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+#gathername,
+#gathernumber {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #bebebe;
+  border-radius: 0px;
+  color: rgb(0, 0, 0, 0.75);
+  font-size: 16px;
+}
+
+#story {
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 15px;
+  width: 100%;
+  height: 80px;
+  border-radius: 6px;
+  border: 1px solid #bebebe;
+  color: rgb(0, 0, 0, 0.75);
+}
+
+#story:focus {
+  outline: none;
+  border: 1px solid #f6d819;
+}
+
+.searchmap {
+  display: none;
+  margin-top: 20px;
+  align-items: center;
+  gap: 0px;
+  width: 100%;
+}
+
+#location {
+  box-sizing: border-box;
+  width: 100%;
+  height: 42px;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #bebebe;
+  border-radius: 6px;
+
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgb(0, 0, 0, 0.75);
+}
+
+#location:hover {
+  outline: none;
+  border: 1px solid #f6d819;
+}
+
+#map {
+  display: none;
+  width: 500px;
+  height: 300px;
+}
+
+#localtime {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #bebebe;
+  outline: 0px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #bebebe;
+  cursor: pointer;
+  color: rgb(0, 0, 0, 0.75);
+}
+
+.wholetime {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+.when {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  color: #bebebe;
+  border: 1px solid #bebebe;
+  outline: 0px;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  border: 1px solid #bebebe;
+  outline: 0px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+option[value=""] {
+  color: #bebebe;
+}
+
+option:not([value=""]) {
+  color: rgb(0, 0, 0, 0.75);
+}
+
+.acti_view {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.check {
+  color: white;
+}
+.view {
+  display: flex;
+  width: 200px;
+  height: 100%;
+  border-radius: 10px;
+  background-color: #f6d819;
+  color: white;
+  font-size: x-large;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.modal6 {
+  display: none;
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(40, 40, 40, 0.75);
+  z-index: 1;
+}
+
+@keyframes fadebackground {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+
+.popup6 {
+  display: none;
+  margin: 60px auto;
+  padding: 20px;
+  width: 1200px;
+  border-radius: 6px;
+  background-color: whitesmoke;
+  animation: appear 1s;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.success,
+.fail {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 3;
+}
+
+.section {
+  margin: 200px auto auto auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: center;
+  width: 320px;
+  height: 250px;
+  border-radius: 10px;
+}
+
+.success .section {
+  border: 3px solid lightseagreen;
+}
+
+.fail .section {
+  border: 3px solid #cd5c5c;
+}
+.tn {
+  text-align: center;
+  width: 200px;
+  font-size: x-large;
+}
+
+.success .section .tn {
+  color: lightseagreen;
+}
+
+.fail .section .tn {
+  color: #cd5c5c;
+}
+
+.word {
+  text-align: center;
+  width: 200px;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.success .section .word {
+  color: lightseagreen;
+}
+
+.fail .section .word {
+  color: #cd5c5c;
+}
+
+.close {
+  text-align: center;
+  width: 120px;
+  color: white;
+  font-size: x-large;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.success .section .close {
+  background-color: lightseagreen;
+}
+
+.fail .section .close {
+  background-color: #cd5c5c;
+}
+
+.popup6 .view_title {
+  border-left: 4px solid #f6d819;
+  margin: 15px auto 15px auto;
+  box-sizing: content-box;
+  padding-left: 5px;
+}
+.popup6 .view_title span {
+  color: #f6d819;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.popup6 .view_photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup6 .view_photo .photo {
+  width: 150px;
+  height: 150px;
+}
+
+.popup6 .view_photo .photo img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+}
+.popup6 .view_row div:nth-child(2),
+.popup6 .view_row div:nth-child(3) {
+  margin-left: 10px;
+  color: rgb(0, 0, 0, 0.75);
+}
+
+.popup6 .view_row .view_city {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.popup6 .view_row .view_title span span {
+  font-size: 16px;
+}
+
+.popup6 .view_send {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  font-size: large;
+}
+
+.popup6 .view_send .back {
+  width: 120px;
+  height: 50px;
+  border-radius: 6px;
+  background-color: #f6d819;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.popup6 .view_send .send {
+  width: 120px;
+  height: 50px;
+  border-radius: 6px;
+  background-color: #26619c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.popup6 .view_send .back span,
+.popup6 .view_send .send span {
+  color: white;
+}
+
+@media (max-width: 1240px) {
+  .popup6 {
+    width: 85%;
+  }
+}
+
+@media (max-width: 780px) {
+  #form {
+    margin-top: 20px;
+  }
+  #map {
+    width: 100%;
+    height: 220px;
+  }
+  .title {
+    font-size: 16px;
+    margin-left: 10px;
+  }
+  select {
+    font-size: 14px;
+  }
+  #gathername,
+  #story,
+  #gathernumber,
+  #location,
+  #localtime {
+    font-size: 14px;
+  }
+  .view {
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
+  .popup6 .view_title span,
+  .popup6 .view_send .back span,
+  .popup6 .view_send .send span {
+    font-size: 16px;
+  }
+  .popup6 .view_row div:nth-child(2),
+  .popup6 .view_row div:nth-child(3) {
+    font-size: 14px;
+  }
+}

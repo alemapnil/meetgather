@@ -1,0 +1,107 @@
+{% extends 'base.html' %} {% block link%}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/static/css/profile.css?v=0.0.244"
+/>
+
+<meta property="og:type" content="website" />
+<meta
+  property="og:image"
+  content="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/webicon225.png"
+/>
+<meta property="og:title" content="Meetgather" />
+<meta property="og:description" content="Profile" />
+
+{% endblock link%} {% block title%}
+<title></title>
+{% endblock title%} {% block content%}
+<div class="modal10"></div>
+<div class="window10">
+  <div class="popup10">
+    <div class="back">
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/arrow-left.svg"
+        />
+      </div>
+      <span class="lang" key="Previous page"></span>
+    </div>
+    <h2 class="lang" key="not login yet?"></h2>
+    <div class="cancel"><span class="lang" key="login"></span></div>
+  </div>
+</div>
+
+<form enctype=multipart/form-data id="form">
+<div class="profile" member_id="{{member}}">
+  <div class="pf">
+    <div class="photo">
+      <div><img referrerpolicy="no-referrer" /></div>
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/close-icon.png"
+        />
+      </div>
+    </div>
+
+    <div class="about">
+      <h1></h1>
+      <div class="myname_edit">
+        <input
+          id="myname_text"
+          type="text"
+          maxlength="20"
+          placeholder="你的姓名"
+        /><span>20</span>
+      </div>
+      <div class="myself"><span></span></div>
+      <div class="myself_edit">
+        <textarea
+          id="myself_text"
+          maxlength="250"
+          placeholder="關於你"
+        ></textarea>
+        <div><span>250</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pfedit">
+    <div class="edit"><span class="lang" key="edit"></span></div>
+    <div class="upload"><span class="lang" key="uploadPhoto"></span></div>
+    <div class="cancel"><span class="lang" key="cancel"></span></div>
+    <div class="save"><span class="lang" key="save"></span></div>
+  </div>
+
+  <div class="hiddenbtn">
+    <input type="file" id="file" name="picture" accept="image/*" /><input
+      type="submit"
+      value="送出"
+      id="send"
+    />
+  </div>
+</div>
+
+<div class="eventscroll">
+  <div class="eventRecord">
+    <div class="choose"><span class="lang" key="hostRecord"></span></div>
+    <div><span class="lang" key="joinRecord"></span></div>
+  </div>
+
+  <div class="eventList">
+    <div class="left"></div>
+    <div class="right"></div>
+  </div>
+
+  <div class="eventLoad">
+    <div>
+      <img
+        src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/circleYellowLoader.gif"
+      />
+    </div>
+  </div>
+</div>
+
+{% endblock content%} {% block script %}
+<script type="text/javascript" src="/static/js/profile.js"></script>
+{% endblock script%}

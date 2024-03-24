@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/webicon225.png"
+    />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    {% block link%}{% endblock link%} {% block title%}{% endblock title%}
+  </head>
+  <body>
+    <div class="overlay">
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/sunLoader.gif"
+        />
+      </div>
+    </div>
+
+    <div class="modal5"></div>
+    <div class="window5">
+      <div class="popup5Load">
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/circleYellowLoader.gif"
+        />
+      </div>
+      <div class="popup5"></div>
+    </div>
+
+    <div class="box0">
+      <div class="box0_contain">
+        <div class="website">
+          <a href="/">Meetgather</a>
+          <div class="search">
+            <input type="text" class="keyword" placeholder="輸入活動關鍵字" />
+            <button>
+              <img
+                src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/magnify.png"
+              />
+            </button>
+          </div>
+        </div>
+
+        <div class="frame1" style="display: none">
+          <span class="earth opc">
+            <img
+              src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/earth.svg" /><span
+              class="lang"
+              key="i18n"
+            ></span
+          ></span>
+          <span class="login opc lang" key="login"></span>
+        </div>
+        <div class="fr2" style="display: none">
+          <div class="frame2">
+            <span class="earth opc">
+              <img
+                src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/earth.svg" /><span
+                class="lang"
+                key="i18n"
+              ></span
+            ></span>
+            <span class="alarm opc">
+              <img
+                src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/alarm.svg"
+            /></span>
+            <span class="notice"></span>
+            <div class="shot opc"><img referrerpolicy="no-referrer" /></div>
+          </div>
+          <div class="myinfo" style="display: none">
+            <div>
+              <div class="create opc">
+                <a href="/create" class="lang" key="create"></a>
+              </div>
+              <div class="myprofile opc">
+                <a class="lang" key="profile"></a>
+              </div>
+              <div class="logoutA opc lang" key="logout"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="laptop">
+      <div class="row1">
+        <div class="website">
+          <a href="/">Meetgather</a>
+        </div>
+        <div class="frame1" style="display: none">
+          <span class="earth opc">
+            <img
+              src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/earth.svg" /><span
+              class="lang"
+              key="i18n"
+            ></span
+          ></span>
+          <span class="login opc lang" key="login"></span>
+        </div>
+        <div class="frame2" style="display: none">
+          <span class="earth opc">
+            <img
+              src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/earth.svg" /><span
+              class="lang"
+              key="i18n"
+            ></span
+          ></span>
+          <span class="alarm opc">
+            <img
+              src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/alarm.svg"
+          /></span>
+          <span class="notice"></span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="fr3">
+          <div class="shot opc"><img referrerpolicy="no-referrer" /></div>
+          <div class="myinfo opc" style="display: none">
+            <div>
+              <div class="create opc">
+                <a href="/create" class="lang" key="create"></a>
+              </div>
+              <div class="myprofile opc">
+                <a class="lang" key="profile"></a>
+              </div>
+              <div class="logoutB opc lang" key="logout"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search">
+          <input type="text" class="keyword" placeholder="輸入活動關鍵字" />
+          <button>
+            <img
+              src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/magnify.png"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="floatRight">
+      <div class="noticeBlock">
+        <div class="rowbox">
+          <div class="head">
+            <span class="lang" key="notification"></span><span>×</span>
+          </div>
+          <div class="tail"></div>
+        </div>
+        <div style="height: 10px"></div>
+      </div>
+    </div>
+
+    <div class="modal11">
+      <div class="_2head">
+        <span class="lang" key="notification"></span><span>×</span>
+      </div>
+      <div class="_2tail"><div class="rowbox"></div></div>
+    </div>
+
+    <div class="wrapper">
+      <div class="box2" id="box2id">
+        {% block content%}{% endblock content%}
+      </div>
+    </div>
+    <div class="footer">
+      <div>© COPYRIGHT<span class="year"></span>PamelaLin</div>
+    </div>
+
+    {% block script %}{% endblock script%}
+    <script type="text/javascript" src="/static/js/base.js"></script>
+  </body>
+</html>

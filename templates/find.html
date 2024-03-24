@@ -1,0 +1,182 @@
+{% extends 'base.html' %} {% block link%}
+<link rel="stylesheet" type="text/css" href="/static/css/find.css?v=0.0.243" />
+<link rel="stylesheet" type="text/css" href="/static/css/calender.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<meta property="og:type" content="website" />
+<meta
+  property="og:image"
+  content="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/webicon225.png"
+/>
+<meta property="og:title" content="Meetgather" />
+<meta property="og:description" content="Find events" />
+
+{% endblock link%} {% block title%}
+<title>Find events | Meetgather</title>
+{% endblock title%} {% block content%}
+<div class="leftrows">
+  <div class="filter">
+    <div class="choosePeriod">
+      <button><span></span></button>
+    </div>
+
+    <div class="choose">
+      <select name="date" id="selectdate">
+        <option value="" class="lang" key="day_empty"></option>
+        <option value="0" class="lang" key="today"></option>
+        <option value="1" class="lang" key="tomorrow"></option>
+        <option value="2" id="CT" class="lang" key="custom"></option>
+      </select>
+    </div>
+
+    <div class="choose">
+      <select name="category" id="selectcategory">
+        <option value="" class="lang" key="cate_empty"></option>
+        <option value="0" class="lang" key="cate_0"></option>
+        <option value="1" class="lang" key="cate_1"></option>
+        <option value="2" class="lang" key="cate_2"></option>
+        <option value="3" class="lang" key="cate_3"></option>
+        <option value="4" class="lang" key="cate_4"></option>
+        <option value="5" class="lang" key="cate_5"></option>
+        <option value="6" class="lang" key="cate_6"></option>
+        <option value="7" class="lang" key="cate_7"></option>
+        <option value="8" class="lang" key="cate_8"></option>
+        <option value="9" class="lang" key="cate_9"></option>
+        <option value="10" class="lang" key="cate_10"></option>
+        <option value="11" class="lang" key="cate_11"></option>
+        <option value="12" class="lang" key="cate_12"></option>
+        <option value="13" class="lang" key="cate_13"></option>
+      </select>
+    </div>
+
+    <div class="choose">
+      <select name="city" id="selectcity">
+        <option value="" class="lang" key="city_empty"></option>
+        <option value="0" class="lang" key="city_0"></option>
+        <option value="1" class="lang" key="city_1"></option>
+        <option value="2" class="lang" key="city_2"></option>
+        <option value="3" class="lang" key="city_3"></option>
+        <option value="4" class="lang" key="city_4"></option>
+        <option value="5" class="lang" key="city_5"></option>
+        <option value="6" class="lang" key="city_6"></option>
+        <option value="7" class="lang" key="city_7"></option>
+        <option value="8" class="lang" key="city_8"></option>
+        <option value="9" class="lang" key="city_9"></option>
+        <option value="10" class="lang" key="city_10"></option>
+        <option value="11" class="lang" key="city_11"></option>
+        <option value="12" class="lang" key="city_12"></option>
+        <option value="13" class="lang" key="city_13"></option>
+        <option value="14" class="lang" key="city_14"></option>
+        <option value="15" class="lang" key="city_15"></option>
+        <option value="16" class="lang" key="city_16"></option>
+        <option value="17" class="lang" key="city_17"></option>
+        <option value="18" class="lang" key="city_18"></option>
+        <option value="19" class="lang" key="city_19"></option>
+        <option value="20" class="lang" key="city_20"></option>
+        <option value="21" class="lang" key="city_21"></option>
+        <option value="22" class="lang" key="city_22"></option>
+      </select>
+    </div>
+
+    <div class="choose">
+      <select name="sort" class="selectChange" id="selectsort">
+        <option value="0" class="lang" key="sort time"></option>
+        <option value="1" class="lang" key="sort popular"></option>
+      </select>
+    </div>
+
+    <div class="refresh choose">
+      <button class="lang" key="Reset filters"></button>
+    </div>
+  </div>
+
+  <div class="calender">
+    <div class="month">
+      <i class="fas fa-angle-left prev"></i>
+      <div class="date">
+        <h1></h1>
+        <p></p>
+      </div>
+      <i class="fas fa-angle-right next"></i>
+    </div>
+    <div class="weekdays">
+      <div class="lang" key="Sun"></div>
+      <div class="lang" key="Mon"></div>
+      <div class="lang" key="Tue"></div>
+      <div class="lang" key="Wed"></div>
+      <div class="lang" key="Thr"></div>
+      <div class="lang" key="Fri"></div>
+      <div class="lang" key="Sat"></div>
+    </div>
+    <div class="days"></div>
+  </div>
+
+  {% if items.result != [] %}
+  <div class="result">
+    {% for D, P ,item in zip(date,people,items.result) %}
+    <a href="/event/{{item[0]}}">
+      <div class="event">
+        <div class="event_in">
+          <div class="picture"><img src="{{item[13]}}" /></div>
+          <div class="section">
+            <div class="time">{{D}}</div>
+            <div class="title">{{item[2]}}</div>
+
+            {% if item[20] is none %}
+            <div class="host">
+              <span>{{item[6]}}</span><span> | {{item[18]}}</span>
+            </div>
+            {% else %}
+            <div class="host">
+              <span>{{item[6]}}</span><span> | {{item[20]}}</span>
+            </div>
+            {% endif %}
+
+            <div class="lastRow">
+              <div class="attendee">
+                {% if P == 1 or P == 0 %}
+                <span>{{P}}</span>
+                <span class="lang" key="attendee"></span>
+                {% else %}
+                <span>{{P}}</span>
+                <span class="lang" key="attendees"></span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    {% endfor%}
+  </div>
+  <div class="page">
+    <i class="fas fa-angle-left prev" id="former"></i>
+    <div>
+      <span class="curentPage">{{page}}</span>
+      <span>／</span>
+      <span class="totalPage">{{totalpage}}</span>
+    </div>
+    <i class="fas fa-angle-right next" id="next"></i>
+  </div>
+
+  {% else %}
+  <div id="nofound">
+    <img
+      src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/nofound.png"
+    />
+  </div>
+  {% endif %}
+</div>
+{% endblock content%} {% block script %}
+<script type="text/javascript" src="/static/js/calender.js"></script>
+<script type="text/javascript" src="/static/js/find.js?"></script>
+{% endblock script%}

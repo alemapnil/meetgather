@@ -1,0 +1,11 @@
+Flask==2.2.2
+jinja2
+itsdangerous
+werkzeug==2.2.3
+boto3
+mysql-connector-python
+python-dotenv
+flask_jwt_extended
+Authlib==0.15.5
+requests
+redis

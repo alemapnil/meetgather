@@ -1,0 +1,498 @@
+.modal10 {
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5e5;
+  z-index: 90;
+}
+
+.window10 {
+  width: 100%;
+  height: 300px;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  position: fixed;
+  top: 140px;
+  z-index: 91;
+  background-color: transparent;
+}
+.popup10 {
+  padding: 15px;
+  width: 80%;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.popup10 .back {
+  display: flex;
+  gap: 10px;
+}
+
+.popup10 .back span {
+  font-weight: 500;
+  font-size: large;
+}
+
+.popup10 .back div img,
+.popup10 .back span {
+  cursor: pointer;
+}
+
+.popup10 .cancel {
+  margin-top: 20px;
+  padding: 10px;
+  width: 200px;
+  background-color: #448899;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.popup10 .cancel span {
+  color: white;
+}
+
+.profile .pf {
+  margin: 0 auto;
+  width: 600px;
+  min-height: 250px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 10px;
+}
+
+.profile .pfedit {
+  margin: 20px auto auto auto;
+  width: 600px;
+  height: 40px;
+  display: none;
+  justify-content: end;
+  gap: 20px;
+}
+
+.pfedit .edit {
+  width: 80px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #26619c;
+  cursor: pointer;
+}
+
+.pfedit .upload {
+  width: 120px;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #26619c;
+  cursor: pointer;
+}
+
+.pfedit .cancel {
+  width: 80px;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #26619c;
+  cursor: pointer;
+}
+
+.pfedit .save {
+  width: 80px;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #f6d819;
+  cursor: pointer;
+}
+
+.pfedit .save div {
+  width: 30px;
+  height: 30px;
+}
+
+.pfedit .save div img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.pfedit .edit span,
+.pfedit .cancel span,
+.pfedit .save span,
+.pfedit .upload span {
+  color: white;
+}
+
+.profile .photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile .photo div:first-child {
+  width: 200px;
+  height: 200px;
+  margin: auto 0;
+}
+
+.profile .photo div:first-child img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.profile .photo div:nth-child(2) {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  bottom: 60px;
+  display: block;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.profile .photo div:nth-child(2) img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.profile .about {
+  box-sizing: content-box;
+  margin-top: 20px;
+}
+
+.profile .about .myself,
+.profile .about .myself span {
+  color: gray;
+}
+
+.about .myname_edit {
+  box-sizing: content-box;
+  padding: 10px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid #bebebe;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.about .myname_edit span {
+  color: #bebebe;
+}
+
+#myname_text {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 0px;
+  width: 90%;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.about .myself_edit {
+  margin-top: 15px;
+  box-sizing: content-box;
+  padding: 10px;
+  height: 140px;
+  border-radius: 6px;
+  border: 1px solid #bebebe;
+  display: none;
+}
+
+#myself_text {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 0px;
+  width: 100%;
+  height: 90%;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.about .myself_edit div {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 10%;
+}
+
+.about .myself_edit div span {
+  color: #bebebe;
+}
+
+.hiddenbtn {
+  display: flex;
+}
+
+#file,
+#send {
+  visibility: hidden;
+  width: 10px;
+}
+
+.eventRecord {
+  margin: 0 auto;
+  width: 600px;
+  height: 45px;
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.eventRecord div {
+  width: 125px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(246, 247, 248);
+}
+
+.eventRecord div:hover {
+  cursor: pointer;
+}
+
+.eventRecord .choose {
+  background-color: #26619c;
+}
+
+.eventRecord .choose span {
+  color: white;
+}
+
+.eventList {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.eventLoad {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.eventLoad div {
+  width: 30px;
+  height: 30px;
+}
+.eventLoad div img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.eventList .left {
+  display: block;
+}
+
+.eventList .right {
+  display: none;
+}
+
+.eventList .event {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border-top: 2px solid #bebebe;
+}
+
+.eventList .event_in {
+  width: 100%;
+  height: 90%;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 15px;
+}
+
+.eventList .picture {
+  height: 160px;
+}
+
+.eventList .picture img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.eventList .section {
+  width: 100%;
+}
+
+.eventList .section div {
+  margin-bottom: 15px;
+}
+
+.eventList .time {
+  color: #b87333;
+  font-size: 16px;
+  font-weight: 700;
+}
+.eventList .time span {
+  color: #b87333;
+  font-size: 12px;
+  font-weight: 700;
+}
+.eventList .title {
+  font-size: 18px;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.eventList .host {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.eventList .lastRow {
+  /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+}
+
+.eventList .lastRow div:nth-child(2) {
+  border-radius: 6px;
+  width: 100px;
+  background-color: #e41e3f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.eventList .lastRow div:nth-child(2) span {
+  color: white;
+}
+
+.eventList .lastRow div:nth-child(1) span:first-child {
+  margin-right: 3px;
+}
+
+#nofound {
+  margin: 60px auto 0 auto;
+  width: 320px;
+  height: 265px;
+}
+
+#nofound img {
+  object-fit: cover;
+  width: 80%;
+  height: 80%;
+}
+
+@media (max-width: 780px) {
+  .profile {
+    margin-top: 15px;
+  }
+  .profile .pf {
+    width: 320px;
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+
+  .profile .pf h1 {
+    font-size: 22px;
+  }
+
+  .profile .about {
+    margin-top: 0px;
+  }
+  .profile .about .myself span {
+    font-size: 14px;
+  }
+  .about .myname_edit {
+    margin-top: 15px;
+    padding: 5px 10px;
+  }
+  .profile .pfedit {
+    width: 320px;
+    gap: 30px;
+  }
+  .profile .photo div:nth-child(2) {
+    bottom: 40px;
+  }
+
+  #myself_text {
+    font-size: 14px;
+  }
+
+  .about .myself_edit {
+    height: 180px;
+  }
+
+  .pfedit .edit {
+    float: right;
+  }
+
+  .eventRecord {
+    width: 320px;
+    justify-content: space-between;
+  }
+  .eventList {
+    width: 320px;
+  }
+
+  .eventList .event {
+    height: 150px;
+  }
+
+  .eventList .event_in {
+    grid-template-columns: 30% 1fr;
+  }
+
+  .eventList .picture {
+    height: 100px;
+  }
+  .eventList .section div {
+    margin-bottom: 10px;
+  }
+  .eventList .time {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .eventList .time span {
+    font-weight: 500;
+  }
+
+  .eventList .title {
+    font-size: 13px;
+    font-weight: 500;
+    -webkit-line-clamp: 3;
+  }
+
+  .eventList .host {
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  .eventList .lastRow {
+    font-size: 13px;
+    font-weight: 300;
+  }
+}

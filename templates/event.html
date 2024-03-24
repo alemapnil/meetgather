@@ -1,0 +1,326 @@
+{% extends 'base.html' %} {% block link%}
+<link rel="stylesheet" type="text/css" href="/static/css/event.css?v=0.0.246" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="{{activity[13]}}" />
+<meta property="og:title" content="{{activity[2]}}" />
+<meta property="og:description" content="{{activity[3]}}" />
+<meta property="og:url" content="{{base_url}}" />
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:image:type" content="image/{{imgType}}" />
+
+{% endblock link%} {% block title%}
+<title></title>
+{% endblock title%} {% block content%}
+<div class="modal1"></div>
+<div class="window1">
+  <div class="popup1">
+    <div class="middle">
+      <div class="exclamation"><span>!</span></div>
+      <span class="loginword lang" key="alerttologin"></span>
+      <div class="close"><span>×</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal2"></div>
+<div class="window2">
+  <div class="popup2">
+    <div class="back">
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/arrow-left.svg"
+        />
+      </div>
+      <span class="lang" key="back to event"></span>
+    </div>
+    <h2 class="lang" key="goingtojoin"></h2>
+    <div class="title"></div>
+    <div class="tm"></div>
+    <div class="add_calender">
+      <a target="_blank"><span class="lang" key="calender"></span></a>
+    </div>
+  </div>
+</div>
+
+<div class="modal3"></div>
+<div class="window3">
+  <div class="popup3">
+    <div class="close3"><span>×</span></div>
+    <h2 class="lang" key="shareevent"></h2>
+    <div class="fb">
+      <div>
+        <a target="_blank"
+          ><img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/Facebook.png"
+        /></a>
+      </div>
+      <a target="_blank">Facebook</a>
+    </div>
+    <div class="twi">
+      <div>
+        <a target="_blank"
+          ><img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/twitter.png"
+        /></a>
+      </div>
+      <a target="_blank">Twitter</a>
+    </div>
+    <div class="lineshare">
+      <div>
+        <a target="_blank"
+          ><img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/Line.png"
+        /></a>
+      </div>
+      <a target="_blank">Line</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal4"></div>
+<div class="window4">
+  <div class="popup4">
+    <div class="c4">
+      <div class="person">
+        <span class="lang" key="attendeenum"></span><span></span>
+      </div>
+      <div class="close4">×</div>
+    </div>
+
+    <div class="nameList"></div>
+    <div style="height: 10px"></div>
+  </div>
+</div>
+
+<div class="modal6"></div>
+<div class="window6">
+  <div class="popup6">
+    <div class="close6"><span>×</span></div>
+    <div class="title"></div>
+    <div>
+      <span class="lang" key="keyin"></span><i>delete</i
+      ><span class="lang" key="deleteevent2"></span>
+    </div>
+    <div>
+      <input id="delete_text" type="text" placeholder="delete" />
+      <div class="notdelete"><span class="lang" key="delete"></span></div>
+    </div>
+
+    <div class="deleteLang">
+      <span class="lang" key="email language"></span>
+      <form>
+        <input type="radio" class="chinese" name="fav_language" value="中文" />
+        <label for="中文">中文</label>
+        <input
+          type="radio"
+          class="english"
+          name="fav_language"
+          value="English"
+        />
+        <label for="English">English</label>
+      </form>
+    </div>
+    <div class="lang" key="deletenotice"></div>
+  </div>
+</div>
+
+<div class="modal7"></div>
+<div class="window7">
+  <div class="popup7">
+    <div class="close7"><span>×</span></div>
+    <div class="title"></div>
+    <textarea id="inform_text" placeholder="寫下想告訴參與者的話"></textarea>
+
+    <div class="informLang">
+      <span class="lang" key="email language"></span>
+      <form>
+        <input type="radio" class="chinese" name="fav_language" value="中文" />
+        <label for="中文">中文</label>
+        <input
+          type="radio"
+          class="english"
+          name="fav_language"
+          value="English"
+        />
+        <label for="English">English</label>
+      </form>
+    </div>
+
+    <div class="lastrow">
+      <div class="lang" key="emailnotice"></div>
+      <div class="inform lang" key="email"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal8"></div>
+<div class="window8">
+  <div class="popup8">
+    <div class="back">
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/arrow-left.svg"
+        />
+      </div>
+      <span class="lang" key="back to event"></span>
+    </div>
+    <h2 class="lang" key="messagemailed"></h2>
+    <div class="title">
+      <span class="lang" key="gotoemail"></span>
+      <span class="mailadd"></span>
+      <span class="lang" key="check"></span>
+    </div>
+  </div>
+</div>
+
+<div class="modal9"></div>
+<div class="window9">
+  <div class="popup9">
+    <div class="back">
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/arrow-left.svg"
+        />
+      </div>
+      <span class="lang" key="back to event"></span>
+    </div>
+    <h2 class="lang" key="withdraw"></h2>
+    <div class="title"></div>
+    <div class="tm"></div>
+    <div class="cancel"><span class="lang" key="OK"></span></div>
+  </div>
+</div>
+
+<div class="header">
+  <div class="header_block">
+    <div class="ev_tm">{{activity[10]}}</div>
+    <h1 class="ev_title">{{activity[2]}}</h1>
+    <div class="ev_host">
+      <div class="photo">
+        <a href="{{url_root}}profile?member={{host[0]}}">
+          {% if host[6] is none %}
+          <img referrerpolicy="no-referrer" src="{{host[3]}}" />
+          {% else %}
+          <img referrerpolicy="no-referrer" src="{{host[6]}}" />
+          {% endif %}
+        </a>
+      </div>
+      <div class="photo_right">
+        <div class="lang" key="host" member_id="{{host[0]}}"></div>
+        <span class="host">
+          <a href="{{url_root}}profile?member={{host[0]}}">
+            {% if host[4] is none %} {{host[2]}} {% else %} {{host[4]}} {% endif
+            %}
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content_desk">
+  <div class="c_edit">
+    <div class="photo">
+      <img
+        src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/comment.svg"
+      />
+    </div>
+    <div class="ev_edit_expand">
+      <div class="edit"><a class="lang" key="editevent"></a></div>
+      <div class="delete lang" key="deleteevent1"></div>
+      <div class="inform lang" key="informattendee"></div>
+    </div>
+  </div>
+  <div class="c_header">
+    <div class="ev_pic"><img src="{{activity[13]}}" /></div>
+    <div class="tm_spot">
+      <div class="ev_tm">
+        <div class="tm_pic">
+          <img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/clock.svg"
+          />
+        </div>
+        <div class="tm_word"></div>
+      </div>
+      <br />
+      <div class="ev_spot">
+        <div class="spot_pic">
+          <img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/marker.svg"
+          />
+        </div>
+        <div class="spot_word">{{activity[6]}}</div>
+        <div class="hiddenadd">{{activity[7]}}</div>
+        <div class="hiddenlat">{{activity[8]}}</div>
+        <div class="hiddenlng">{{activity[9]}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="c_detail">
+    <h2 class="lang" key="acti_descp"></h2>
+    <div class="detail">{{activity[3]}}</div>
+  </div>
+
+  <div class="c_attendee">
+    <h2 class="lang" key="acti_attend"></h2>
+    <div>
+      <span class="lang" key="attendeenum"></span>
+      <span class="c_now_attend_p">{{namelist_num}}, </span>
+      <span class="lang limit" key="limit"></span>
+      <span class="c_now_attend_l">{{c_now_attend_l}}</span>
+    </div>
+    <div class="seeAll lang" key="seeAll"></div>
+  </div>
+
+  <div class="c_join">
+    <div class="share">
+      <span class="lang" key="share"></span>
+      <div>
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/share.png"
+        />
+      </div>
+    </div>
+    <div class="join">
+      <span
+        ><div class="attendPic">
+          <img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/grayLoader.gif"
+          /></div
+      ></span>
+    </div>
+  </div>
+
+  <div class="c_write">
+    <h2 class="lang" key="acti_message"></h2>
+    <textarea id="message_text" placeholder="留下你的話"></textarea>
+    <div class="leaveM">
+      <div class="sendM"><span class="lang" key="send"></span></div>
+    </div>
+  </div>
+
+  <div class="c_message"></div>
+</div>
+
+<div class="replycontent">
+  <div class="keyinUpper">
+    <div class="floorContent">
+      <div class="lang" key="reply"></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="replyclose"><span>×</span></div>
+  </div>
+  <div class="keyinreply">
+    <input id="reply_text" type="text" placeholder="留言" />
+    <div><span class="lang" key="send"></span></div>
+    <div></div>
+  </div>
+</div>
+{% endblock content%} {% block script %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{api}}&libraries=places&callback=initMap"></script>
+<script type="text/javascript" src="/static/js/event.js"></script>
+{% endblock script%}

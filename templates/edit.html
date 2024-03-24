@@ -1,0 +1,226 @@
+{% extends 'base.html' %} {% block link%}
+<link rel="stylesheet" type="text/css" href="/static/css/edit.css?v=0.0.244" />
+
+<meta property="og:type" content="website" />
+<meta
+  property="og:image"
+  content="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/webicon225.png"
+/>
+<meta property="og:title" content="Meetgather" />
+<meta property="og:description" content="Edit event" />
+
+{% endblock link%} {% block title%}
+<title></title>
+{% endblock title%} {% block content%}
+<div class="modal6">
+  <div class="popup6">
+    <div class="view_row">
+      <div class="view_title"><span class="lang" key="acti_pho"></span></div>
+      <div class="view_photo">
+        <div class="photo">
+          <img
+            src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/upload.svg"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="view_row">
+      <div class="view_title"><span class="lang" key="acti_name"></span></div>
+      <div class="view_gathername"></div>
+    </div>
+
+    <div class="view_row">
+      <div class="view_title"><span class="lang" key="acti_descp"></span></div>
+      <div class="view_descp"></div>
+    </div>
+
+    <div class="view_row">
+      <div class="view_title"><span class="lang" key="acti_cate"></span></div>
+      <div class="view_cate"></div>
+    </div>
+
+    <div class="view_row">
+      <div class="view_title"><span class="lang" key="acti_num"></span></div>
+      <div class="view_num"></div>
+    </div>
+
+    <div class="view_row">
+      <div class="view_title"><span class="lang" key="acti_add"></span></div>
+      <div class="view_city"></div>
+      <div class="view_add"></div>
+    </div>
+
+    <div class="view_row">
+      <div class="view_title">
+        <span class="lang" key="acti_tm"><span class="gmt">GMT+8</span></span>
+      </div>
+      <div class="view_tm"></div>
+    </div>
+
+    <div class="view_send">
+      <div class="back"><span class="lang" key="back to edit"></span></div>
+      <div class="send"><span class="lang" key="send"></span></div>
+    </div>
+  </div>
+</div>
+
+<form enctype=multipart/form-data id="form">
+<div class="acti_pho">
+  <div class="title lang" key="edit_pho"></div>
+  <div class="enter">
+    <div class="activity_photo">
+      <div class="photo">
+        <img
+          src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/upload.svg"
+        />
+      </div>
+    </div>
+    <span class="notice"></span>
+    <input type="file" id="file" name="picture" accept="image/*" /><input
+      type="submit"
+      value="送出"
+      id="send"
+    />
+  </div>
+</div>
+
+<div class="acti_name">
+  <div class="title lang" key="edit_name"></div>
+  <div class="enter">
+    <input type="text" placeholder="請填寫活動名稱" id="gathername" />
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="acti_descp">
+  <div class="title lang" key="edit_descp"></div>
+  <div class="enter">
+    <textarea id="story" name="story" placeholder="請描述活動內容"></textarea>
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="acti_cate">
+  <div class="title lang" key="edit_cate"></div>
+  <div class="enter">
+    <select name="category" class="category">
+      <option value="" class="lang" key="cate_empty"></option>
+      <option value="0" class="lang" key="cate_0"></option>
+      <option value="1" class="lang" key="cate_1"></option>
+      <option value="2" class="lang" key="cate_2"></option>
+      <option value="3" class="lang" key="cate_3"></option>
+      <option value="4" class="lang" key="cate_4"></option>
+      <option value="5" class="lang" key="cate_5"></option>
+      <option value="6" class="lang" key="cate_6"></option>
+      <option value="7" class="lang" key="cate_7"></option>
+      <option value="8" class="lang" key="cate_8"></option>
+      <option value="9" class="lang" key="cate_9"></option>
+      <option value="10" class="lang" key="cate_10"></option>
+      <option value="11" class="lang" key="cate_11"></option>
+      <option value="12" class="lang" key="cate_12"></option>
+      <option value="13" class="lang" key="cate_13"></option>
+    </select>
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="acti_num">
+  <div class="title lang" key="edit_num"></div>
+  <div class="enter">
+    <input
+      type="number"
+      min="2"
+      placeholder="請填寫活動人數上限"
+      id="gathernumber"
+      inputmode="numeric"
+    />
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="acti_add">
+  <div class="title lang" key="edit_add"></div>
+  <div class="enter">
+    <select name="city" class="city">
+      <option value="" class="lang" key="city_empty"></option>
+      <option value="0" class="lang" key="city_0"></option>
+      <option value="1" class="lang" key="city_1"></option>
+      <option value="2" class="lang" key="city_2"></option>
+      <option value="3" class="lang" key="city_3"></option>
+      <option value="4" class="lang" key="city_4"></option>
+      <option value="5" class="lang" key="city_5"></option>
+      <option value="6" class="lang" key="city_6"></option>
+      <option value="7" class="lang" key="city_7"></option>
+      <option value="8" class="lang" key="city_8"></option>
+      <option value="9" class="lang" key="city_9"></option>
+      <option value="10" class="lang" key="city_10"></option>
+      <option value="11" class="lang" key="city_11"></option>
+      <option value="12" class="lang" key="city_12"></option>
+      <option value="13" class="lang" key="city_13"></option>
+      <option value="14" class="lang" key="city_14"></option>
+      <option value="15" class="lang" key="city_15"></option>
+      <option value="16" class="lang" key="city_16"></option>
+      <option value="17" class="lang" key="city_17"></option>
+      <option value="18" class="lang" key="city_18"></option>
+      <option value="19" class="lang" key="city_19"></option>
+      <option value="20" class="lang" key="city_20"></option>
+      <option value="21" class="lang" key="city_21"></option>
+      <option value="22" class="lang" key="city_22"></option>
+    </select>
+
+    <div class="searchmap">
+      <input type="text" id="location" placeholder="輸入活動地點" />
+    </div>
+    <div id="map"></div>
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="acti_tm">
+  <div>
+    <span class="title lang" key="edit_tm"></span>
+    <span class="gmt">GMT+8</span>
+  </div>
+  <div class="enter">
+    <input type="datetime-local" id="localtime" />
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="acti_view">
+  <div class="abandon"><div class="lang" key="abandon"></div></div>
+  <div class="view">
+    <div class="preview lang" key="preview"></div>
+    <div class="previewload">
+      <img
+        src="https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/grayLoader.gif"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="success">
+  <div class="section">
+    <div class="tn lang" key="editevent"></div>
+    <div class="word lang" key="success"></div>
+    <div class="close lang" key="OK"></div>
+  </div>
+</div>
+
+<div class="fail">
+  <div class="section">
+    <div class="tn lang" key="editevent"></div>
+    <div class="word lang" key="fail"></div>
+    <div class="close lang" key="OK"></div>
+  </div>
+</div>
+{% endblock content%} {% block script %}
+<script type="text/javascript" src="/static/js/map.js"></script>
+<script type="text/javascript" src="/static/js/evedit.js"></script>
+<script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key={{api}}&libraries=places&callback=initMap"
+></script>
+{% endblock script%}

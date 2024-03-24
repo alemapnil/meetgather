@@ -1,0 +1,113 @@
+.calender {
+  width: 324px;
+  height: 330px;
+  background-color: white;
+  border: 1px solid #bebebe;
+  border-radius: 10px;
+  position: relative;
+  top: 0px;
+  z-index: 1;
+
+  display: none;
+}
+
+.month {
+  height: 60px;
+  background-color: #f6d819;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.month i {
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+  margin: auto 10px auto 10px;
+}
+
+.month h1 {
+  font-size: 25px;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+}
+.month p {
+  font-size: 16px;
+  color: white;
+  margin: 0;
+}
+.weekdays {
+  width: 100%;
+  height: 30px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.weekdays div {
+  width: calc(100% / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f6d819;
+
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.days {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.days div {
+  width: calc(100% / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
+  border-radius: 50%;
+
+  font-size: 14px;
+  height: 40px;
+}
+
+.days div:hover:not(.next-date):not(.past):not(.prev-date) {
+  cursor: pointer;
+}
+
+.pick {
+  background-color: #f6d819;
+}
+
+.past {
+  color: #bebebe;
+  opacity: 0.3;
+}
+
+.current {
+  color: black;
+}
+
+.prev-date,
+.next-date {
+  color: #bebebe;
+}
+.today {
+  background-color: #bebebe;
+}
+
+.notoday {
+}
+
+@media (max-width: 600px) {
+  .calender {
+    margin: 0 auto;
+  }
+}

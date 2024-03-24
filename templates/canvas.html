@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resize Images Before Upload</title>
+  </head>
+  <body>
+    <form id="form" enctype=multipart/form-data>
+    <div>
+      圖片檔案<input type="file" name="picture" id="upload" accept="image/*" />
+    </div>
+    <div><input type="submit" value="送出" id="send" /></div>
+
+    <div>
+      <img id="input" />
+    </div>
+    <div>
+      <img id="output" />
+    </div>
+    <script src="/static/js/canvas.js"></script>
+  </body>
+</html>
