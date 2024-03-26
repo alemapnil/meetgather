@@ -5,6 +5,6 @@ I’m an adventurous person who would like to break my comfort zone to experienc
 Most importantly, I’d like to showcase my full-end skills of software engineering and proficiency in AWS.
 ## Technologies 
 #### Front ends
-* HTML, CSS, JavaScript:  
+* HTML, CSS, JavaScript  
 I developed the web without using any templates on the internet. I did it from the scratch on my own.
 
