@@ -3,6 +3,6 @@ A platform you’re able to form any kind of activities to invite netizens to pa
 ## Motivation
 I’m an adventurous person who would like to break my comfort zone to experience the world. People who want to experience new things or make new friends can utilize the web to make their lives splendid.
 Most importantly, I’d like to showcase my full-end skills of software engineering and proficiency in AWS.
-### Technologies 
-####Front ends
+## Technologies 
+######Front ends
 
