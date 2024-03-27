@@ -4,7 +4,7 @@ A platform you’re able to form any kind of activities to invite netizens to pa
 I’m an adventurous person who would like to break my comfort zone to experience the world. People who want to experience new things or make new friends can utilize the web to make their lives splendid.
 Most importantly, I’d like to showcase my full-end skills of software engineering and proficiency in AWS.
 ## Technologies 
-#### Front ends
+### Front ends
 * ###### HTML, CSS, JavaScript  
 I developed the web without using any templates on the internet. I did it from the scratch on my own.
 * ###### Ajax  
@@ -15,7 +15,7 @@ Simplifying HTML templates with Jinja
 Adapting web for any size of screen
 * ###### Open Graph Protocol  
 Adding OG properties to have distinctive graphics and descriptions when sharing on social media
-#### Back ends
+### Back ends
 * ###### Python Flask
 Establishing server with Flask
 * ###### RESTful API
