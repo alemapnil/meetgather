@@ -15,6 +15,8 @@ Simplifying HTML templates with Jinja
 Adapting web for any size of screen
 * ###### Open Graph Protocol  
 Adding OG properties to have distinctive graphics and descriptions when sharing on social media
+* ###### Google Maps API
+Appying Google map to show the acurate position of events
 ### Back ends
 * ###### Python Flask
 Establishing server with Flask
@@ -33,11 +35,8 @@ Creating a domain name, meetgather.site, on GoDaddy and connecting it with IP ad
 * ###### SSL certificate
 Secure URL with https by Certbot
 * ###### Docker
-Writing Dockerfile and making an image and run the image on EC2 without setting up environment.
+Writing Dockerfile, making an image and run the image on EC2 without setting up environment.
 * ###### Third-party sign-in
 Using Google OAuth 2.0 to allow users to login without inventing an unique password
-* ###### Google Maps API
-Appying Google map to show the acurate position of events
-
 
 MySQL, Redis, 
