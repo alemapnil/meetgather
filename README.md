@@ -22,7 +22,15 @@ Establishing server with Flask
 Making use of RESTful API to let front-ends read, create, patch or delete data. All API URLs are displayed on second.py. 
 * ###### MVC
 Separating different functions in each part. Models are wraped in models.db.py, views are in static and templates folders, controllers are in app.py
+* ###### Smtplib
+Sending emails with Python via Zoho Mail when hosts deliver messages to attendees
+* ###### JWT
+Producing a limited token when an user login, which is a credential for server to identify the user 
+* ###### Nginx
+Utilizing a reverse proxy to conceal IP address of the web with a domain name
+* ###### Domain Name
+Creating a domain name, meetgather.site, on GoDaddy and connecting it with IP address of Meetgather
+* ###### SSL
 
-
-
-MySQL, Redis, , MVC, Smtplib, JWT, Docker, Nginx, Domain Name, SSL, Google OAuth 2.0, Google Maps API
+MySQL, Redis, 
+Docker, SSL, Google OAuth 2.0, Google Maps API
