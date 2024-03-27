@@ -6,7 +6,7 @@ Most importantly, I’d like to showcase my full-end skills of software engineer
 ## Technologies 
 #### Front ends
 * HTML, CSS, JavaScript
-I developed the web without using any templates on the internet. I did it from the scratch on my own.
+  I developed the web without using any templates on the internet. I did it from the scratch on my own.
 * Ajax
-Using async、await to fetch api and get data from server.
+  Using async、await to fetch api and get data from server.
 
