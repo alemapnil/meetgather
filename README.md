@@ -11,7 +11,7 @@ I developed the web without using any templates on the internet. I did it from t
 Using async、await to fetch api and get data from server
 * Jinja  
 Simplifying HTML templates with Jinja
-* RWD
+* RWD  
 Adapting web for any size of screen
 * Open Graph Protocol  
 Adding OG properties to have distinctive graphics and descriptions when sharing on social media
