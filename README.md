@@ -21,7 +21,7 @@ Establishing server with Flask
 * ###### RESTful API
 Making use of RESTful API to let front-ends read, create, patch or delete data. All API URLs are displayed on second.py. 
 * ###### MVC
-Seperating different functions in each part. Models are wraped in models.db.py, views are in static and templates folders, controllers are in app.py
+Separating different functions in each part. Models are wraped in models.db.py, views are in static and templates folders, controllers are in app.py
 
 
 
