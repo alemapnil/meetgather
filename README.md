@@ -5,13 +5,18 @@ I’m an adventurous person who would like to break my comfort zone to experienc
 Most importantly, I’d like to showcase my full-end skills of software engineering and proficiency in AWS.
 ## Technologies 
 #### Front ends
-* ###### HTML, CSS, JavaScript  
+###### HTML, CSS, JavaScript  
 I developed the web without using any templates on the internet. I did it from the scratch on my own.
-* ###### Ajax  
+###### Ajax  
 Using async、await to fetch api and get data from server
-* ###### Jinja  
+###### Jinja  
 Simplifying HTML templates with Jinja
-* ###### RWD  
+###### RWD  
 Adapting web for any size of screen
-* ###### Open Graph Protocol  
+###### Open Graph Protocol  
 Adding OG properties to have distinctive graphics and descriptions when sharing on social media
+#### Front ends
+
+
+
+Python Flask, MySQL, Redis, RESTful API, MVC, Smtplib, JWT, Docker, Nginx, Domain Name, SSL, Google OAuth 2.0, Google Maps API
