@@ -33,8 +33,11 @@ Creating a domain name, meetgather.site, on GoDaddy and connecting it with IP ad
 * ###### SSL certificate
 Secure URL with https by Certbot
 * ###### Docker
-* ###### Google OAuth 2.0
+Writing Dockerfile and making an image and run the image on EC2 without setting up environment.
+* ###### Third-party sign-in
+Using Google OAuth 2.0 to allow users to login without inventing an unique password
 * ###### Google Maps API
+Appying Google map to show the acurate position of events
 
 
 MySQL, Redis, 
