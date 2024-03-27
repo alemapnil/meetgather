@@ -38,5 +38,15 @@ Secure URL with https by Certbot
 Writing Dockerfile, making an image and run the image on EC2 without setting up environment.
 * ###### Third-party sign-in
 Using Google OAuth 2.0 to allow users to login without inventing an unique password
+### AWS 
+* ###### EC2
+Developing with a computer on EC2, using the Ubuntu 22.04.4 LTS system.
+
+
+
+
+
+
 
 MySQL, Redis, 
+EC2, RDS, S3, CloudFront, lastiCache
