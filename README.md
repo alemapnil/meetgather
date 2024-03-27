@@ -30,7 +30,11 @@ Producing a limited token when an user login, which is a credential for server t
 Utilizing a reverse proxy to conceal IP address of the web with a domain name
 * ###### Domain Name
 Creating a domain name, meetgather.site, on GoDaddy and connecting it with IP address of Meetgather
-* ###### SSL
+* ###### SSL certificate
+Secure URL with https by Certbot
+* ###### Docker
+* ###### Google OAuth 2.0
+* ###### Google Maps API
+
 
 MySQL, Redis, 
-Docker, SSL, Google OAuth 2.0, Google Maps API
