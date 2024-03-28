@@ -46,5 +46,6 @@ Deploying MySQL to store and preserve data.
 * ###### lastiCache
 Running Redis to cache data for faster speed instead of requeasting data to RDS everytime.  
 * ###### S3
-Storing 
+Storing photos of activities and personal profiles that users upload
 * ###### CloudFront
+Displaying photos faster with CDN in AWS
