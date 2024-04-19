@@ -127,10 +127,10 @@ def create_post():
     try:
         acti_pho, acti_name = (
             request.files["acti_pho"],
-            request.form["acti_name"].strip(),
+            request.form["acti_name"].strip().capitalize(),
         )
         acti_story, acti_cate = (
-            request.form["acti_story"].strip(),
+            request.form["acti_story"].strip().capitalize(),
             request.form["acti_cate"],
         )
         acti_num, acti_city = request.form["acti_num"], request.form["acti_city"]
@@ -262,9 +262,9 @@ def edit_post():
             print()
 
         acti_id, acti_name = request.form["acti_id"], request.form["acti_name"].strip(
-        )
+        ).capitalize()
         acti_story, acti_cate = (
-            request.form["acti_story"].strip(),
+            request.form["acti_story"].strip().capitalize(),
             request.form["acti_cate"],
         )
         acti_num, acti_city = request.form["acti_num"], request.form["acti_city"]
