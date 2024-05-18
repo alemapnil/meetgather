@@ -31,9 +31,9 @@ Most importantly, I’d like to showcase my full-stack developing skills and pro
 - ###### Python Flask
   Establish server with Flask
 - ###### RESTful API
-  Make use of RESTful API to let front-ends read, create, patch or delete data. All API URLs are displayed on second.py.
+  Make use of RESTful API to let front-ends read, create, patch or delete data. All APIs URLs are displayed on second.py.
 - ###### MVC
-  Separate different functions in each part. Models are wraped in models.db.py, views are in static and templates folders, controllers are in app.py
+  Separate different functions in each part. Models are wrapped in models.db.py, views are in static and templates folders, controllers are in app.py
 - ###### Smtplib
   Send emails with Python via Zoho Mail when hosts deliver messages to attendees
 - ###### JWT
