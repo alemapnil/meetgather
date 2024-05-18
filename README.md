@@ -14,17 +14,17 @@ Most importantly, I’d like to showcase my full-stack developing skills and pro
 - ###### HTML, CSS, JavaScript
   I developed the web without using any templates on the internet. I did it from the scratch on my own.
 - ###### Ajax
-  Use async、await to fetch api and get data from server
+  Use async, await to fetch api and get data from server
 - ###### Jinja
   Simplify HTML templates with Jinja
 - ###### i18n
-  The web can be adapted to Engilish and Chinese
+  The web can be adapted to English and Chinese
 - ###### RWD
   Adapt web to any size of screen
 - ###### Open Graph Protocol
   Add OG properties to have distinctive graphics and descriptions when sharing on social media
 - ###### Google Maps API
-  Apply Google map to show the acurate position of events
+  Apply Google map to show the accurate position of events
 
 ### Back ends
 
