@@ -259,7 +259,6 @@ def edit_post():
             acti_pho = None
         else:
             acti_pho = request.files["acti_pho"]
-            print()
 
         acti_id, acti_name = request.form["acti_id"], request.form["acti_name"].strip(
         ).capitalize()

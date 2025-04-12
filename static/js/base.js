@@ -59,7 +59,7 @@ for (let i = 0; i < document.cookie.split(";").length; i++) {
   if (document.cookie.split(";")[i].includes("language")) {
     language = document.cookie
       .split(";")
-      [i].replace("language=", "")
+    [i].replace("language=", "")
       .replace(spaceOff, "");
   }
 }
@@ -96,7 +96,7 @@ function langCookie(para) {
     if (document.cookie.split(";")[i].includes("language")) {
       language = document.cookie
         .split(";")
-        [i].replace("language=", "")
+      [i].replace("language=", "")
         .replace(spaceOff, "");
     }
   }
@@ -118,7 +118,7 @@ function English() {
         for (let l = 0; l < document.querySelectorAll(".lang").length; l++) {
           let langName = document
             .querySelectorAll(".lang")
-            [l].getAttribute("key");
+          [l].getAttribute("key");
           document.querySelectorAll(".lang")[l].innerHTML =
             english_i18n[langName];
         }
@@ -132,7 +132,7 @@ function English() {
   for (let l = 0; l < document.querySelectorAll(".keyword").length; l++) {
     document
       .querySelectorAll(".keyword")
-      [l].setAttribute("placeholder", "Search for keyword");
+    [l].setAttribute("placeholder", "Search for keyword");
   }
 }
 //轉中文
@@ -152,7 +152,7 @@ function Chinese() {
         for (let l = 0; l < document.querySelectorAll(".lang").length; l++) {
           let langName = document
             .querySelectorAll(".lang")
-            [l].getAttribute("key");
+          [l].getAttribute("key");
           document.querySelectorAll(".lang")[l].innerHTML =
             chinese_i18n[langName];
         }
@@ -166,7 +166,7 @@ function Chinese() {
   for (let l = 0; l < document.querySelectorAll(".keyword").length; l++) {
     document
       .querySelectorAll(".keyword")
-      [l].setAttribute("placeholder", "輸入活動關鍵字");
+    [l].setAttribute("placeholder", "輸入活動關鍵字");
   }
 }
 
@@ -226,7 +226,7 @@ async function load() {
       return response.json();
     })
     .catch((error) => console.error("Error:", error))
-    .then(function (dict) {});
+    .then(function (dict) { });
 }
 
 //登入者資料。已登入時，右上角要做相應變化，還有token過期時的調整
@@ -267,10 +267,10 @@ async function googleInfo(para) {
           document.querySelectorAll(".shot")[i].appendChild(shot_img);
           document
             .querySelectorAll(".shot")
-            [i].setAttribute("member_id", dict["member_id"]);
+          [i].setAttribute("member_id", dict["member_id"]);
           document
             .querySelectorAll(".myprofile a")
-            [i].setAttribute("href", `/profile?member=${dict["member_id"]}`);
+          [i].setAttribute("href", `/profile?member=${dict["member_id"]}`);
         }
 
         //通知數字變化
@@ -426,18 +426,18 @@ function getNotice(page) {
         ) {
           document
             .querySelectorAll(".rowbox .row")
-            [r].addEventListener("click", function (e) {
-              let noticeid = this.getAttribute("noticeid");
-              let name = notification[noticeid]["name"];
-              if (name === "a") {
-                let board_id = notification[noticeid]["content"]["board_id"];
-                noticeMsg_A(board_id);
-              } else if (name === "b") {
-                let reply_id = notification[noticeid]["content"]["reply_id"];
-                noticeMsg_B(reply_id);
-              }
-              e.stopPropagation();
-            });
+          [r].addEventListener("click", function (e) {
+            let noticeid = this.getAttribute("noticeid");
+            let name = notification[noticeid]["name"];
+            if (name === "a") {
+              let board_id = notification[noticeid]["content"]["board_id"];
+              noticeMsg_A(board_id);
+            } else if (name === "b") {
+              let reply_id = notification[noticeid]["content"]["reply_id"];
+              noticeMsg_B(reply_id);
+            }
+            e.stopPropagation();
+          });
         }
 
         if (page === 0 && notice.length === 0) {
@@ -468,10 +468,10 @@ function getNotice(page) {
         if (
           (screen.width <= 780 &&
             document.querySelector(".modal11 .rowbox").offsetHeight <=
-              screen.height) ||
+            screen.height) ||
           (screen.width > 780 &&
             document.querySelector(".floatRight .tail").offsetHeight <=
-              document.querySelector(".floatRight .rowbox").offsetHeight)
+            document.querySelector(".floatRight .rowbox").offsetHeight)
         ) {
           if (notice_nextPage) {
             if (noticePage_record.includes(notice_nextPage)) {
@@ -1120,14 +1120,14 @@ document.querySelector(".logoutB").addEventListener("click", logout);
 for (let k = 0; k < document.querySelectorAll(".keyword").length; k++) {
   document
     .querySelectorAll(".keyword")
-    [k].addEventListener("focusin", function () {
-      this.style.borderColor = "#f6d819";
-    });
+  [k].addEventListener("focusin", function () {
+    this.style.borderColor = "#f6d819";
+  });
   document
     .querySelectorAll(".keyword")
-    [k].addEventListener("focusout", function () {
-      this.style.borderColor = "#BEBEBE";
-    });
+  [k].addEventListener("focusout", function () {
+    this.style.borderColor = "#BEBEBE";
+  });
 }
 
 //關鍵字放大鏡
@@ -1209,19 +1209,19 @@ function keywordSearch(index) {
 for (let k = 0; k < document.querySelectorAll(".search button").length; k++) {
   document
     .querySelectorAll(".search button")
-    [k].addEventListener("click", function () {
-      keywordSearch(k);
-    });
+  [k].addEventListener("click", function () {
+    keywordSearch(k);
+  });
   // Execute a function when the user presses a key on the keyboard
   document
     .querySelectorAll(".keyword")
-    [k].addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        // If the user presses the "Enter" key on the keyboard
-        event.preventDefault(); // Cancel the default action, if needed
-        keywordSearch(k); // Trigger the button element with a click
-      }
-    });
+  [k].addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      // If the user presses the "Enter" key on the keyboard
+      event.preventDefault(); // Cancel the default action, if needed
+      keywordSearch(k); // Trigger the button element with a click
+    }
+  });
 }
 
 //搜尋欄中出現輸入的關鍵字
@@ -1311,9 +1311,9 @@ function noticeLoad() {
 for (let r = 0; r < document.querySelectorAll(".rowbox row").length; r++) {
   document
     .querySelectorAll(".rowbox row")
-    [r].addEventListener("click", function (e) {
-      e.stopPropagation();
-    });
+  [r].addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
 }
 
 function padZero(num) {

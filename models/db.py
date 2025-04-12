@@ -214,17 +214,15 @@ redis_pool = redis.connection.ConnectionPool(
 
 class Redis_link:
     def __init__(self):
-        conn = redis.Redis(connection_pool=redis_pool)
-        self.conn = conn
+        self.conn = redis.Redis(connection_pool=redis_pool)
+        self.conn.ping()
 
     def del_memberID(self, query_member_id):
         if self.conn.exists(query_member_id):
             self.conn.delete(query_member_id)
+        self.conn.close()
 
-    def pool_disconnect(self):
-        self.conn.connection_pool.disconnect()
-
-    def getData(self, query_member_id):
+    def getData(self, query_member_id): # query_member_id 資料型態為int
         if self.conn.exists(query_member_id):  #
             decode_list = [
                 i.decode("utf-8") for i in self.conn.lrange(query_member_id, 0, -1)
@@ -240,6 +238,7 @@ class Redis_link:
 
         else:
             data = {"error": True, "message": "Redis沒此會員ID"}
+        self.conn.close()
         return data
 
     def createData(
@@ -262,7 +261,8 @@ class Redis_link:
             aboutme,
             alterphoto,
         )
-        self.conn.expire(query_member_id, 43200)
+        self.conn.expire(query_member_id, 600) # 生存時間十分鐘
+        self.conn.close()
 
 
 class Members:
@@ -298,7 +298,6 @@ class Members:
                 if result[2] != self.name or result[3] != self.photo:
                     r = Redis_link()
                     r.del_memberID(result[0])
-                    r.pool_disconnect()
         except:
             print(traceback.format_exc())
             data = {"error": True, "message": "伺服器內部錯誤"}
@@ -320,7 +319,6 @@ class Members:
         r = Redis_link()
         redisData = r.getData(query_member_id)
         if "ok" in redisData:
-            r.pool_disconnect()
             return redisData
 
         try:  # DATABASE
@@ -346,8 +344,6 @@ class Members:
                     result[5],
                     result[6],
                 )
-                r.pool_disconnect()
-
         except:
             print(traceback.format_exc())
             data = {"error": True, "message": "伺服器內部錯誤"}
@@ -379,7 +375,6 @@ class Members:
             else:
                 r = Redis_link()  # redis
                 r.del_memberID(result[0])
-                r.pool_disconnect()
 
                 if result[4] != newname:
                     command = (

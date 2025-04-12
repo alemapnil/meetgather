@@ -62,10 +62,10 @@ async function profile() {
         if ('invalidToken' in dict || 'error' in dict) {
           window.location.href = '/'
         } else if ('ok' in dict) {
-          ;(googlename = dict['message'][2]),
+          ; (googlename = dict['message'][2]),
             (googlePhoto = dict['message'][3]),
             (altername = dict['message'][4])
-          ;(aboutme = dict['message'][5]), (alterphoto = dict['message'][6])
+            ; (aboutme = dict['message'][5]), (alterphoto = dict['message'][6])
 
           if (alterphoto !== null) {
             document.querySelector(
@@ -116,9 +116,8 @@ document.getElementById('myname_text').addEventListener('blur', function () {
 })
 //姓名字數管控
 document.getElementById('myname_text').addEventListener('input', function () {
-  document.querySelector('.myname_edit span').innerHTML = `${
-    20 - this.value.length
-  }`
+  document.querySelector('.myname_edit span').innerHTML = `${20 - this.value.length
+    }`
 })
 
 //輸入自介聚焦
@@ -131,9 +130,8 @@ document.getElementById('myself_text').addEventListener('blur', function () {
 })
 //自介字數管控
 document.getElementById('myself_text').addEventListener('input', function () {
-  document.querySelector('.myself_edit span').innerHTML = `${
-    250 - this.value.length
-  }`
+  document.querySelector('.myself_edit span').innerHTML = `${250 - this.value.length
+    }`
 })
 
 //點個人檔案取消
@@ -453,17 +451,15 @@ function hostDisplay(member_url, page) {
           let eventHour = String(eventTime.getHours()).padStart(2, '0')
           let eventYear = eventTime.getFullYear()
           if (language === 'en') {
-            ev_dayStr = `${days_en[eventTime.getDay()]}, ${
-              month_en[eventTime.getMonth()]
-            } ${eventDate} · ${eventHour}:${String(
-              eventTime.getMinutes(),
-            ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
+            ev_dayStr = `${days_en[eventTime.getDay()]}, ${month_en[eventTime.getMonth()]
+              } ${eventDate} · ${eventHour}:${String(
+                eventTime.getMinutes(),
+              ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
           } else if (language === 'zh') {
-            ev_dayStr = `${days_cn[eventTime.getDay()]}, ${
-              month_cn[eventTime.getMonth()]
-            }${eventDate} · ${eventHour}:${String(
-              eventTime.getMinutes(),
-            ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
+            ev_dayStr = `${days_cn[eventTime.getDay()]}, ${month_cn[eventTime.getMonth()]
+              }${eventDate} · ${eventHour}:${String(
+                eventTime.getMinutes(),
+              ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
           }
 
           let time = document.createElement('div')
@@ -484,13 +480,11 @@ function hostDisplay(member_url, page) {
           let host = document.createElement('div')
           host.className = 'host'
           if (language === 'en') {
-            host.innerHTML = `<span>${
-              english_i18n[`city_${_12event[e][6]}`]
-            }</span><span> | ${name}</span>`
+            host.innerHTML = `<span>${english_i18n[`city_${_12event[e][6]}`]
+              }</span><span> | ${name}</span>`
           } else if (language === 'zh') {
-            host.innerHTML = `<span>${
-              chinese_i18n[`city_${_12event[e][6]}`]
-            }</span><span> | ${name}</span>`
+            host.innerHTML = `<span>${chinese_i18n[`city_${_12event[e][6]}`]
+              }</span><span> | ${name}</span>`
           }
           section.appendChild(host)
 
@@ -593,17 +587,15 @@ function joinDisplay(member_url, page) {
           let eventHour = String(eventTime.getHours()).padStart(2, '0')
           let eventYear = eventTime.getFullYear()
           if (language === 'en') {
-            ev_dayStr = `${days_en[eventTime.getDay()]}, ${
-              month_en[eventTime.getMonth()]
-            } ${eventDate} · ${eventHour}:${String(
-              eventTime.getMinutes(),
-            ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
+            ev_dayStr = `${days_en[eventTime.getDay()]}, ${month_en[eventTime.getMonth()]
+              } ${eventDate} · ${eventHour}:${String(
+                eventTime.getMinutes(),
+              ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
           } else if (language === 'zh') {
-            ev_dayStr = `${days_cn[eventTime.getDay()]}, ${
-              month_cn[eventTime.getMonth()]
-            }${eventDate} · ${eventHour}:${String(
-              eventTime.getMinutes(),
-            ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
+            ev_dayStr = `${days_cn[eventTime.getDay()]}, ${month_cn[eventTime.getMonth()]
+              }${eventDate} · ${eventHour}:${String(
+                eventTime.getMinutes(),
+              ).padStart(2, '0')}, ${eventYear} <span>${timezone}</span>`
           }
 
           let time = document.createElement('div')
@@ -625,13 +617,11 @@ function joinDisplay(member_url, page) {
           host.className = 'host'
           //
           if (language === 'en') {
-            host.innerHTML = `<span>${
-              english_i18n[`city_${_12event[e][9]}`]
-            }</span><span> | ${name}</span>`
+            host.innerHTML = `<span>${english_i18n[`city_${_12event[e][9]}`]
+              }</span><span> | ${name}</span>`
           } else if (language === 'zh') {
-            host.innerHTML = `<span>${
-              chinese_i18n[`city_${_12event[e][9]}`]
-            }</span><span> | ${name}</span>`
+            host.innerHTML = `<span>${chinese_i18n[`city_${_12event[e][9]}`]
+              }</span><span> | ${name}</span>`
           }
           section.appendChild(host)
 

@@ -211,17 +211,21 @@ def edit(editID):
 def login():
     google = oauth.create_client("google")
     redirect_uri = url_for("authorize", _external=True)
+
+    print(request.headers['Host'])
     if 'localhost' in request.headers['Host']:  # 在本機上跑
         redirect_uri = redirect_uri.replace('https', 'http')
     else:
         redirect_uri = redirect_uri.replace('http', 'https')
     print('此為google轉址URL>>', redirect_uri)
     currentpage = request.cookies.get("currentpage")
+    print('此為Cookie登記的currentpage>>', currentpage)
     return google.authorize_redirect(redirect_uri)
 
 
 @app.route("/authorize")
 def authorize():
+    print('進入/authorize')
     google = oauth.create_client("google")
     token = google.authorize_access_token()
     resp = google.get("userinfo")
