@@ -51,9 +51,22 @@ async function activity() {
   document.getElementById('box2id').classList.add('box2_event')
   id = current_url.split('/')[current_url.split('/').length - 1]
   history.replaceState({ modal: null }, 'Default state', `./${id}`)
-
-  ev_title = document.querySelector('.ev_title').innerHTML
-  document.title = `${ev_title} | Meetgather` // 網頁標題
+  //
+  await fetch(`/api/event/${id}`) //取得活動資訊
+    .then(function (response) {
+      if (response.ok) {
+        return response.json()
+      }
+    })
+    .catch((error) => {
+      console.error('GET /api/event 錯誤:', error)
+    })
+    .then(function (dict) {
+      if ('ok' in dict) {
+        ev_title = dict['activity'][2];
+      }
+    })
+  //
   ev_attend = parseInt(document.querySelector('.c_now_attend_p').innerHTML)
   ev_location = parseInt(document.querySelector('.spot_word').innerHTML)
 
@@ -127,13 +140,11 @@ async function activity() {
   let UTCTm = document.querySelector('.header .ev_tm').innerHTML
   let ev_tm = new Date(UTCTm + 'Z')
   if (language === 'en') {
-    ev_dayStr = `${days_en[ev_tm.getDay()]}, ${
-      month_en[ev_tm.getMonth()]
-    } ${String(ev_tm.getDate()).padStart(2, '0')}, ${ev_tm.getFullYear()}`
+    ev_dayStr = `${days_en[ev_tm.getDay()]}, ${month_en[ev_tm.getMonth()]
+      } ${String(ev_tm.getDate()).padStart(2, '0')}, ${ev_tm.getFullYear()}`
   } else if (language === 'zh') {
-    ev_dayStr = `${days_cn[ev_tm.getDay()]}, ${
-      month_cn[ev_tm.getMonth()]
-    } ${String(ev_tm.getDate()).padStart(2, '0')}, ${ev_tm.getFullYear()}`
+    ev_dayStr = `${days_cn[ev_tm.getDay()]}, ${month_cn[ev_tm.getMonth()]
+      } ${String(ev_tm.getDate()).padStart(2, '0')}, ${ev_tm.getFullYear()}`
   }
   ev_HrMin = `${String(ev_tm.getHours()).padStart(2, '0')}:${String(
     ev_tm.getMinutes(),
@@ -543,10 +554,10 @@ function loadMsg(para, access_token) {
         ) {
           document
             .querySelectorAll('.hideReply .word')
-            [d].removeEventListener('click', conceal)
+          [d].removeEventListener('click', conceal)
           document
             .querySelectorAll('.hideReply .word')
-            [d].addEventListener('click', conceal)
+          [d].addEventListener('click', conceal)
         }
       }
     })
@@ -796,7 +807,7 @@ function replyLine(
   let mainUrl = current_url.split('/')[0] + '//' + current_url.split('/')[2]
   let data_memberid = document
     .querySelectorAll('.c_message ._2line ._2message_photo')
-    [lastIndex].getAttribute('memberid')
+  [lastIndex].getAttribute('memberid')
 }
 
 //製作第一個節點留言
@@ -948,6 +959,7 @@ function googleCalender(para) {
     .replaceAll(':', '')
   let calender_detail = `更多資訊請看 ${window.location.href}`.replace(' ', '+')
   google_calender = `${calendar_url}text=${calender_title}&dates=${calender_date}/${calender_date}&location=${calender_add}&details=${calender_detail}&ctz=Asia/Taipei`
+  console.log(google_calender)
 }
 
 // google map
@@ -1017,8 +1029,8 @@ document
                 )
                 selectBox(modal)
 
-                //更新人數
-                ;(ev_attend = dict['allJoinNum']), (namelist = dict['namelist'])
+                  //更新人數
+                  ; (ev_attend = dict['allJoinNum']), (namelist = dict['namelist'])
                 document.querySelector(
                   '.c_now_attend_p',
                 ).innerHTML = `${ev_attend}`
@@ -1120,9 +1132,9 @@ document
                     document.querySelector(
                       '.c_join  div:nth-of-type(2n) span',
                     ).className = 'in'
-                    //更新人數
-                    ;(ev_attend = dict['allJoinNum']),
-                      (namelist = dict['namelist'])
+                      //更新人數
+                      ; (ev_attend = dict['allJoinNum']),
+                        (namelist = dict['namelist'])
                     document.querySelector(
                       '.c_now_attend_p',
                     ).innerHTML = `${ev_attend}`
@@ -1172,9 +1184,9 @@ document
 function joinCursor() {
   if (
     document.querySelector('.c_join  div:nth-of-type(2n) span').className ===
-      'in' ||
+    'in' ||
     document.querySelector('.c_join  div:nth-of-type(2n) span').className ===
-      'out'
+    'out'
   ) {
     document.querySelector('.c_join  div:nth-of-type(2n)').style.cursor =
       'pointer'
@@ -1485,13 +1497,13 @@ function editGone() {
       document.querySelectorAll('.line')[j].querySelector('.editline').remove()
       document
         .querySelectorAll('.line')
-        [j].querySelector('.personMsg').style.display = 'block'
+      [j].querySelector('.personMsg').style.display = 'block'
       document
         .querySelectorAll('.line')
-        [j].querySelector('.personBT').style.display = 'block'
+      [j].querySelector('.personBT').style.display = 'block'
       document
         .querySelectorAll('.line')
-        [j].querySelector('.message_work').style.display = 'block'
+      [j].querySelector('.message_work').style.display = 'block'
     }
   }
   for (let j = 0; j < document.querySelectorAll('._2line').length; j++) {
@@ -1501,17 +1513,17 @@ function editGone() {
     ) {
       document
         .querySelectorAll('._2line')
-        [j].querySelector('._2editline')
+      [j].querySelector('._2editline')
         .remove()
       document
         .querySelectorAll('._2line')
-        [j].querySelector('._2personMsg').style.display = 'block'
+      [j].querySelector('._2personMsg').style.display = 'block'
       document
         .querySelectorAll('._2line')
-        [j].querySelector('._2personBT').style.display = 'block'
+      [j].querySelector('._2personBT').style.display = 'block'
       document
         .querySelectorAll('._2line')
-        [j].querySelector('._2message_work').style.display = 'block'
+      [j].querySelector('._2message_work').style.display = 'block'
     }
   }
 }
@@ -1559,10 +1571,10 @@ function message_work_img(e) {
     ) {
       document
         .querySelectorAll('.message_work_expand .delete')
-        [d].removeEventListener('click', boardDelete)
+      [d].removeEventListener('click', boardDelete)
       document
         .querySelectorAll('.message_work_expand .delete')
-        [d].addEventListener('click', boardDelete)
+      [d].addEventListener('click', boardDelete)
     }
   }
   e.stopPropagation()
@@ -1609,10 +1621,10 @@ function _2message_work_img(e) {
     ) {
       document
         .querySelectorAll('._2message_work_expand ._2delete')
-        [d].removeEventListener('click', replyDelete)
+      [d].removeEventListener('click', replyDelete)
       document
         .querySelectorAll('._2message_work_expand ._2delete')
-        [d].addEventListener('click', replyDelete)
+      [d].addEventListener('click', replyDelete)
     }
   }
   e.stopPropagation()
@@ -1627,10 +1639,10 @@ function hambergerMsg() {
   ) {
     document
       .querySelectorAll('.message_work img')
-      [i].removeEventListener('click', message_work_img)
+    [i].removeEventListener('click', message_work_img)
     document
       .querySelectorAll('.message_work img')
-      [i].addEventListener('click', message_work_img)
+    [i].addEventListener('click', message_work_img)
   }
   //回覆留言
   for (
@@ -1640,10 +1652,10 @@ function hambergerMsg() {
   ) {
     document
       .querySelectorAll('._2message_work img')
-      [i].removeEventListener('click', _2message_work_img)
+    [i].removeEventListener('click', _2message_work_img)
     document
       .querySelectorAll('._2message_work img')
-      [i].addEventListener('click', _2message_work_img)
+    [i].addEventListener('click', _2message_work_img)
   }
   //點擊回覆
   clickReply()
@@ -1672,17 +1684,17 @@ function hambergerMsgGone(e) {
     ) {
       document
         .querySelectorAll('._2line')
-        [i].querySelector('._2editline')
+      [i].querySelector('._2editline')
         .remove()
       document
         .querySelectorAll('._2line')
-        [i].querySelector('._2personMsg').style.display = 'block'
+      [i].querySelector('._2personMsg').style.display = 'block'
       document
         .querySelectorAll('._2line')
-        [i].querySelector('._2personBT').style.display = 'block'
+      [i].querySelector('._2personBT').style.display = 'block'
       document
         .querySelectorAll('._2line')
-        [i].querySelector('._2message_work').style.display = 'block'
+      [i].querySelector('._2message_work').style.display = 'block'
     }
   }
   //本樓
@@ -1706,13 +1718,13 @@ function hambergerMsgGone(e) {
       document.querySelectorAll('.line')[i].querySelector('.editline').remove()
       document
         .querySelectorAll('.line')
-        [i].querySelector('.personMsg').style.display = 'block'
+      [i].querySelector('.personMsg').style.display = 'block'
       document
         .querySelectorAll('.line')
-        [i].querySelector('.personBT').style.display = 'block'
+      [i].querySelector('.personBT').style.display = 'block'
       document
         .querySelectorAll('.line')
-        [i].querySelector('.message_work').style.display = 'block'
+      [i].querySelector('.message_work').style.display = 'block'
     }
   }
   e.stopPropagation()
@@ -1733,66 +1745,66 @@ function Edit() {
   ) {
     document
       .querySelectorAll('.message_work_expand .edit')
-      [i].addEventListener('click', function (e) {
-        let msgID = this.parentElement.parentElement.parentElement.getAttribute(
-          'data-id',
-        )
-        let line = document.querySelector(`[data-id="${msgID}"]`)
-        if (line.querySelector('.personMsg').style.display !== 'none') {
-          line.querySelector('.personMsg').style.display = 'none'
-          line.querySelector('.personBT').style.display = 'none'
-          line.querySelector('.message_work').style.display = 'none'
-          let editline
-          if (language === 'en') {
-            editline =
-              '<div class="editline"><input id = "edit_text"/><div><div class="editsend"><span>Edit</span></div><div class="editcancel"><span>Cancel</span></div></div></div>'
-          } else if (language === 'zh') {
-            editline =
-              '<div class="editline"><input id = "edit_text"/><div><div class="editsend"><span>編輯</span></div><div class="editcancel"><span>取消</span></div></div></div>'
-          }
-          line.querySelector('.message_middle').innerHTML += editline
-          line.querySelector('#edit_text').value = line.querySelector(
-            '.personMsg',
-          ).innerHTML
-
-          //編輯、取消顏色轉換
-          document
-            .querySelector('.editsend')
-            .addEventListener('mouseover', function () {
-              document.querySelector('.editsend span').style.color = 'white'
-            })
-          document
-            .querySelector('.editsend')
-            .addEventListener('mouseout', function () {
-              document.querySelector('.editsend span').style.color = 'gray'
-            })
-          document
-            .querySelector('.editcancel')
-            .addEventListener('mouseover', function () {
-              document.querySelector('.editcancel span').style.color = 'white'
-            })
-          document
-            .querySelector('.editcancel')
-            .addEventListener('mouseout', function () {
-              document.querySelector('.editcancel span').style.color = 'gray'
-            })
-
-          //keyin編輯樓層留言
-          document
-            .getElementById('edit_text')
-            .removeEventListener('click', edit_text)
-          document
-            .getElementById('edit_text')
-            .addEventListener('click', edit_text)
-          document
-            .querySelector('.editsend')
-            .removeEventListener('click', mainEdit)
-          document
-            .querySelector('.editsend')
-            .addEventListener('click', mainEdit)
+    [i].addEventListener('click', function (e) {
+      let msgID = this.parentElement.parentElement.parentElement.getAttribute(
+        'data-id',
+      )
+      let line = document.querySelector(`[data-id="${msgID}"]`)
+      if (line.querySelector('.personMsg').style.display !== 'none') {
+        line.querySelector('.personMsg').style.display = 'none'
+        line.querySelector('.personBT').style.display = 'none'
+        line.querySelector('.message_work').style.display = 'none'
+        let editline
+        if (language === 'en') {
+          editline =
+            '<div class="editline"><input id = "edit_text"/><div><div class="editsend"><span>Edit</span></div><div class="editcancel"><span>Cancel</span></div></div></div>'
+        } else if (language === 'zh') {
+          editline =
+            '<div class="editline"><input id = "edit_text"/><div><div class="editsend"><span>編輯</span></div><div class="editcancel"><span>取消</span></div></div></div>'
         }
-        e.stopPropagation()
-      })
+        line.querySelector('.message_middle').innerHTML += editline
+        line.querySelector('#edit_text').value = line.querySelector(
+          '.personMsg',
+        ).innerHTML
+
+        //編輯、取消顏色轉換
+        document
+          .querySelector('.editsend')
+          .addEventListener('mouseover', function () {
+            document.querySelector('.editsend span').style.color = 'white'
+          })
+        document
+          .querySelector('.editsend')
+          .addEventListener('mouseout', function () {
+            document.querySelector('.editsend span').style.color = 'gray'
+          })
+        document
+          .querySelector('.editcancel')
+          .addEventListener('mouseover', function () {
+            document.querySelector('.editcancel span').style.color = 'white'
+          })
+        document
+          .querySelector('.editcancel')
+          .addEventListener('mouseout', function () {
+            document.querySelector('.editcancel span').style.color = 'gray'
+          })
+
+        //keyin編輯樓層留言
+        document
+          .getElementById('edit_text')
+          .removeEventListener('click', edit_text)
+        document
+          .getElementById('edit_text')
+          .addEventListener('click', edit_text)
+        document
+          .querySelector('.editsend')
+          .removeEventListener('click', mainEdit)
+        document
+          .querySelector('.editsend')
+          .addEventListener('click', mainEdit)
+      }
+      e.stopPropagation()
+    })
   }
   for (
     let i = 0;
@@ -1801,65 +1813,65 @@ function Edit() {
   ) {
     document
       .querySelectorAll('._2message_work_expand ._2edit')
-      [i].addEventListener('click', function (e) {
-        let replyid = this.parentElement.parentElement.parentElement.parentElement.getAttribute(
-          'replyid',
-        )
-        let _2line = document.querySelector(`[replyid="${replyid}"]`)
-        if (_2line.querySelector('._2personMsg').style.display !== 'none') {
-          _2line.querySelector('._2personMsg').style.display = 'none'
-          _2line.querySelector('._2personBT').style.display = 'none'
-          _2line.querySelector('._2message_work').style.display = 'none'
-          let _2editline
-          if (language === 'en') {
-            _2editline =
-              '<div class="_2editline"><input id = "_2edit_text"/><div><div class="_2editsend"><span>Edit</span></div><div class="_2editcancel"><span>Cancel</span></div></div></div>'
-          } else if (language === 'zh') {
-            _2editline =
-              '<div class="_2editline"><input id = "_2edit_text"/><div><div class="_2editsend"><span>編輯</span></div><div class="_2editcancel"><span>取消</span></div></div></div>'
-          }
-          _2line.querySelector('._2message_middle').innerHTML += _2editline
-          _2line.querySelector('#_2edit_text').value = _2line.querySelector(
-            '._2personMsg',
-          ).innerHTML
-
-          //編輯、取消顏色轉換
-          document
-            .querySelector('._2editsend')
-            .addEventListener('mouseover', function () {
-              document.querySelector('._2editsend span').style.color = 'white'
-            })
-          document
-            .querySelector('._2editsend')
-            .addEventListener('mouseout', function () {
-              document.querySelector('._2editsend span').style.color = 'gray'
-            })
-          document
-            .querySelector('._2editcancel')
-            .addEventListener('mouseover', function () {
-              document.querySelector('._2editcancel span').style.color = 'white'
-            })
-          document
-            .querySelector('._2editcancel')
-            .addEventListener('mouseout', function () {
-              document.querySelector('._2editcancel span').style.color = 'gray'
-            })
-          //編輯回覆留言
-          document
-            .getElementById('_2edit_text')
-            .removeEventListener('click', _2edit_text)
-          document
-            .getElementById('_2edit_text')
-            .addEventListener('click', _2edit_text)
-          document
-            .querySelector('._2editsend')
-            .removeEventListener('click', replyEdit)
-          document
-            .querySelector('._2editsend')
-            .addEventListener('click', replyEdit)
+    [i].addEventListener('click', function (e) {
+      let replyid = this.parentElement.parentElement.parentElement.parentElement.getAttribute(
+        'replyid',
+      )
+      let _2line = document.querySelector(`[replyid="${replyid}"]`)
+      if (_2line.querySelector('._2personMsg').style.display !== 'none') {
+        _2line.querySelector('._2personMsg').style.display = 'none'
+        _2line.querySelector('._2personBT').style.display = 'none'
+        _2line.querySelector('._2message_work').style.display = 'none'
+        let _2editline
+        if (language === 'en') {
+          _2editline =
+            '<div class="_2editline"><input id = "_2edit_text"/><div><div class="_2editsend"><span>Edit</span></div><div class="_2editcancel"><span>Cancel</span></div></div></div>'
+        } else if (language === 'zh') {
+          _2editline =
+            '<div class="_2editline"><input id = "_2edit_text"/><div><div class="_2editsend"><span>編輯</span></div><div class="_2editcancel"><span>取消</span></div></div></div>'
         }
-        e.stopPropagation()
-      })
+        _2line.querySelector('._2message_middle').innerHTML += _2editline
+        _2line.querySelector('#_2edit_text').value = _2line.querySelector(
+          '._2personMsg',
+        ).innerHTML
+
+        //編輯、取消顏色轉換
+        document
+          .querySelector('._2editsend')
+          .addEventListener('mouseover', function () {
+            document.querySelector('._2editsend span').style.color = 'white'
+          })
+        document
+          .querySelector('._2editsend')
+          .addEventListener('mouseout', function () {
+            document.querySelector('._2editsend span').style.color = 'gray'
+          })
+        document
+          .querySelector('._2editcancel')
+          .addEventListener('mouseover', function () {
+            document.querySelector('._2editcancel span').style.color = 'white'
+          })
+        document
+          .querySelector('._2editcancel')
+          .addEventListener('mouseout', function () {
+            document.querySelector('._2editcancel span').style.color = 'gray'
+          })
+        //編輯回覆留言
+        document
+          .getElementById('_2edit_text')
+          .removeEventListener('click', _2edit_text)
+        document
+          .getElementById('_2edit_text')
+          .addEventListener('click', _2edit_text)
+        document
+          .querySelector('._2editsend')
+          .removeEventListener('click', replyEdit)
+        document
+          .querySelector('._2editsend')
+          .addEventListener('click', replyEdit)
+      }
+      e.stopPropagation()
+    })
   }
 }
 
@@ -1964,7 +1976,7 @@ function edit_text(e) {
   e.stopPropagation()
 }
 
-function editlinehover() {}
+function editlinehover() { }
 
 function mainEdit(e) {
   e.stopPropagation()
@@ -2108,10 +2120,10 @@ function clickReply() {
   for (let r = 0; r < document.querySelectorAll('.response').length; r++) {
     document
       .querySelectorAll('.response')
-      [r].removeEventListener('click', response)
+    [r].removeEventListener('click', response)
     document
       .querySelectorAll('.response')
-      [r].addEventListener('click', response)
+    [r].addEventListener('click', response)
   }
 }
 
@@ -2242,10 +2254,10 @@ function replySend() {
               ) {
                 document
                   .querySelectorAll('.hideReply .word')
-                  [d].removeEventListener('click', conceal)
+                [d].removeEventListener('click', conceal)
                 document
                   .querySelectorAll('.hideReply .word')
-                  [d].addEventListener('click', conceal)
+                [d].addEventListener('click', conceal)
               }
             }
             //先前有留言，要查看是否有隱藏留言
@@ -2267,9 +2279,9 @@ function replySend() {
               //
               if (
                 replyDiv.querySelector('.hideReply .word').innerHTML ===
-                  '隱藏回覆留言' ||
+                '隱藏回覆留言' ||
                 replyDiv.querySelector('.hideReply .word').innerHTML ===
-                  'Hide reply'
+                'Hide reply'
               ) {
               } //開啟狀態
               else {
