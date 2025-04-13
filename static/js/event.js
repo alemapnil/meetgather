@@ -943,19 +943,21 @@ function Gmt8TmStrCalender(tm) {
 //google Calender
 function googleCalender(para) {
   let calendar_url = 'https://calendar.google.com/calendar/u/0/r/eventedit?'
-  let calender_title = ev_title.replace(' ', '+')
+  let calender_title = ev_title.replaceAll(' ', '+')
   let calender_detail;
   let calender_date = Gmt8TmStrCalender(para)
     .replaceAll('-', '')
     .replaceAll(':', '')
 
   if (language === 'en') {
-    calender_detail = `Check more infomation ${window.location.href}`.replace(' ', '+')
+    calender_detail = `Check more infomation ${window.location.href}`.replaceAll(' ', '+')
   } else if (language === 'zh') {
-    calender_detail = `更多資訊請看 ${window.location.href}`.replace(' ', '+')
+    calender_detail = `更多資訊請看 ${window.location.href}`.replaceAll(' ', '+')
   }
   google_calender = `${calendar_url}dates=${calender_date}/${calender_date}&details=${calender_detail}&ctz=Asia/Taipei&text=${calender_title}`
   console.log(google_calender)
+  console.log(ev_title)
+  console.log(calender_title)
 }
 
 // google map
@@ -2088,7 +2090,7 @@ function response() {
   let msgID = line.getAttribute('data-id')
   let personName = line.querySelector('.personName').innerHTML
   let personMsg = line.querySelector('.personMsg').innerHTML
-  let floor = line.querySelector('.floor').innerHTML.replace(' · ', '')
+  let floor = line.querySelector('.floor').innerHTML.replaceAll(' · ', '')
   document.querySelector(
     '.floorContent div:nth-of-type(2n)',
   ).innerHTML = `${floor}`
