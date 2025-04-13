@@ -944,21 +944,17 @@ function Gmt8TmStrCalender(tm) {
 function googleCalender(para) {
   let calendar_url = 'https://calendar.google.com/calendar/u/0/r/eventedit?'
   let calender_title = ev_title.replace(' ', '+')
-  let calender_add
-  if (ev_location === 0) {
-    if (language === 'en') {
-      calender_add = 'Online'
-    } else {
-      calender_add = '線上'
-    }
-  } else {
-    calender_add = ev_address.replace(' ', '+')
-  }
+  let calender_detail;
   let calender_date = Gmt8TmStrCalender(para)
     .replaceAll('-', '')
     .replaceAll(':', '')
-  let calender_detail = `更多資訊請看 ${window.location.href}`.replace(' ', '+')
-  google_calender = `${calendar_url}text=${calender_title}&dates=${calender_date}/${calender_date}&location=${calender_add}&details=${calender_detail}&ctz=Asia/Taipei`
+
+  if (language === 'en') {
+    calender_detail = `Check more infomation ${window.location.href}`.replace(' ', '+')
+  } else if (language === 'zh') {
+    calender_detail = `更多資訊請看 ${window.location.href}`.replace(' ', '+')
+  }
+  google_calender = `${calendar_url}dates=${calender_date}/${calender_date}&details=${calender_detail}&ctz=Asia/Taipei&text=${calender_title}`
   console.log(google_calender)
 }
 
