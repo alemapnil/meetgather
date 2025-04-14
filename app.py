@@ -251,6 +251,7 @@ def authorize():
         currentpage = request.cookies.get("currentpage")
         resp = make_response(redirect(currentpage))
         resp.set_cookie("access_token", access_token)
+        print('access_token >> ',access_token)
         return resp
     else:
         return "db.Members.login error"
