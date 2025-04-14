@@ -17,6 +17,11 @@ from lang import en, zh
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+
+
+
 load_dotenv()
 
 
@@ -44,6 +49,8 @@ app.secret_key = os.urandom(24)
 app.config["JWT_SECRET_KEY"] = os.getenv("TOKENKEY")
 app.config["JWT_TOKEN_LOCATION"] = ["headers", "query_string"]
 app.register_blueprint(api, url_prefix="")
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1)  #這樣就能保證不管你是 EC2 還是 Docker，Flask 都能「知道外部其實是 HTTPS」
 
 jwt = JWTManager(app)
 
@@ -250,7 +257,7 @@ def authorize():
 
         currentpage = request.cookies.get("currentpage")
         resp = make_response(redirect(currentpage))
-        resp.set_cookie("access_token", access_token)
+        resp.set_cookie("access_token", access_token, secure=True,samesite='None') #chrome要求第三方網站設的cookie要安全，否則cookie會被砍掉
         print('access_token >> ',access_token)
         print("Request is secure?", request.is_secure)
         return resp
