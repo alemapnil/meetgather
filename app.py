@@ -252,6 +252,7 @@ def authorize():
         resp = make_response(redirect(currentpage))
         resp.set_cookie("access_token", access_token)
         print('access_token >> ',access_token)
+        print("Request is secure?", request.is_secure)
         return resp
     else:
         return "db.Members.login error"
