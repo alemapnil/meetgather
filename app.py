@@ -175,9 +175,6 @@ def find():
 def event(id):
     e = db.Event(id)
     result = e.content()
-    print('以下印出活動詳目')
-    print(result["activity"])
-
     if "ok" not in result:
         return redirect(url_for("index"))
     else:
@@ -259,8 +256,8 @@ def authorize():
         return "db.Members.login error"
 
 
-app.run(port=2000)
+#app.run(port=2000)
 
-# app.run(host="0.0.0.0", port=2000)
+app.run(host="0.0.0.0", port=2000)
 
 db.pool._remove_connections()

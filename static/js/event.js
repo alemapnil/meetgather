@@ -64,11 +64,14 @@ async function activity() {
     .then(function (dict) {
       if ('ok' in dict) {
         ev_title = dict['activity'][2];
+        ev_location = dict['activity'][6];
+        ev_address = dict['activity'][7];
+        ev_lat = dict['activity'][8];
+        ev_lng = dict['activity'][9];
       }
     })
   //
   ev_attend = parseInt(document.querySelector('.c_now_attend_p').innerHTML)
-  ev_location = parseInt(document.querySelector('.spot_word').innerHTML)
 
   //地圖顯示
   if (ev_location === 0) {
@@ -79,9 +82,6 @@ async function activity() {
     }
     document.querySelector('.tm_spot').style.height = '120px'
   } else {
-    ev_lat = document.querySelector('.ev_spot .hiddenlat').innerHTML
-    ev_lng = document.querySelector('.ev_spot .hiddenlng').innerHTML
-    ev_address = document.querySelector('.ev_spot .hiddenadd').innerHTML
     let map_url = `https://www.google.com/maps/search/?api=1&query=${ev_lat},${ev_lng}`
     document.querySelector(
       '.spot_word',
