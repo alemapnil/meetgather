@@ -9,3 +9,4 @@ flask_jwt_extended
 Authlib==0.15.5
 requests
 redis
+PyJWT==2.9.0
