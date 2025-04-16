@@ -211,9 +211,10 @@ def login():
 
     print('主機>>',request.headers['Host'])
     print('即將轉址>>',redirect_uri)
-    if 'localhost' in request.headers['Host']:  # 若在本機上跑
+    if 'localhost' in request.headers['Host']:  # 若在筆電本機上跑
         redirect_uri = redirect_uri.replace('https', 'http')
-
+    else:
+        redirect_uri = redirect_uri.replace('http', 'https')
     print('此為google轉址URL>>', redirect_uri)
     currentpage = request.cookies.get("currentpage")
     print('此為Cookie登記的currentpage>>', currentpage)
