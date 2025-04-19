@@ -264,7 +264,6 @@ class Redis_link:
         self.conn.expire(query_member_id, 600) # 生存時間十分鐘
         self.conn.close()
 
-
 class Members:
     def __init__(self, email, name, photo):
         self.email = email
@@ -441,7 +440,6 @@ class Members:
             cursor.close()
             CN1.close()
             return data
-
 
 class Activity:
     def __init__(
@@ -710,7 +708,6 @@ class Activity:
             CN1.close()
             return data
 
-
 class Find:
     def __init__(self, nowTime, page, web):
         self.nowTime = nowTime
@@ -912,7 +909,6 @@ class Find:
             cursor.close()
             CN1.close()
             return data
-
 
 class Event:
     def __init__(self, eventId):
@@ -1258,11 +1254,11 @@ class Event:
                     if result is None:  # 此活動無留言
                         thisfloor = "B1"
                         if event[1] == JWTemail:  # 主辦人自己留言就標註已讀
-                            board_status = "read"
-                            board_link = "linked"
+                            board_status = "read"  #  read 表示紅點消失
+                            board_link = "linked"  # linked 似乎是留待之後開發的欄位
                         else:
-                            board_status = "not read"
-                            board_link = "not link"
+                            board_status = "not read" # 紅點出現，通知你的活動頁面上有未讀留言
+                            board_link = "not link" 
 
                         command = "insert into `boardlist` (`board_name`, `board_email`, `board_msg`, `board_floor`,`board_time`,`board_status`, `board_link`) \
                             values(%s, %s, %s, %s, %s, %s,%s);"
@@ -1704,7 +1700,6 @@ class Event:
             CN1.close()
             return data
 
-
 class Notify:
     def __init__(self, JWTemail):
         self.email = JWTemail
@@ -2046,6 +2041,58 @@ class Notify:
                 "Notify.email_inform > pool close, ",
                 CN1.is_connected(),
             )
+            cursor.close()
+            CN1.close()
+            return data
+
+    def linked(self, main_or_reply, msgID):
+        try:
+            crud = 0
+            CN1 = pool.get_connection()  # get a connection with pool.
+            print(CN1.connection_id, "Notify.linked > pool create")
+            cursor = CN1.cursor()
+            if main_or_reply == 'a': # 更改主要/主樓留言之link狀態
+                command = "select c.host, c.board_link from (select *from boardlist as b left join activity as a on  b.`board_name`=a.`id` where b.`board_id`=%s) as c;"
+                cursor.execute(command, (msgID,))
+                fetchback = cursor.fetchall() # list contains one tuple, tuple第一個元素是活動版主,第二個元素是否讀了留言
+
+                if len(fetchback) == 0: # 沒有此筆留言
+                    data = {"error": True, "message": "no result from boardlist"}
+                elif self.email != fetchback[0][0]: # 確認是否為活動主已讀留言
+                    data = {"error": True, "message": "no authorization to see board msg"}
+                elif 'linked' == fetchback[0][1]: # 被讀取過的留言就不必再讀
+                    data = {"error": True, "message": "repeat linked board msg"}
+                else:
+                    command = """update `boardlist` set `board_link` = %s where `board_id` = %s"""
+                    cursor.execute(command, ('linked', msgID))
+                    crud += 1
+            elif main_or_reply == 'b': # 更改回覆留言之link狀態
+                command = "select c.board_email, c.reply_link from (select *from boardreply as r left join boardlist as b on r.`reply_boardID`=b.`board_id` where r.`reply_id`=%s) as c;"
+                cursor.execute(command, (msgID,))
+                fetchback = cursor.fetchall() # list contains one tuple, tuple第一個元素是主留言者,第二個元素是否讀了回覆留言
+                
+                if len(fetchback) == 0: # 沒有此筆留言
+                    data = {"error": True, "message": "no result from boardreply"}
+                elif self.email != fetchback[0][0]: # 確認是否為留言主人已讀其回覆留言
+                    data = {"error": True, "message": "no authorization to see reply msg"}
+                elif 'linked' == fetchback[0][1]: # 被讀取過的留言就不必再讀
+                    data = {"error": True, "message": "repeat linked reply msg"}
+                else:
+                    command = """update `boardreply` set `reply_link` = %s where `reply_id` = %s"""
+                    cursor.execute(command, ('linked', msgID))
+                    crud += 1
+        except:
+            CN1.rollback()
+            print(traceback.format_exc())
+            print("Notify.linked > 發生錯誤")
+            data = {"error": True, "message": "伺服器內部錯誤"}
+        else:
+            if crud > 0:
+                print("Notify.linked  > commit")
+                CN1.commit()
+                data = {"ok": True}
+        finally:
+            print(CN1.connection_id, "Notify.linked > pool close, ",CN1.is_connected())
             cursor.close()
             CN1.close()
             return data

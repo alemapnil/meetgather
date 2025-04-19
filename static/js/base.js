@@ -399,7 +399,10 @@ function getNotice(page) {
               board_tm.getMinutes()
             ).padStart(2, "0")}`;
             let A6 = notice[n]["content"]["board_name"];
-            rowbox(A1, A2, A3, A4, A5, A6, notice[n]);
+            //製作link，表示留言已讀未讀，未讀底色為深，已讀沒底色
+            let a_BoardLink = notice[n]["content"]["board_link"]; //not link or linked
+
+            rowbox(A1, A2, A3, A4, A5, A6, notice[n], a_BoardLink);
           } else if (notice[n]["name"] === "b") {
             let A1 = notice[n]["name"],
               A2 = notice[n]["content"]["reply_PersonPhoto"];
@@ -415,27 +418,53 @@ function getNotice(page) {
               board_tm.getMinutes()
             ).padStart(2, "0")}`;
             let A6 = notice[n]["content"]["board_name"];
-            rowbox(A1, A2, A3, A4, A5, A6, notice[n]);
+            //製作link，表示留言已讀未讀，未讀底色為深，已讀沒底色
+            let b_BoardLink = notice[n]["content"]["reply_link"]; //not link or linked
+
+            rowbox(A1, A2, A3, A4, A5, A6, notice[n], b_BoardLink);
           }
         }
+
+        // hover留言link底色變化，mouseover變白色，mouseleave變回原來的顏色
+        for (let i = 0; i < document.querySelectorAll('.rowbox .row').length; i++) {
+          document.querySelectorAll('.rowbox .row')[i].addEventListener('mouseover', () => {
+            document.querySelectorAll('.rowbox .row')[i].style.backgroundColor = 'white'
+          })
+          document.querySelectorAll('.rowbox .row')[i].addEventListener('mouseleave', function () {
+            // 依據屬性link status的值來決定留言notification的底色
+            if (this.getAttribute('status') === 'nl') {
+              document.querySelectorAll('.rowbox .row')[i].style.backgroundColor = '#e0e0e0'
+            } else {
+              document.querySelectorAll('.rowbox .row')[i].style.backgroundColor = 'transparent'
+            }
+          })
+        }
+
         //點擊通知的每一行row
-        for (
-          let r = 0;
-          r < document.querySelectorAll(".rowbox .row").length;
-          r++
-        ) {
-          document
-            .querySelectorAll(".rowbox .row")
-          [r].addEventListener("click", function (e) {
+        for (let r = 0; r < document.querySelectorAll(".rowbox .row").length; r++) {
+          document.querySelectorAll(".rowbox .row")[r].addEventListener("click", function (e) {
             let noticeid = this.getAttribute("noticeid");
             let name = notification[noticeid]["name"];
             if (name === "a") {
               let board_id = notification[noticeid]["content"]["board_id"];
               noticeMsg_A(board_id);
+              // 若點開未讀留言，則修改狀態
+              if (this.getAttribute('status') === 'nl') {
+                alterLinkStatus(name, board_id) //首個參數判斷是主樓留言，還是回覆留言；末個參數是指主樓留言或回覆留言的ID
+              }
             } else if (name === "b") {
               let reply_id = notification[noticeid]["content"]["reply_id"];
               noticeMsg_B(reply_id);
+              // 若點開未讀留言，則修改狀態
+              if (this.getAttribute('status') === 'nl') { //若點開未讀留言，則修改狀態
+                alterLinkStatus(name, reply_id) //首個參數判斷是主樓留言，還是回覆留言；末個參數是指主樓留言或回覆留言的ID
+              }
             }
+            // 改變屬性link status的值
+            if (this.getAttribute('status') === 'nl') {
+              document.querySelectorAll(".rowbox .row")[r].setAttribute('status', 'l')
+            }
+            //
             e.stopPropagation();
           });
         }
@@ -455,7 +484,6 @@ function getNotice(page) {
             document.querySelector("._2tail .rowbox").appendChild(noDiv);
           }
         }
-
         //移除黃色loading圖示
         for (
           let r = 0;
@@ -488,6 +516,31 @@ function getNotice(page) {
       }
     });
 }
+
+// fetch api改變留言的board_link或reply_link
+// 首個參數判斷是主樓留言，還是回覆留言；末個參數是指主樓留言或回覆留言的ID
+function alterLinkStatus(name, mID) {
+  fetch("/api/notification", {
+    method: "PATCH",
+    body: JSON.stringify({ main_or_reply: name, msgID: mID }),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${access_token}`,
+    },
+  }).then(function (response) {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+    .catch((error) => {
+      console.error("PATCH /api/notification 錯誤:", error);
+    })
+    .then(function (dict) {
+      if (!('ok' in dict)) {
+        console.log("unknown problem", dict);
+      }
+    })
+};
 
 // fetch 通知詳細留言內容
 function noticeMsg_A(board_id) {
@@ -878,15 +931,23 @@ function noticeMsg_B_window(para) {
 }
 
 //make rowbox Div
-function rowbox(type, photo, name, floor, time, board_name, notice) {
+function rowbox(type, photo, name, floor, time, board_name, notice, linkStatus) {
   notification[Object.keys(notification).length + 1] = notice;
 
   let rowDiv = document.createElement("div");
   rowDiv.className = "row";
   rowDiv.setAttribute("noticeID", Object.keys(notification).length);
+
+  //notification每條留言標明linked與否之狀態,並製作未讀留言的底色區別
+  if (linkStatus === 'not link') {
+    rowDiv.setAttribute('status', 'nl')
+    rowDiv.style.backgroundColor = '#e0e0e0';
+  } else {
+    rowDiv.setAttribute('status', 'l')
+  }
+  //
   let photoDiv = document.createElement("div");
   photoDiv.className = "photo";
-
   let imgDiv = document.createElement("div");
   let img = document.createElement("img");
   img.src = photo;
@@ -900,17 +961,19 @@ function rowbox(type, photo, name, floor, time, board_name, notice) {
   let message = document.createElement("div");
   message.className = "message";
 
+
+  //
   if (type === "a") {
     if (language === "en") {
-      message.innerHTML = `<span>${name}</span> writes a comment`;
+      message.innerHTML = `<div>${name}</div> <div>writes a comment</div>`;
     } else if (language === "zh") {
-      message.innerHTML = `<span>${name}</span>在你的活動中留言`;
+      message.innerHTML = `<div>${name}</div> <div>在你的活動中留言</div>`;
     }
   } else if (type === "b") {
     if (language === "en") {
-      message.innerHTML = `<span>${name}</span> responds your comment`;
+      message.innerHTML = `<div>${name}</div> <div>responds your comment</div>`;
     } else if (language === "zh") {
-      message.innerHTML = `<span>${name}</span>回覆了你的留言`;
+      message.innerHTML = `<div>${name}</div> <div>回覆了你的留言</div>`;
     }
   }
 
@@ -923,12 +986,14 @@ function rowbox(type, photo, name, floor, time, board_name, notice) {
   content.appendChild(messagetime);
   rowDiv.appendChild(content);
 
-  if (screen.width > 780) {
+  if (screen.width > 780) { //手機螢幕的留言板
     document.querySelector(".noticeBlock .rowbox .tail").appendChild(rowDiv);
   } else {
     document.querySelector(".modal11 ._2tail  .rowbox").appendChild(rowDiv);
   }
 }
+
+
 
 //桌機通知鈴鐺
 document.querySelectorAll(".alarm")[0].addEventListener("click", function (e) {
@@ -1306,6 +1371,8 @@ function noticeLoad() {
     document.querySelector(".modal11 ._2tail .rowbox").appendChild(noticeLoad);
   }
 }
+
+
 
 //點擊通知的每一行row
 for (let r = 0; r < document.querySelectorAll(".rowbox row").length; r++) {

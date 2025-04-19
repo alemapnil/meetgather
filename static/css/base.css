@@ -430,10 +430,6 @@ a {
   border-radius: 6px;
 }
 
-.rowbox .row:hover {
-  background-color: white;
-}
-
 .rowbox .row .photo div {
   width: 60px;
   height: 60px;
@@ -446,13 +442,19 @@ a {
   border-radius: 50%;
 }
 
-.rowbox .row .content .message {
-  color: rgba(0, 0, 0, 0.3);
-}
-
-.rowbox .row .content .message span:first-of-type {
+.rowbox .row .content .message div:first-of-type {
   color: rgba(0, 0, 0, 0.75);
   font-weight: 500;
+  /**/
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 260px;
+}
+
+.rowbox .row .content .message div:nth-child(2) {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
 }
 
 .rowbox .row .content .messagetime {
@@ -648,6 +650,7 @@ a {
 }
 
 @media (max-width: 1240px) {
+
   .box0_contain,
   .box2,
   .floatRight {
@@ -735,8 +738,7 @@ a {
     width: 138px;
   }
 
-  .rowbox {
-  }
+  .rowbox {}
 
   .rowbox::-webkit-scrollbar {
     width: 0px;

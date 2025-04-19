@@ -100,6 +100,7 @@ def user_delete():
     return resp
 
 
+# 留言板回傳回來的一筆筆留言
 @api.route("/api/user", methods=["POST"])
 @jwt_required()
 def user_post():
@@ -118,6 +119,18 @@ def user_patch():
     n = db.Notify(decrypt["email"])
     data = n.read(anchortm)
     return jsonify(data)
+
+
+# 更改鈴鐺內留言bar的狀態為linked，表示已讀該則留言
+@api.route("/api/notification", methods=["PATCH"])
+@jwt_required()
+def notification():
+    decrypt = get_jwt_identity()
+    main_or_reply, msgID = request.get_json()["main_or_reply"], request.get_json()["msgID"]
+    n = db.Notify(decrypt['email'])
+    data = n.linked(main_or_reply,msgID)
+    return jsonify(data)
+
 
 
 @api.route("/api/create", methods=["POST"])
@@ -533,19 +546,18 @@ def boardGet(id_page):
 @jwt_required()
 def message():
     decrypt = get_jwt_identity()
-    boardid, replyid = request.args.get("boardid", None), request.args.get(
-        "replyid", None
-    )
-    if boardid is not None and replyid is not None:
-        return "/api/message搜尋有誤"
+    boardid, replyid = request.args.get("boardid", None), request.args.get("replyid", None)
 
     if boardid is not None:
         n = db.Notify(decrypt["email"])
         result = n.msg_boardid(boardid)
         return jsonify(result)
-    if replyid is not None:
+    elif replyid is not None:
         n = db.Notify(decrypt["email"])
         result = n.msg_replyid(replyid)
+        return jsonify(result)
+    else:
+        result = {"error": True, "message": "wrong parameter"}
         return jsonify(result)
 
 

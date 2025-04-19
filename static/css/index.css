@@ -24,6 +24,7 @@ body {
 a {
   text-decoration: none;
 }
+
 .noscroll {
   overflow: hidden;
 }
@@ -69,6 +70,7 @@ a {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 0.6;
   }
@@ -107,10 +109,12 @@ a {
   background-color: whitesmoke;
   animation: appear 1s;
 }
+
 @keyframes appear {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -206,6 +210,7 @@ a {
   height: 100%;
   border-radius: 50%;
 }
+
 .popup5 .message_middle,
 .popup5 ._2message_middle {
   width: 100%;
@@ -225,6 +230,7 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .popup5 .personMsg,
 .popup5 ._2personMsg {
   font-size: 14px;
@@ -240,6 +246,7 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .popup5 .personBT .floor,
 .popup5 .personBT .personTM,
 .popup5 ._2personBT ._2floor,
@@ -255,6 +262,7 @@ a {
   width: 100%;
   z-index: 50;
 }
+
 .box0_contain {
   width: 1200px;
   height: 100%;
@@ -262,16 +270,19 @@ a {
   justify-content: space-between;
   align-items: center;
 }
+
 .website a {
   font-family: "Pacifico", cursive;
   font-size: 30px;
   color: #f6d819;
   text-decoration: none;
 }
+
 .opc:hover {
   opacity: 0.5;
   cursor: pointer;
 }
+
 .frame1 {
   display: none;
   justify-content: space-around;
@@ -356,6 +367,7 @@ a {
   left: 0;
   margin: auto;
 }
+
 .noticeBlock {
   width: 360px;
   height: 100%;
@@ -375,6 +387,7 @@ a {
   width: 10px;
   border-bottom-right-radius: 6px;
 }
+
 .rowbox::-webkit-scrollbar-thumb {
   background: #bebebe;
 }
@@ -440,18 +453,26 @@ a {
   border-radius: 50%;
 }
 
-.rowbox .row .content .message {
-  color: rgba(0, 0, 0, 0.3);
-}
-.rowbox .row .content .message span:first-of-type {
+.rowbox .row .content .message div:first-of-type {
   color: rgba(0, 0, 0, 0.75);
   font-weight: 500;
+  /**/
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 260px;
+}
+
+.rowbox .row .content .message div:nth-child(2) {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
 }
 
 .rowbox .row .content .messagetime {
   color: rgba(0, 0, 0, 0.3);
   font-size: small;
 }
+
 .modal11 {
   display: none;
   position: fixed;
@@ -494,21 +515,25 @@ a {
 }
 
 .wrapper {
-  min-height: 100%; /*外層高度100%*/
-  margin-bottom: -50px; /*隨footer高度需做調整*/
+  min-height: 100%;
+  /*外層高度100%*/
+  margin-bottom: -50px;
+  /*隨footer高度需做調整*/
 }
 
 .wrapper .content {
   position: relative;
   top: 64px;
-  padding-bottom: 50px; /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
+  padding-bottom: 50px;
+  /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .footer {
-  height: 50px; /*設定footer本身高度*/
+  height: 50px;
+  /*設定footer本身高度*/
   display: flex;
   align-items: flex-end;
 }
@@ -526,15 +551,18 @@ a {
   justify-content: center;
   align-items: center;
 }
+
 .slogan_cn {
   gap: 20px;
   margin-bottom: 15px;
 }
+
 .slogan_cn div {
   font-weight: 500;
   font-size: 70px;
   color: white;
 }
+
 .slogan_en {
   font-weight: 500;
   font-size: 70px;
@@ -568,6 +596,7 @@ a {
   .box0_contain {
     width: 90%;
   }
+
   .floatRight {
     width: 90%;
   }
@@ -581,22 +610,27 @@ a {
   .website a {
     font-size: 23px;
   }
+
   .opc:hover {
     opacity: 1;
   }
+
   .frame1 {
     font-size: 13px;
     font-weight: 300;
   }
+
   .frame2 {
     width: 200px;
     font-size: 12px;
     font-weight: 300;
   }
+
   .shot {
     width: 40px;
     height: 40px;
   }
+
   .myinfo {
     margin-left: 50px;
   }
@@ -604,21 +638,26 @@ a {
   .slogan_cn {
     gap: 0px;
   }
+
   .slogan_cn div {
     font-size: 50px;
   }
+
   .slogan_en {
     font-size: 45px;
     margin-top: 0px;
   }
+
   .searchBar div {
     width: 200px;
   }
+
   .noticeBlock {
     float: none;
     margin: 0 auto;
     width: 310px;
   }
+
   .window5 {
     top: 70px;
   }
@@ -626,6 +665,7 @@ a {
   .popup5 {
     width: 85%;
   }
+
   .popup5 .no_line {
     width: auto;
   }
@@ -633,11 +673,13 @@ a {
   .popup5 .no_line {
     width: 300px;
   }
-  .rowbox {
-  }
+
+  .rowbox {}
+
   .rowbox::-webkit-scrollbar {
     width: 0px;
   }
+
   .rowbox::-webkit-scrollbar-thumb {
     background: transparent;
   }
