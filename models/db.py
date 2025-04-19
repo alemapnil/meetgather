@@ -1534,7 +1534,7 @@ class Event:
                             reply_link = "linked"
                         else:
                             reply_status = "not read"
-                            reply_link = " not link"
+                            reply_link = "not link"
 
                         command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`,`reply_link`) \
                             values(%s, %s, %s, %s, %s, %s, %s);"
@@ -1558,7 +1558,7 @@ class Event:
                             reply_link = "linked"
                         else:
                             reply_status = "not read"
-                            reply_link = " not link"
+                            reply_link = "not link"
 
                         command = "insert into `boardreply` (`reply_boardID`, `reply_email`, `reply_msg`, `reply_floor`,`reply_time`,`reply_status`,`reply_link`) \
                             values(%s, %s, %s, %s, %s, %s, %s);"
