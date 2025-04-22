@@ -65,8 +65,7 @@ def email_inform_delete(title, bcc, lang):
     print(bcc, "BCC delete")
     print("============")
     msg = email.message.EmailMessage()
-    SMTP_ACCOUNT, SMTP_PASSWORD = os.getenv(
-        "SMTP_ACCOUNT"), os.getenv("SMTP_PASSWORD")
+    SMTP_ACCOUNT, SMTP_PASSWORD = os.getenv("SMTP_ACCOUNT"), os.getenv("SMTP_PASSWORD")
     year = date.today().year
 
     if lang == "zh":
@@ -128,8 +127,7 @@ def html_inform(title, bcc, inform, url, lang):
     print(bcc, "BCC", inform)
     print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     msg = email.message.EmailMessage()
-    SMTP_ACCOUNT, SMTP_PASSWORD = os.getenv(
-        "SMTP_ACCOUNT"), os.getenv("SMTP_PASSWORD")
+    SMTP_ACCOUNT, SMTP_PASSWORD = os.getenv("SMTP_ACCOUNT"), os.getenv("SMTP_PASSWORD")
     year = date.today().year
     if lang == "zh":
         msg["From"] = f"Meetgather <{SMTP_ACCOUNT}>"
@@ -192,7 +190,8 @@ def html_inform(title, bcc, inform, url, lang):
 
 def localToUTC(t, tz):  # 原時區改為UTC
     browser = datetime.strptime(
-        t + f"{tz}", "%Y-%m-%d %H:%M%z")  # 將時間字串設為瀏覽器時區時間
+        t + f"{tz}", "%Y-%m-%d %H:%M%z"
+    )  # 將時間字串設為瀏覽器時區時間
     utc = browser.astimezone(timezone(timedelta(hours=0)))  # 將瀏覽器時區時間改為UTC
     return utc.strftime("%Y-%m-%d %H:%M")
 
@@ -222,7 +221,7 @@ class Redis_link:
             self.conn.delete(query_member_id)
         self.conn.close()
 
-    def getData(self, query_member_id): # query_member_id 資料型態為int
+    def getData(self, query_member_id):  # query_member_id 資料型態為int
         if self.conn.exists(query_member_id):  #
             decode_list = [
                 i.decode("utf-8") for i in self.conn.lrange(query_member_id, 0, -1)
@@ -261,8 +260,9 @@ class Redis_link:
             aboutme,
             alterphoto,
         )
-        self.conn.expire(query_member_id, 600) # 生存時間十分鐘
+        self.conn.expire(query_member_id, 600)  # 生存時間十分鐘
         self.conn.close()
+
 
 class Members:
     def __init__(self, email, name, photo):
@@ -308,8 +308,7 @@ class Members:
                 CN1.commit()
             data = {"ok": True}
         finally:
-            print(CN1.connection_id, "Members.login > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Members.login > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
@@ -435,11 +434,11 @@ class Members:
             ):  # 上傳新圖片且alterphoto已有網址/未上傳新圖片且alterphoto已有網址
                 delete_pic_s3("/".join(result[6].split("/")[-3:]))
         finally:
-            print(CN1.connection_id, "Members.edit > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Members.edit > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
+
 
 class Activity:
     def __init__(
@@ -524,8 +523,7 @@ class Activity:
             cursor = CN1.cursor(buffered=True)
             ###
 
-            cursor.execute(
-                """select * from `activity` where `id` = %s """, (self.id,))
+            cursor.execute("""select * from `activity` where `id` = %s """, (self.id,))
             result = cursor.fetchone()  # tuple or None
 
             if result is None:
@@ -649,8 +647,7 @@ class Activity:
             if pic_s3Object != "":  # 刪除原圖片
                 delete_pic_s3("/".join(result[13].split("/")[-3:]))
         finally:
-            print(CN1.connection_id, "Activity.edit > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Activity.edit > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
@@ -662,8 +659,7 @@ class Activity:
             print(CN1.connection_id, "Activity.delete > pool create")
             cursor = CN1.cursor(buffered=True)
 
-            cursor.execute(
-                """select * from `activity` where `id` = %s """, (self.id,))
+            cursor.execute("""select * from `activity` where `id` = %s """, (self.id,))
             result = cursor.fetchone()  # tuple or None
 
             if result is None:
@@ -682,8 +678,7 @@ class Activity:
                         attendee_list.append(self.host)
 
                     # email to notify deleting
-                    email_inform_delete(
-                        result[2], ",".join(attendee_list), lang)
+                    email_inform_delete(result[2], ",".join(attendee_list), lang)
 
                     # mysql
                     command = """delete from `activity` where `id` = %s;"""
@@ -707,6 +702,7 @@ class Activity:
             cursor.close()
             CN1.close()
             return data
+
 
 class Find:
     def __init__(self, nowTime, page, web):
@@ -910,6 +906,7 @@ class Find:
             CN1.close()
             return data
 
+
 class Event:
     def __init__(self, eventId):
         self.eventId = eventId
@@ -947,8 +944,7 @@ class Event:
             data = {"error": True, "message": "伺服器內部錯誤"}
             print("Event.content > 發生錯誤", data)
         finally:
-            print(CN1.connection_id, "Event.content > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Event.content > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
@@ -975,8 +971,7 @@ class Event:
                         command = """select `starttime` from activity where `id`=%s;"""
                         cursor.execute(command, (self.eventId,))
                         starttime = cursor.fetchone()
-                        clickTime_tm = datetime.strptime(
-                            clickTime, "%Y-%m-%d %H:%M:%S")
+                        clickTime_tm = datetime.strptime(clickTime, "%Y-%m-%d %H:%M:%S")
 
                         if clickTime_tm < starttime[0]:
                             command = """select `limit` from activity where `id`=%s for update;"""
@@ -991,8 +986,7 @@ class Event:
                                 # 新增
                                 # 增加參加者名單
                                 command = "insert into `attendees` (`attendee_eventID`, `attendee_email`) values(%s, %s);"
-                                cursor.execute(
-                                    command, (self.eventId, attendee))
+                                cursor.execute(command, (self.eventId, attendee))
                                 crud += 1
                             else:
                                 data = {"error": True, "message": "已滿額"}
@@ -1019,11 +1013,9 @@ class Event:
                 cursor.execute(command, (self.eventId,))
                 namelist = cursor.fetchall()
                 print(namelist, "namelist新增後")
-                data = {"ok": True, "allJoinNum": len(
-                    namelist), "namelist": namelist}
+                data = {"ok": True, "allJoinNum": len(namelist), "namelist": namelist}
         finally:
-            print(CN1.connection_id, "Event.attend > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Event.attend > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
@@ -1060,8 +1052,7 @@ class Event:
                 cursor.execute(command, (self.eventId,))
                 namelist = cursor.fetchall()
                 print(namelist, "namelist刪除後")
-                data = {"ok": True, "allJoinNum": len(
-                    namelist), "namelist": namelist}
+                data = {"ok": True, "allJoinNum": len(namelist), "namelist": namelist}
         finally:
             print(
                 CN1.connection_id, "Event.not_going > pool close, ", CN1.is_connected()
@@ -1113,7 +1104,9 @@ class Event:
             CN1.close()
             return data
 
-    def mystatus_Login(self, attendee, clickTime):  # 自己參與狀態(已登入)    #先檢查有無額滿，再查是否參加過
+    def mystatus_Login(
+        self, attendee, clickTime
+    ):  # 自己參與狀態(已登入)    #先檢查有無額滿，再查是否參加過
         try:
             CN1 = pool.get_connection()  # get a connection with pool.
             print(CN1.connection_id, "Event.mystatus_Login > pool create")
@@ -1257,8 +1250,10 @@ class Event:
                             board_status = "read"  #  read 表示紅點消失
                             board_link = "linked"  # linked 似乎是留待之後開發的欄位
                         else:
-                            board_status = "not read" # 紅點出現，通知你的活動頁面上有未讀留言
-                            board_link = "not link" 
+                            board_status = (
+                                "not read"  # 紅點出現，通知你的活動頁面上有未讀留言
+                            )
+                            board_link = "not link"
 
                         command = "insert into `boardlist` (`board_name`, `board_email`, `board_msg`, `board_floor`,`board_time`,`board_status`, `board_link`) \
                             values(%s, %s, %s, %s, %s, %s,%s);"
@@ -1326,8 +1321,7 @@ class Event:
                 cursor.execute(command, (thisfloor, self.eventId))
                 board_id = cursor.fetchone()
                 inserttuple = list(inserttuple)
-                inserttuple[4] = datetime.strptime(
-                    inserttuple[4], "%Y-%m-%d %H:%M:%S")
+                inserttuple[4] = datetime.strptime(inserttuple[4], "%Y-%m-%d %H:%M:%S")
                 data = {
                     "ok": True,
                     "inserttuple": inserttuple,
@@ -1493,8 +1487,7 @@ class Event:
             else:
                 nextpage = page + 1
 
-            data = {"nextPage": nextpage,
-                    "data": datalist, "logger": member_id}
+            data = {"nextPage": nextpage, "data": datalist, "logger": member_id}
         except:
             print(traceback.format_exc())
             data = {"error": True, "message": "自訂的錯誤訊息"}
@@ -1550,8 +1543,7 @@ class Event:
                         )
                         cursor.execute(command, inserttuple)
                     else:  # 此樓有回覆
-                        a, b = result[4].split(
-                            "-")[0], int(result[4].split("-")[1])
+                        a, b = result[4].split("-")[0], int(result[4].split("-")[1])
                         thisfloor = f"{a}-{b+1}"
                         if line[2] == JWTemail:  # 樓主自己留言就標註已讀
                             reply_status = "read"
@@ -1603,8 +1595,7 @@ class Event:
                 cursor.execute(command, (thisfloor, boardID))
                 reply = cursor.fetchone()
                 inserttuple = list(inserttuple)
-                inserttuple[4] = datetime.strptime(
-                    inserttuple[4], "%Y-%m-%d %H:%M:%S")
+                inserttuple[4] = datetime.strptime(inserttuple[4], "%Y-%m-%d %H:%M:%S")
                 data = {
                     "ok": True,
                     "inserttuple": inserttuple,
@@ -1700,6 +1691,7 @@ class Event:
             CN1.close()
             return data
 
+
 class Notify:
     def __init__(self, JWTemail):
         self.email = JWTemail
@@ -1783,8 +1775,7 @@ class Notify:
             if a_idLen > 0:
                 # update  boardlists board_status
                 command = """update boardlist  set `board_status` = 'read' where `board_id` in"""
-                parastr = " (" + \
-                    ",".join(["%s" for i in range(a_idLen)]) + ");"
+                parastr = " (" + ",".join(["%s" for i in range(a_idLen)]) + ");"
                 command += parastr
                 cursor.execute(command, a_notRead_idTuple)
                 crud += 1
@@ -1802,8 +1793,7 @@ class Notify:
 
             if b_idLen > 0:
                 command = """update boardreply set `reply_status` = 'read' where `reply_id` in"""
-                parastr = " (" + \
-                    ",".join(["%s" for i in range(b_idLen)]) + ");"
+                parastr = " (" + ",".join(["%s" for i in range(b_idLen)]) + ");"
                 command += parastr
                 cursor.execute(command, b_notRead_idTuple)
                 crud += 1
@@ -1819,8 +1809,7 @@ class Notify:
             data = {"ok": True}
 
         finally:
-            print(CN1.connection_id, "Notify.read > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Notify.read > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
@@ -1998,8 +1987,7 @@ class Notify:
             print("Notify.notice > 發生錯誤", data)
 
         finally:
-            print(CN1.connection_id, "Notify.notice > pool close, ",
-                  CN1.is_connected())
+            print(CN1.connection_id, "Notify.notice > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data
@@ -2024,8 +2012,7 @@ class Notify:
                     attendee_list = [a[0] for a in attendee_tuple_list]
                     if self.email not in attendee_list:  # 版主也要收到信
                         attendee_list.append(self.email)
-                    html_inform(result[2], ",".join(
-                        attendee_list), inform, url, lang)
+                    html_inform(result[2], ",".join(attendee_list), inform, url, lang)
 
                     data = {"ok": True, "email": self.email}
                 else:
@@ -2051,35 +2038,45 @@ class Notify:
             CN1 = pool.get_connection()  # get a connection with pool.
             print(CN1.connection_id, "Notify.linked > pool create")
             cursor = CN1.cursor()
-            if main_or_reply == 'a': # 更改主要/主樓留言之link狀態
+            if main_or_reply == "a":  # 更改主要/主樓留言之link狀態
                 command = "select c.host, c.board_link from (select *from boardlist as b left join activity as a on  b.`board_name`=a.`id` where b.`board_id`=%s) as c;"
                 cursor.execute(command, (msgID,))
-                fetchback = cursor.fetchall() # list contains one tuple, tuple第一個元素是活動版主,第二個元素是否讀了留言
+                fetchback = (
+                    cursor.fetchall()
+                )  # list contains one tuple, tuple第一個元素是活動版主,第二個元素是否讀了留言
 
-                if len(fetchback) == 0: # 沒有此筆留言
+                if len(fetchback) == 0:  # 沒有此筆留言
                     data = {"error": True, "message": "no result from boardlist"}
-                elif self.email != fetchback[0][0]: # 確認是否為活動主已讀留言
-                    data = {"error": True, "message": "no authorization to see board msg"}
-                elif 'linked' == fetchback[0][1]: # 被讀取過的留言就不必再讀
+                elif self.email != fetchback[0][0]:  # 確認是否為活動主已讀留言
+                    data = {
+                        "error": True,
+                        "message": "no authorization to see board msg",
+                    }
+                elif "linked" == fetchback[0][1]:  # 被讀取過的留言就不必再讀
                     data = {"error": True, "message": "repeat linked board msg"}
                 else:
                     command = """update `boardlist` set `board_link` = %s where `board_id` = %s"""
-                    cursor.execute(command, ('linked', msgID))
+                    cursor.execute(command, ("linked", msgID))
                     crud += 1
-            elif main_or_reply == 'b': # 更改回覆留言之link狀態
+            elif main_or_reply == "b":  # 更改回覆留言之link狀態
                 command = "select c.board_email, c.reply_link from (select *from boardreply as r left join boardlist as b on r.`reply_boardID`=b.`board_id` where r.`reply_id`=%s) as c;"
                 cursor.execute(command, (msgID,))
-                fetchback = cursor.fetchall() # list contains one tuple, tuple第一個元素是主留言者,第二個元素是否讀了回覆留言
-                
-                if len(fetchback) == 0: # 沒有此筆留言
+                fetchback = (
+                    cursor.fetchall()
+                )  # list contains one tuple, tuple第一個元素是主留言者,第二個元素是否讀了回覆留言
+
+                if len(fetchback) == 0:  # 沒有此筆留言
                     data = {"error": True, "message": "no result from boardreply"}
-                elif self.email != fetchback[0][0]: # 確認是否為留言主人已讀其回覆留言
-                    data = {"error": True, "message": "no authorization to see reply msg"}
-                elif 'linked' == fetchback[0][1]: # 被讀取過的留言就不必再讀
+                elif self.email != fetchback[0][0]:  # 確認是否為留言主人已讀其回覆留言
+                    data = {
+                        "error": True,
+                        "message": "no authorization to see reply msg",
+                    }
+                elif "linked" == fetchback[0][1]:  # 被讀取過的留言就不必再讀
                     data = {"error": True, "message": "repeat linked reply msg"}
                 else:
                     command = """update `boardreply` set `reply_link` = %s where `reply_id` = %s"""
-                    cursor.execute(command, ('linked', msgID))
+                    cursor.execute(command, ("linked", msgID))
                     crud += 1
         except:
             CN1.rollback()
@@ -2092,7 +2089,7 @@ class Notify:
                 CN1.commit()
                 data = {"ok": True}
         finally:
-            print(CN1.connection_id, "Notify.linked > pool close, ",CN1.is_connected())
+            print(CN1.connection_id, "Notify.linked > pool close, ", CN1.is_connected())
             cursor.close()
             CN1.close()
             return data

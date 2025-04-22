@@ -49,7 +49,7 @@ async function find() {
       'lang'
     document
       .querySelectorAll('.event .host span:first-child')
-      [l].setAttribute('key', `city_${locationNum}`)
+    [l].setAttribute('key', `city_${locationNum}`)
     //
     let ev_dayStr
     let eventTime = new Date(
@@ -60,19 +60,17 @@ async function find() {
     let eventHour = String(eventTime.getHours()).padStart(2, '0')
 
     if (language === 'en') {
-      ev_dayStr = `${days_en[eventTime.getDay()]}, ${
-        month_en[eventTime.getMonth()]
-      } ${eventDate} · ${eventHour}:${String(eventTime.getMinutes()).padStart(
-        2,
-        '0',
-      )} <span>${timezone}</span>`
+      ev_dayStr = `${days_en[eventTime.getDay()]}, ${month_en[eventTime.getMonth()]
+        } ${eventDate} · ${eventHour}:${String(eventTime.getMinutes()).padStart(
+          2,
+          '0',
+        )} <span>${timezone}</span>`
     } else if (language === 'zh') {
-      ev_dayStr = `${days_cn[eventTime.getDay()]}, ${
-        month_cn[eventTime.getMonth()]
-      }${eventDate} · ${eventHour}:${String(eventTime.getMinutes()).padStart(
-        2,
-        '0',
-      )} <span>${timezone}</span>`
+      ev_dayStr = `${days_cn[eventTime.getDay()]}, ${month_cn[eventTime.getMonth()]
+        }${eventDate} · ${eventHour}:${String(eventTime.getMinutes()).padStart(
+          2,
+          '0',
+        )} <span>${timezone}</span>`
     }
     document.querySelectorAll('.event .time')[l].innerHTML = ev_dayStr
   }
@@ -194,13 +192,11 @@ async function find() {
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].includes('datefrom=')) {
         if (arr[i].split('=')[1] !== arr[i + 1].split('=')[1]) {
-          document.querySelector('.choosePeriod button span').innerHTML = `${
-            arr[i].split('=')[1]
-          }~ ${arr[i + 1].split('=')[1]}`
+          document.querySelector('.choosePeriod button span').innerHTML = `${arr[i].split('=')[1]
+            }~ ${arr[i + 1].split('=')[1]}`
         } else {
-          document.querySelector('.choosePeriod button span').innerHTML = `${
-            arr[i].split('=')[1]
-          }`
+          document.querySelector('.choosePeriod button span').innerHTML = `${arr[i].split('=')[1]
+            }`
         }
       }
     }
@@ -314,8 +310,7 @@ async function find() {
         let newUrl
         newUrl =
           current_url +
-          `&datefrom=${today_tomorrow()[0]}&dateto=${
-            today_tomorrow()[0]
+          `&datefrom=${today_tomorrow()[0]}&dateto=${today_tomorrow()[0]
           }&tzOffset=${tzOffset}`
         if (newUrl.includes('page=')) {
           let _2newUrl = newUrl.split('&')
@@ -369,8 +364,7 @@ async function find() {
         let newUrl
         newUrl =
           current_url +
-          `&datefrom=${today_tomorrow()[1]}&dateto=${
-            today_tomorrow()[1]
+          `&datefrom=${today_tomorrow()[1]}&dateto=${today_tomorrow()[1]
           }&tzOffset=${tzOffset}`
         if (newUrl.includes('page=')) {
           let _2newUrl = newUrl.split('&')

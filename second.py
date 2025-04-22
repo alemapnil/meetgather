@@ -28,7 +28,8 @@ def IDTime():
 
 def localToUTC(t, tz):  # 原時區改為UTC
     browser = datetime.strptime(
-        t + f"{tz}", "%Y-%m-%d %H:%M%z")  # 將時間字串設為瀏覽器時區時間
+        t + f"{tz}", "%Y-%m-%d %H:%M%z"
+    )  # 將時間字串設為瀏覽器時區時間
     utc = browser.astimezone(timezone(timedelta(hours=0)))  # 將瀏覽器時區時間改為UTC
     return utc.strftime("%Y-%m-%d %H:%M")
 
@@ -126,11 +127,13 @@ def user_patch():
 @jwt_required()
 def notification():
     decrypt = get_jwt_identity()
-    main_or_reply, msgID = request.get_json()["main_or_reply"], request.get_json()["msgID"]
-    n = db.Notify(decrypt['email'])
-    data = n.linked(main_or_reply,msgID)
+    main_or_reply, msgID = (
+        request.get_json()["main_or_reply"],
+        request.get_json()["msgID"],
+    )
+    n = db.Notify(decrypt["email"])
+    data = n.linked(main_or_reply, msgID)
     return jsonify(data)
-
 
 
 @api.route("/api/create", methods=["POST"])
@@ -171,8 +174,7 @@ def create_post():
             data["message"] = "人數不符"
             return jsonify(data)
 
-        print(acti_pho, acti_name, acti_story,
-              acti_cate, acti_num, acti_city, acti_tm)
+        print(acti_pho, acti_name, acti_story, acti_cate, acti_num, acti_city, acti_tm)
         print("------")
         print(acti_add, acti_lat, acti_lng)
         print("------------------------")
@@ -237,8 +239,7 @@ def create_post():
 @jwt_required()
 def create_delete():
     decrypt = get_jwt_identity()
-    event_id, language = request.get_json()["id"], request.get_json()[
-        "language"]
+    event_id, language = request.get_json()["id"], request.get_json()["language"]
     activity = db.Activity(
         event_id,
         decrypt["email"],
@@ -273,8 +274,10 @@ def edit_post():
         else:
             acti_pho = request.files["acti_pho"]
 
-        acti_id, acti_name = request.form["acti_id"], request.form["acti_name"].strip(
-        ).capitalize()
+        acti_id, acti_name = (
+            request.form["acti_id"],
+            request.form["acti_name"].strip().capitalize(),
+        )
         acti_story, acti_cate = (
             request.form["acti_story"].strip().capitalize(),
             request.form["acti_cate"],
@@ -283,7 +286,7 @@ def edit_post():
         acti_tm = localToUTC(request.form["acti_tm"], "+0800")
         acti_add, acti_lat, acti_lng = None, None, None
 
-        print(acti_num, 'acti_num', type(acti_num))
+        print(acti_num, "acti_num", type(acti_num))
         if acti_city == "0":
             pass
         else:
@@ -305,8 +308,7 @@ def edit_post():
             data["message"] = "人數不符"
             return jsonify(data)
 
-        print(acti_pho, acti_name, acti_story,
-              acti_cate, acti_num, acti_city, acti_tm)
+        print(acti_pho, acti_name, acti_story, acti_cate, acti_num, acti_city, acti_tm)
         print("------")
         print(acti_add, acti_lat, acti_lng)
         print(acti_pho, type(acti_pho))
@@ -314,7 +316,8 @@ def edit_post():
         if acti_pho is not None and acti_pho.content_type not in [
             "image/png",
             "image/jpeg",
-                "image/gif"]:
+            "image/gif",
+        ]:
             data["message"] = "照片不符規格"
             return jsonify(data)
 
@@ -435,8 +438,7 @@ def attendGet(id):
 @api.route("/api/attend", methods=["POST"])
 @jwt_required()
 def attendPost():
-    activity, attendee = request.get_json()["activity"], request.get_json()[
-        "attendee"]
+    activity, attendee = request.get_json()["activity"], request.get_json()["attendee"]
     e = db.Event(activity)
     result = e.attend(attendee, utcNowTime())
     return jsonify(result)
@@ -445,8 +447,7 @@ def attendPost():
 @api.route("/api/attend", methods=["DELETE"])
 @jwt_required()
 def attendDelete():
-    activity, attendee = request.get_json()["activity"], request.get_json()[
-        "attendee"]
+    activity, attendee = request.get_json()["activity"], request.get_json()["attendee"]
     e = db.Event(activity)
     result = e.not_going(attendee)
     return jsonify(result)
@@ -481,8 +482,7 @@ def replyPost():
 @api.route("/api/board", methods=["DELETE"])
 @jwt_required()
 def boardDelete():
-    activity, board_id = request.get_json()["activity"], request.get_json()[
-        "board_id"]
+    activity, board_id = request.get_json()["activity"], request.get_json()["board_id"]
     decrypt = get_jwt_identity()
     e = db.Event(activity)
     result = e.boardDelete(decrypt["email"], board_id)
@@ -492,8 +492,7 @@ def boardDelete():
 @api.route("/api/reply", methods=["DELETE"])
 @jwt_required()
 def replyDelete():
-    activity, reply_id = request.get_json()["activity"], request.get_json()[
-        "reply_id"]
+    activity, reply_id = request.get_json()["activity"], request.get_json()["reply_id"]
     decrypt = get_jwt_identity()
     e = db.Event(activity)
     result = e.replyDelete(decrypt["email"], reply_id)
@@ -503,8 +502,7 @@ def replyDelete():
 @api.route("/api/board", methods=["PATCH"])
 @jwt_required()
 def boardPatch():
-    activity, board_id = request.get_json()["activity"], request.get_json()[
-        "board_id"]
+    activity, board_id = request.get_json()["activity"], request.get_json()["board_id"]
     message = request.get_json()["message"].strip(" ")
     decrypt = get_jwt_identity()
     e = db.Event(activity)
@@ -515,8 +513,7 @@ def boardPatch():
 @api.route("/api/reply", methods=["PATCH"])
 @jwt_required()
 def replyPatch():
-    activity, reply_id = request.get_json()["activity"], request.get_json()[
-        "reply_id"]
+    activity, reply_id = request.get_json()["activity"], request.get_json()["reply_id"]
     message = request.get_json()["message"].strip(" ")
     decrypt = get_jwt_identity()
     e = db.Event(activity)
@@ -546,7 +543,9 @@ def boardGet(id_page):
 @jwt_required()
 def message():
     decrypt = get_jwt_identity()
-    boardid, replyid = request.args.get("boardid", None), request.args.get("replyid", None)
+    boardid, replyid = request.args.get("boardid", None), request.args.get(
+        "replyid", None
+    )
 
     if boardid is not None:
         n = db.Notify(decrypt["email"])
@@ -597,8 +596,7 @@ def profile_post():
     if newaboutme == "null":
         newaboutme = None
 
-    member = db.Members(
-        decrypt["email"], decrypt["name"], decrypt["picture"])  # 實例化
+    member = db.Members(decrypt["email"], decrypt["name"], decrypt["picture"])  # 實例化
     result = member.edit(newname, newaboutme, newphoto, background)
     return jsonify(result)
 
@@ -631,8 +629,7 @@ def scrape():
     url = request.get_json()["url"]
     r = requests.post(
         "https://graph.facebook.com/v15.0",
-        data={"scrape": True, "id": url,
-              "access_token": os.getenv("FACEBOOKTOKEN")},
+        data={"scrape": True, "id": url, "access_token": os.getenv("FACEBOOKTOKEN")},
     )
     print(r, r.status_code)
 

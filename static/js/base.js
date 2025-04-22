@@ -528,9 +528,7 @@ function alterLinkStatus(name, mID) {
       Authorization: `Bearer ${access_token}`,
     },
   }).then(function (response) {
-    if (response.ok) {
-      return response.json();
-    }
+    if (response.ok) { return response.json(); }
   })
     .catch((error) => {
       console.error("PATCH /api/notification 錯誤:", error);

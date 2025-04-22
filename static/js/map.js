@@ -8,8 +8,7 @@ function initMap() {
     };
 
     var options = {
-      center: location,
-      zoom: 12,
+      center: location, zoom: 12,
     };
 
     if (navigator.geolocation) {

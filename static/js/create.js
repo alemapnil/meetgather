@@ -583,7 +583,7 @@ document
 
       try {
         document.querySelector(".popup6 .view_add").innerHTML = "";
-      } catch {}
+      } catch { }
       if (acti_city !== "0") {
         document
           .querySelector(".popup6 .view_add")

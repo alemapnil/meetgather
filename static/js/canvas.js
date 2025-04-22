@@ -67,7 +67,7 @@ document.getElementById("send").addEventListener("click", function (fe) {
       })
         .catch((error) => console.error("Error:", error))
         .then((response) => response.json()) // 輸出成 json
-        .then(function (dict) {});
+        .then(function (dict) { });
     };
   };
 });

@@ -70,12 +70,12 @@ async function evedit() {
       .then(function (ele) {
         dict = ele
         if ('ok' in dict) {
-          ;(ev_title = dict['activity'][2]),
+          ; (ev_title = dict['activity'][2]),
             (ev_content = dict['activity'][3]),
             (ev_cate = dict['activity'][4]),
             (ev_limit = dict['activity'][5]),
-            (ev_location = dict['activity'][6])
-          ;(ev_address = dict['activity'][7]),
+            (ev_location = dict['activity'][6]),
+            (ev_address = dict['activity'][7]),
             (ev_lat = dict['activity'][8]),
             (ev_lng = dict['activity'][9]),
             (ev_tm = dict['activity'][10]),
@@ -530,7 +530,7 @@ async function preview() {
 
       try {
         document.querySelector('.popup6 .view_add').innerHTML = ''
-      } catch {}
+      } catch { }
       if (acti_city !== '0') {
         if (acti_add !== undefined) {
           document

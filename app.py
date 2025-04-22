@@ -31,8 +31,7 @@ google = oauth.register(
     authorize_url="https://accounts.google.com/o/oauth2/auth",
     authorize_params=None,
     api_base_url="https://www.googleapis.com/oauth2/v1/",
-    client_kwargs={"scope": "openid email profile",
-                   "prompt": "select_account"},
+    client_kwargs={"scope": "openid email profile", "prompt": "select_account"},
 )
 
 app.config["JSON_AS_ASCII"] = False
@@ -119,8 +118,7 @@ def find():
         if dateto is not None:
             datetime.strptime(dateto, "%Y-%m-%d")
         if tzOffset is not None:
-            datetime.strptime(
-                datefrom + f" 00:00{tzOffset}", "%Y-%m-%d %H:%M%z")
+            datetime.strptime(datefrom + f" 00:00{tzOffset}", "%Y-%m-%d %H:%M%z")
         if category is not None:
             if 0 <= int(category) <= 13:
                 pass
@@ -186,7 +184,7 @@ def event(id):
                 base_url=request.base_url,
                 url_root=request.url_root,
                 imgType=result["activity"][13].split(".")[-1],
-                c_now_attend_l=format(result["activity"][5], ',')
+                c_now_attend_l=format(result["activity"][5], ","),
             )
         )
         resp.set_cookie("boardfrom", utcNowTime())
@@ -209,21 +207,21 @@ def login():
     google = oauth.create_client("google")
     redirect_uri = url_for("authorize", _external=True)
 
-    print('主機>>',request.headers['Host'])
-    print('即將轉址>>',redirect_uri)
-    if 'localhost' in request.headers['Host']:  # 若在筆電本機上跑
-        redirect_uri = redirect_uri.replace('https', 'http')
+    print("主機>>", request.headers["Host"])
+    print("即將轉址>>", redirect_uri)
+    if "localhost" in request.headers["Host"]:  # 若在筆電本機上跑
+        redirect_uri = redirect_uri.replace("https", "http")
     else:
-        redirect_uri = redirect_uri.replace('http', 'https')
-    print('此為google轉址URL>>', redirect_uri)
+        redirect_uri = redirect_uri.replace("http", "https")
+    print("此為google轉址URL>>", redirect_uri)
     currentpage = request.cookies.get("currentpage")
-    print('此為Cookie登記的currentpage>>', currentpage)
+    print("此為Cookie登記的currentpage>>", currentpage)
     return google.authorize_redirect(redirect_uri)
 
 
 @app.route("/authorize")
 def authorize():
-    print('進入/authorize')
+    print("進入/authorize")
     google = oauth.create_client("google")
     token = google.authorize_access_token()
     resp = google.get("userinfo")
@@ -250,7 +248,7 @@ def authorize():
         currentpage = request.cookies.get("currentpage")
         resp = make_response(redirect(currentpage))
         resp.set_cookie("access_token", access_token)
-        print('access_token >> ',access_token)
+        print("access_token >> ", access_token)
         print("Request is secure?", request.is_secure)
         return resp
     else:
