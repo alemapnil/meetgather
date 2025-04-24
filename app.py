@@ -1,9 +1,7 @@
 # 後臺時區全是格林威治標準時間
 from authlib.integrations.flask_client import OAuth
-import enum
 import os
 import time
-import requests
 from flask import *
 from flask_jwt_extended import (
     create_access_token,
