@@ -117,7 +117,7 @@ def email_inform_delete(title, bcc, lang):
             subtype="html",
         )
 
-    server = smtplib.SMTP_SSL("smtppro.zoho.com", 465)
+    server = smtplib.SMTP_SSL("smtp.zoho.com", 465)
     server.login(SMTP_ACCOUNT, SMTP_PASSWORD)
     server.send_message(msg)
     server.close()
@@ -182,7 +182,7 @@ def html_inform(title, bcc, inform, url, lang):
             subtype="html",
         )
 
-    server = smtplib.SMTP_SSL("smtppro.zoho.com", 465)
+    server = smtplib.SMTP_SSL("smtp.zoho.com", 465)
     server.login(SMTP_ACCOUNT, SMTP_PASSWORD)
     server.send_message(msg)
     server.close()
