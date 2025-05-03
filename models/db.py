@@ -84,7 +84,7 @@ def email_inform_delete(title, bcc, lang):
             <br/>
             <div style='color:#BEBEBE'>*本郵件由系統自動發出，請勿直接回覆此信件</div>
             <div style='color:#BEBEBE'>© COPYRIGHT {year} PamelaLin</div>
-            <div style='color:#f6d819; font-weight:bold;'>Meetgather</div>
+            <img src ='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/meetgather3.jpg'> 
         </body>
         </html>
         """.format(
@@ -108,7 +108,7 @@ def email_inform_delete(title, bcc, lang):
             <br/>
             <div style='color:#BEBEBE'>*This mail is sent automatically, so do not give any reply.</div>
             <div style='color:#BEBEBE'>© COPYRIGHT {year} PamelaLin</div>
-            <div style='color:#f6d819; font-weight:bold;'>Meetgather</div>
+            <img src ='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/meetgather3.jpg'> 
         </body>
         </html>
         """.format(
@@ -138,16 +138,16 @@ def html_inform(title, bcc, inform, url, lang):
         <html>
         <head></head>
         <body>
-            <p style='color:rgb(0,0,0,0.75)'>哈囉! 參與者</p>
+            <p style='color:rgb(0,0,0,0.75)'>參與者你好</p>
             <div style='color:rgb(0,0,0,0.75)'>主辦人有話要說:</div>
             <br/>
             <div style='color:rgb(0,0,0,0.75)'><b>{inform}</b></div>
             <br/>
-            <div style='color:rgb(0,0,0,0.75)'><a href="{url}">留意活動資訊</a></div>
+            <div style='color:rgb(0,0,0,0.75)'><a href="{url}">更多活動資訊</a></div>
             <br/>
             <div style='color:#BEBEBE'>*本郵件由系統自動發出，請勿直接回覆此信件</div>
             <div style='color:#BEBEBE'>© COPYRIGHT {year} PamelaLin</div>
-            <div style='color:#f6d819; font-weight:bold;'>Meetgather</div>
+            <img src ='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/meetgather3.jpg'> 
         </body>
         </html>
         """.format(
@@ -169,11 +169,11 @@ def html_inform(title, bcc, inform, url, lang):
             <br/>
             <div style='color:rgb(0,0,0,0.75)'><b>{inform}</b></div>
             <br/>
-            <div style='color:rgb(0,0,0,0.75)'><a href="{url}">Mind information of activity</a></div>
+            <div style='color:rgb(0,0,0,0.75)'><a href="{url}">More information about the activity</a></div>
             <br/>
             <div style='color:#BEBEBE'>*This mail is sent automatically, so do not give any reply.</div>
             <div style='color:#BEBEBE'>© COPYRIGHT {year} PamelaLin</div>
-            <div style='color:#f6d819; font-weight:bold;'>Meetgather</div>
+            <img src ='https://d3i2i3wop7mzlm.cloudfront.net/meetgather/html/meetgather3.jpg'>            
         </body>
         </html>
         """.format(
