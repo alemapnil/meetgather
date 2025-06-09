@@ -205,9 +205,7 @@ sudo certbot --nginx
 ```
 
 ## AWS Frame
-![frame](https://github.com/user-attachments/assets/3088f788-7673-4f05-9b44-4b99155212ea)
-
-
+![frame](https://github.com/user-attachments/assets/536960f5-b7d2-4c5e-99e8-c72bcead4630)
 ## How to Use the Web?
 
 https://github.com/alemapnil/meetgather/assets/52197443/ef1e1834-aea8-4a5e-a7ca-1b3f89d04c64
